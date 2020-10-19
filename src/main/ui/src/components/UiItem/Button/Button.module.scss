@@ -1,0 +1,65 @@
+.Button {
+  display: block;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  font-size: 16px;
+  font-family: "Arial";
+  margin: 3.2px 0;
+  padding: 7.2px 3px;
+  min-width: 8.5rem;
+  color: #fff;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:active {
+    box-shadow: inset 2px 2px 1px rgba(0, 0, 0, 0.3);
+  }
+
+  &:disabled {
+    background: #ccc;
+    color: #000;
+    cursor: not-allowed;
+
+    &:hover {
+      background: #ccc;
+    }
+  }
+}
+
+.primary {
+  background: #96588a;
+  color: #fff;
+  transition: 0.3s;
+  width: 70%;
+  margin-left: 10px;
+  background: #96588a;
+
+  &:hover {
+    background: #8e2e96;
+    transition: 0.3s;
+  }
+}
+
+.success {
+  background: #db6736;
+  transition: 0.3s;
+  width: 30%;
+
+  &:hover {
+    background: #d45900;
+    transition: 0.3s;
+  }
+}
+
+.error {
+  background-color: #bd001f;
+
+  &:hover {
+    background: #ac1800;
+    transition: 0.3s;
+  }
+}

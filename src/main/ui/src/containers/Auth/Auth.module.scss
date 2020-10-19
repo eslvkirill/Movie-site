@@ -1,0 +1,21 @@
+.Auth {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-70%);
+  font-family: "Comic Sans MS", arial;
+  width: 346px;
+
+  p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #db6736;
+    font-size: 2.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .Buttons {
+    display: flex;
+  }
+}
