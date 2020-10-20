@@ -1,0 +1,51 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="2020-10-19 create table for User entity" author="Befors">
+        <createTable tableName="user">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2020-10-19 insert test data for User entity with admin role" author="Befors">
+        <insert tableName="user">
+            <column name="email" value="admin"/>
+            <column name="password" value="$2a$10$vi.FhVRCECnvXRBOaExUP.QXeK1nNNh01I6magsOE3k77R3j6eF0a"/>
+            <column name="first_name" value="Денис"/>
+            <column name="last_name" value="Бондаренко"/>
+            <column name="active" value="true"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="2020-10-19 insert test data for User entity with user role" author="Befors">
+        <insert tableName="user">
+            <column name="email" value="user"/>
+            <column name="password" value="$2a$10$zBh8fhdupHJQsUwec96wY.8msLQnU27jwZbFXBI4OkPewrk79pMOa"/>
+            <column name="first_name" value="Аркадий"/>
+            <column name="last_name" value="Ветров"/>
+            <column name="active" value="true"/>
+            <column name="role" value="USER"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
