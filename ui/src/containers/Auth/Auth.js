@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import classes from "./Auth.module.scss";
 import Button from "../../components/UiItem/Button/Button";
 import Input from "../../components/UiItem/Input/Input";
+import axios from "axios";
 
-function validateEmail(email) {
-  const re = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
-  return re.test(String(email).toLowerCase());
-}
+// function validateEmail(email) {
+//   const re = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
+//   return re.test(String(email).toLowerCase());
+// }
 
 export default class Auth extends Component {
   state = {
@@ -14,14 +15,16 @@ export default class Auth extends Component {
     formControls: {
       email: {
         value: "",
-        type: "email",
+        // type: "email",
+        type: "text",
         placeholder: "Email адрес",
         errorMessage: "Email адрес должен быть вида: ivanov@yandex.ru",
         valid: false,
         touched: false,
         validation: {
           required: true,
-          email: true,
+          minLength: 4,
+          // email: true,
         },
       },
       password: {
@@ -33,13 +36,34 @@ export default class Auth extends Component {
         touched: false,
         validation: {
           required: true,
-          minLength: 5,
+          minLength: 4,
         },
       },
     },
   };
 
-  loginHandler = () => {};
+  loginHandler = () => {
+    const authData = {
+      email: this.state.formControls.email.value,
+      password: this.state.formControls.password.value,
+    };
+    // try {
+    //   const response = await axios.post("/login", authData);
+    console.log(authData);
+    //   console.log(response.data);
+    // } catch (e) {
+    //   console.log(e);
+    // }
+
+    axios({
+      method: "post",
+      url: "/login",
+      data: {
+        email: this.state.formControls.email.value,
+        password: this.state.formControls.password.value,
+      },
+    });
+  };
 
   registerHandler = () => {};
 
@@ -58,9 +82,9 @@ export default class Auth extends Component {
       isValid = value.trim() !== "" && isValid;
     }
 
-    if (validation.email) {
-      isValid = validateEmail(value) && isValid;
-    }
+    // if (validation.email) {
+    //   isValid = validateEmail(value) && isValid;
+    // }
 
     if (validation.minLength) {
       isValid = value.length >= validation.minLength && isValid;
@@ -115,7 +139,11 @@ export default class Auth extends Component {
     return (
       <div className={classes.Auth}>
         <p>Личный кабинет</p>
-        <form onSubmit={this.submitHandler}>
+        <form
+          onSubmit={this.submitHandler}
+          // action="http://localhost:8080/login"
+          // method="post"
+        >
           <div>{this.renderInputs()}</div>
           <div className={classes.Buttons}>
             <Button
