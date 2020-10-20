@@ -41,15 +41,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @SneakyThrows
     protected void configure(HttpSecurity http) {
         http
-                .authorizeRequests()
+            .authorizeRequests()
                 .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
-                .and()
+            .and()
                 .formLogin()
                 .loginPage("/login")
                 .usernameParameter(USERNAME_PARAMETER)
 //                .defaultSuccessUrl("/");
-                .and()
-                .csrf().disable();
+            .and()
+                .cors()
+            .and()
+                .csrf()
+                .disable();
     }
 
     @Override
