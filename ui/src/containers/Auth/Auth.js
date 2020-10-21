@@ -68,12 +68,6 @@ export default class Auth extends Component {
     // });
   };
 
-  registerHandler = () => {};
-
-  submitHandler = (event) => {
-    event.preventDefault();
-  };
-
   validateControl(value, validation) {
     if (!validation) {
       return true;
@@ -93,8 +87,18 @@ export default class Auth extends Component {
       isValid = value.length >= validation.minLength && isValid;
     }
 
+    if (validation.maxLength) {
+      isValid = value.length <= validation.maxLength && isValid;
+    }
+
     return isValid;
   }
+
+  registerHandler = () => {};
+
+  submitHandler = (event) => {
+    event.preventDefault();
+  };
 
   onChangeHandler = (event, controlName) => {
     const formControls = { ...this.state.formControls };

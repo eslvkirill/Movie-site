@@ -1,0 +1,25 @@
+.GenreItem {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 75%;
+    margin: auto;
+    margin-top: 1rem;
+    border: 2px solid #c06b0a;
+    font-size: 18px;
+    padding: 8px 6px;
+    border-radius: 5px;
+    color: rgb(252, 237, 220);
+
+    div {
+      padding-left: 20px;
+      font-size: 18px;
+      width: 80%;
+    }
+  }
+}
