@@ -1,6 +1,5 @@
 package com.movie.site.config;
 
-import com.movie.site.model.enums.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
@@ -42,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) {
         http
             .authorizeRequests()
-                .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
+                .anyRequest().permitAll()
             .and()
                 .formLogin()
                 .loginPage("/login")
