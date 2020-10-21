@@ -1,0 +1,68 @@
+$primary-color: rgb(252, 237, 220);
+
+.AdminPanel {
+  margin: 6rem auto;
+
+  form {
+    display: flex;
+    align-items: center;
+  }
+
+  Input {
+    font-size: 18px;
+    padding: 11px 12px;
+    border: 3px solid rgb(199, 108, 4);
+    border-radius: 10px;
+    font-weight: normal;
+    outline: none;
+    width: 22rem;
+    height: 48.8px;
+    background: #fafafa;
+    color: rgb(35, 2, 58);
+    transition: 0.3s;
+    caret-color: #a35b09;
+
+    &::placeholder {
+      color: rgb(168, 145, 118);
+      transition: 0.3s;
+    }
+
+    &:focus {
+      background: rgb(255, 244, 232);
+      transition: 0.3s;
+    }
+  }
+
+  button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    margin-left: 0.5rem;
+    background: #c06b0a;
+    color: $primary-color;
+    transition: 0.3s;
+    height: 42px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background: #a35b09;
+      transition: 0.3s;
+    }
+  }
+
+  .AddItem {
+    padding: 11px 6px;
+    border-radius: 10px;
+    font-size: 17px;
+    width: 11rem;
+  }
+
+  hr {
+    background: $primary-color;
+    margin-top: 1rem;
+    border-width: 2px;
+  }
+}

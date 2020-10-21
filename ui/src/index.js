@@ -3,13 +3,16 @@ import ReactDOM from "react-dom";
 import "./index.scss";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import { BrowserRouter } from "react-router-dom";
 
 const app = (
-  <React.StrictMode>
+  <BrowserRouter>
     <App />
-  </React.StrictMode>
+  </BrowserRouter>
 );
-
-ReactDOM.render(app, document.getElementById("root"));
+ReactDOM.render(
+  <React.StrictMode>{app}</React.StrictMode>,
+  document.getElementById("root")
+);
 
 serviceWorker.unregister();
