@@ -105,7 +105,9 @@ export default class GenreList extends Component {
     this.setState(genres);
   };
 
-  button2Click = (genreId) => {
+  button2Click = async (genreId) => {
+    // try {
+
     const genres = this.state.genres;
 
     const index = genres.findIndex((genre) => genre.id === genreId);
@@ -115,7 +117,38 @@ export default class GenreList extends Component {
     }
 
     this.setState(genres);
+
+    const genre = {
+      name: genres[index].name,
+    };
+
+    console.log(genres[index]);
+
+    await axios({
+      method: "put",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      url: `/api/genres/${genres[index].id}`,
+      data: genre,
+    }).then((response) => console.log(response));
+    // } catch (e) {
+    //   console.log(e);
+    // }
   };
+
+  // button2Click = (genreId) => {
+  //   const genres = this.state.genres;
+
+  //   const index = genres.findIndex((genre) => genre.id === genreId);
+
+  //   if (genres[index] !== undefined) {
+  //     genres[index].open = !genres[index].open;
+  //   }
+
+  //   this.setState(genres);
+  // };
 
   editHandler = (e, genreId) => {
     const genres = this.state.genres;
