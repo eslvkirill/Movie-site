@@ -10,6 +10,9 @@ export default class GenreList extends Component {
   state = {
     genres: [],
     loading: true,
+    newItem: "",
+    value: "",
+    disabled: false,
     formControls: {
       text: {
         value: "",
@@ -34,7 +37,11 @@ export default class GenreList extends Component {
       const response = await axios.get("/api/genres");
 
       const genres = response.data;
-      // console.log(genres);
+
+      genres.map((genre) => {
+        genre.open = false;
+        return genre;
+      });
 
       this.setState({ genres, loading: false });
       console.log(genres);
@@ -44,22 +51,20 @@ export default class GenreList extends Component {
   }
 
   genreHandler = async () => {
-    const genre = {
-      name: this.state.formControls.text.value,
-    };
-    console.log(genre);
-    // try {
-    const response = await axios
-      .post("http://localhost:8080/api/genres", { genre })
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-      });
+    try {
+      const genre = {
+        name: this.state.newItem,
+      };
 
-    console.log(response.data);
-    // } catch (e) {
-    //   console.log(e);
-    // }
+      await axios({
+        method: "post",
+        contentType: "application/json",
+        url: "/api/genres",
+        data: genre,
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   validateControl(value, validation) {
@@ -88,6 +93,53 @@ export default class GenreList extends Component {
     return isValid;
   }
 
+  button1Click = (genreId) => {
+    const genres = this.state.genres;
+
+    const index = genres.findIndex((genre) => genre.id === genreId);
+
+    if (genres[index] !== undefined) {
+      genres[index].open = !genres[index].open;
+    }
+
+    this.setState(genres);
+  };
+
+  button2Click = (genreId) => {
+    const genres = this.state.genres;
+
+    const index = genres.findIndex((genre) => genre.id === genreId);
+
+    if (genres[index] !== undefined) {
+      genres[index].open = !genres[index].open;
+    }
+
+    this.setState(genres);
+  };
+
+  editHandler = (e, genreId) => {
+    const genres = this.state.genres;
+    let value = this.state.value;
+
+    genres.map((genre) => {
+      if (genre.id === genreId) {
+        value = e.target.value;
+        genre.name = value;
+
+        //   if (
+        //     genre.name.trim().length <
+        //     this.state.formControls["text"].validation.minLength
+        //   ) {
+        //     this.setState({ disabled: true });
+        //   } else this.setState({ disabled: false });
+        // }
+      }
+      return genres;
+    });
+
+    this.setState({ genres });
+  };
+
   onChangeHandler = (event, controlName) => {
     const formControls = { ...this.state.formControls };
     const control = { ...formControls[controlName] };
@@ -107,7 +159,29 @@ export default class GenreList extends Component {
     this.setState({
       formControls,
       isFormValid,
+      newItem: control.value,
     });
+  };
+
+  submitNewGenre = (event) => {
+    event.preventDefault();
+    const genres = this.state.genres;
+    const newItem = this.state.newItem;
+    if (newItem.length > 0) {
+      this.setState({
+        genres: [
+          ...genres,
+          {
+            name: newItem,
+          },
+        ],
+        newItem: "",
+      });
+    }
+    console.log(this.state.newItem);
+
+    console.log(this.state);
+    console.log(this.state.newItem);
   };
 
   renderInputs() {
@@ -118,7 +192,7 @@ export default class GenreList extends Component {
           key={controlName + index}
           type={control.type}
           placeholder={control.placeholder}
-          value={control.value}
+          value={this.state.newItem}
           valid={control.valid}
           touched={control.touched}
           label={control.label}
@@ -130,14 +204,10 @@ export default class GenreList extends Component {
     });
   }
 
-  submitHandler = (event) => {
-    event.preventDefault();
-  };
-
   render() {
     return (
       <div className={classes.GenreList}>
-        <form onSubmit={this.submitHandler}>
+        <form onSubmit={(event) => this.submitNewGenre(event)}>
           {this.renderInputs()}
           {/* <input
             value={this.state.newItem}
@@ -157,7 +227,13 @@ export default class GenreList extends Component {
         {this.state.loading ? (
           <Loader />
         ) : (
-          <GenreItem genres={this.state.genres} />
+          <GenreItem
+            genres={this.state.genres}
+            Click={this.button1Click}
+            Click2={this.button2Click}
+            onChangeHandler={this.editHandler}
+            // disabled={this.state.disabled}
+          />
         )}
       </div>
     );

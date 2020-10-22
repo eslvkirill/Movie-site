@@ -42,30 +42,25 @@ export default class Auth extends Component {
     },
   };
 
-  loginHandler = async () => {
+  loginHandler = async (username, password) => {
     const authData = {
       email: this.state.formControls.email.value,
       password: this.state.formControls.password.value,
     };
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/login",
-        authData
-      );
-      console.log(authData);
-      console.log(response.data);
-    } catch (e) {
-      console.log(e);
-    }
 
-    // axios({
-    //   method: "post",
-    //   url: "/login",
-    //   data: {
-    //     email: this.state.formControls.email.value,
-    //     password: this.state.formControls.password.value,
-    //   },
-    // });
+    username = authData.email;
+    password = authData.password;
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/x-www-form-urlencoded");
+
+    const response = await axios.post(
+      "http://localhost:8080/login",
+      encodeURI(`username=${username}&password=${password}`),
+      { headers }
+    );
+
+    console.log(response);
   };
 
   validateControl(value, validation) {

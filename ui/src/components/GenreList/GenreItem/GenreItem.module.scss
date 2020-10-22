@@ -16,10 +16,30 @@
     border-radius: 5px;
     color: rgb(252, 237, 220);
 
-    div {
+    Input {
       padding-left: 20px;
       font-size: 18px;
       width: 80%;
+      background: #c06b0a;
+      color: #c06b0a;
+      border: 2px solid #c06b0a;
+      border-radius: 10px;
+
+      &:disabled {
+        background: #37104d;
+        border: none;
+        padding-left: 20px;
+        font-size: 18px;
+        width: 80%;
+        color: #fceddc;
+      }
+      &:focus {
+        background: #fceddc;
+        color: #c06b0a;
+      }
     }
+  }
+  Input[value] {
+    background: #fafafa;
   }
 }
