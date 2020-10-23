@@ -11,6 +11,7 @@ export default class GenreList extends Component {
     genres: [],
     loading: true,
     newItem: "",
+    newItemId: "",
     value: "",
     disabled: false,
     formControls: {
@@ -52,16 +53,22 @@ export default class GenreList extends Component {
 
   genreHandler = async () => {
     try {
+      let newItemId = "";
+
       const genre = {
         name: this.state.newItem,
       };
 
-      await axios({
+      const response = await axios({
         method: "post",
         contentType: "application/json",
         url: "/api/genres",
         data: genre,
       });
+
+      newItemId = response.data;
+
+      this.setState({ newItemId });
     } catch (e) {
       console.log(e);
     }
@@ -106,49 +113,41 @@ export default class GenreList extends Component {
   };
 
   button2Click = async (genreId) => {
-    // try {
+    try {
+      const genres = this.state.genres;
+      const newItemId = this.state.newItemId;
+      const index = genres.findIndex((genre) => genre.id === genreId);
 
-    const genres = this.state.genres;
+      if (genres[index] !== undefined) {
+        genres[index].open = !genres[index].open;
+      }
 
-    const index = genres.findIndex((genre) => genre.id === genreId);
+      this.setState({ genres, newItemId });
 
-    if (genres[index] !== undefined) {
-      genres[index].open = !genres[index].open;
+      const genre = {
+        id: genres[index].id,
+        name: genres[index].name,
+      };
+
+      if (genres[index].id === "") {
+        genres[index].id = newItemId;
+      }
+
+      console.log(this.state);
+
+      await axios({
+        method: "put",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        url: `/api/genres/${genres[index].id}`,
+        data: genre,
+      });
+    } catch (e) {
+      console.log(e);
     }
-
-    this.setState(genres);
-
-    const genre = {
-      name: genres[index].name,
-    };
-
-    console.log(genres[index]);
-
-    await axios({
-      method: "put",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      url: `/api/genres/${genres[index].id}`,
-      data: genre,
-    }).then((response) => console.log(response));
-    // } catch (e) {
-    //   console.log(e);
-    // }
   };
-
-  // button2Click = (genreId) => {
-  //   const genres = this.state.genres;
-
-  //   const index = genres.findIndex((genre) => genre.id === genreId);
-
-  //   if (genres[index] !== undefined) {
-  //     genres[index].open = !genres[index].open;
-  //   }
-
-  //   this.setState(genres);
-  // };
 
   editHandler = (e, genreId) => {
     const genres = this.state.genres;
@@ -200,21 +199,22 @@ export default class GenreList extends Component {
     event.preventDefault();
     const genres = this.state.genres;
     const newItem = this.state.newItem;
+    const newItemId = this.state.newItemId;
+
     if (newItem.length > 0) {
       this.setState({
         genres: [
           ...genres,
           {
+            id: newItemId,
             name: newItem,
           },
         ],
         newItem: "",
+        newItemId: "",
       });
     }
-    console.log(this.state.newItem);
-
     console.log(this.state);
-    console.log(this.state.newItem);
   };
 
   renderInputs() {

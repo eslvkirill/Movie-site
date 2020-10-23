@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import classes from "./Auth.module.scss";
 import Button from "../../components/UiItem/Button/Button";
 import Input from "../../components/UiItem/Input/Input";
+// import { NavLink } from "react-router-dom";
 import axios from "axios";
 
 // function validateEmail(email) {
@@ -42,25 +43,27 @@ export default class Auth extends Component {
     },
   };
 
-  loginHandler = async (username, password) => {
+  loginHandler = async (email, password) => {
+    // try {
     const authData = {
       email: this.state.formControls.email.value,
       password: this.state.formControls.password.value,
     };
 
-    username = authData.email;
+    email = authData.email;
     password = authData.password;
 
-    const headers = new Headers();
-    headers.append("Content-Type", "application/x-www-form-urlencoded");
-
-    const response = await axios.post(
-      "http://localhost:8080/login",
-      encodeURI(`username=${username}&password=${password}`),
-      { headers }
-    );
+    const response = await axios({
+      method: "post",
+      contentType: "application/x-www-form-urlencoded",
+      url: "/login",
+      data: encodeURI(`email=${email}&password=${password}`),
+    });
 
     console.log(response);
+    // } catch (e) {
+    //   console.log(e);
+    // }
   };
 
   validateControl(value, validation) {
@@ -93,6 +96,12 @@ export default class Auth extends Component {
 
   submitHandler = (event) => {
     event.preventDefault();
+    // this.setState((prevState) => {
+    //   return {
+    //     ...prevState,
+    //     isFormValid: true,
+    //   };
+    // });
   };
 
   onChangeHandler = (event, controlName) => {
