@@ -9,20 +9,24 @@ import com.movie.site.model.Genre;
 import com.movie.site.repository.GenreRepository;
 import com.movie.site.service.GenreService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class GenreServiceImpl implements GenreService {
 
     private final GenreRepository genreRepository;
     private final GenreMapper genreMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public Collection<GenreDtoResponse> findAll() {
-        return genreMapper.toDtoList(genreRepository.findAll());
+        return genreMapper.toDtoList(genreRepository.findAll(Sort.by("id")));
     }
 
     @Override

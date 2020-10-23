@@ -3,9 +3,11 @@ package com.movie.site.api;
 import com.movie.site.dto.request.CreateGenreDtoRequest;
 import com.movie.site.dto.request.UpdateGenreDtoRequest;
 import com.movie.site.dto.response.GenreDtoResponse;
+import com.movie.site.model.Genre;
 import com.movie.site.service.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,9 +26,10 @@ public class GenreRestController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void create(@Valid @RequestBody CreateGenreDtoRequest genreDto) {
-        genreService.create(genreDto);
+    public ResponseEntity<Long> create(@Valid @RequestBody CreateGenreDtoRequest genreDto) {
+        Genre genre = genreService.create(genreDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(genre.getId());
     }
 
     @PutMapping("/{id}")
