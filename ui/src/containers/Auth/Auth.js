@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import classes from "./Auth.module.scss";
 import Button from "../../components/UiItem/Button/Button";
 import Input from "../../components/UiItem/Input/Input";
+// import { NavLink } from "react-router-dom";
 import axios from "axios";
 
 // function validateEmail(email) {
@@ -42,36 +43,27 @@ export default class Auth extends Component {
     },
   };
 
-  loginHandler = async () => {
+  loginHandler = async (email, password) => {
+    // try {
     const authData = {
       email: this.state.formControls.email.value,
       password: this.state.formControls.password.value,
     };
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/login",
-        authData
-      );
-      console.log(authData);
-      console.log(response.data);
-    } catch (e) {
-      console.log(e);
-    }
 
-    // axios({
-    //   method: "post",
-    //   url: "/login",
-    //   data: {
-    //     email: this.state.formControls.email.value,
-    //     password: this.state.formControls.password.value,
-    //   },
-    // });
-  };
+    email = authData.email;
+    password = authData.password;
 
-  registerHandler = () => {};
+    const response = await axios({
+      method: "post",
+      contentType: "application/x-www-form-urlencoded",
+      url: "/login",
+      data: encodeURI(`email=${email}&password=${password}`),
+    });
 
-  submitHandler = (event) => {
-    event.preventDefault();
+    console.log(response);
+    // } catch (e) {
+    //   console.log(e);
+    // }
   };
 
   validateControl(value, validation) {
@@ -93,8 +85,24 @@ export default class Auth extends Component {
       isValid = value.length >= validation.minLength && isValid;
     }
 
+    if (validation.maxLength) {
+      isValid = value.length <= validation.maxLength && isValid;
+    }
+
     return isValid;
   }
+
+  registerHandler = () => {};
+
+  submitHandler = (event) => {
+    event.preventDefault();
+    // this.setState((prevState) => {
+    //   return {
+    //     ...prevState,
+    //     isFormValid: true,
+    //   };
+    // });
+  };
 
   onChangeHandler = (event, controlName) => {
     const formControls = { ...this.state.formControls };
