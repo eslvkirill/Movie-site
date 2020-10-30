@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +42,18 @@ public class GenreServiceImpl implements GenreService {
         genreMapper.update(genreDto, genre);
 
         return genreRepository.save(genre);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Set<Genre> findAllByIds(Iterable<Long> ids) {
+        Set<Genre> genres = genreRepository.findAllByIds(ids);
+
+        if (genres.isEmpty()) {
+            throw new GenreNotFoundException(ids);
+        }
+
+        return genres;
     }
 
     private Genre findById(Long id) {
