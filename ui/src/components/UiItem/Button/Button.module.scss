@@ -57,6 +57,34 @@
 
 .error {
   background-color: #bd001f;
+  transition: 0.3s;
+
+  &:hover {
+    background: #ac1800;
+    transition: 0.3s;
+  }
+}
+
+.reset {
+  background-color: #10740d;
+  transition: 0.3s;
+
+  &:hover {
+    background: #0e7e0a;
+    transition: 0.3s;
+  }
+}
+
+.exit {
+  font-family: "Exo", sans-serif;
+  margin: -32px 0 -10px 0;
+  position: relative;
+  top: 16px;
+  left: 5px;
+  box-shadow: 1px 5px 10px -5px black;
+  background-color: #bd001f;
+  padding: 16px 20px;
+  border-radius: 0px;
 
   &:hover {
     background: #ac1800;

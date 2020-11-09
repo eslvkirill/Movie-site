@@ -1,6 +1,6 @@
 import React from "react";
-// import classes from "./AdminPanel.module.scss";
 import GenreList from "../../components/GenreList/GenreList";
+// import classes from "./AdminPanel.module.scss";
 
 const AdminPanel = () => <GenreList />;
 

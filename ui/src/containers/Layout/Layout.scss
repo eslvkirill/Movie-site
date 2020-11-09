@@ -1,11 +1,11 @@
-.LayoutHomePage {
+.Layout {
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
   background: #37104d;
   font-family: "Comic Sans MS", arial;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 
   &::-webkit-scrollbar {
@@ -22,19 +22,20 @@
     background: #37104d;
   }
 
-  main {
+  .Content {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     position: relative;
     width: 100vw;
     height: 100vh;
-    animation: load 1s ease-in-out;
+    animation: loading 1s ease-in-out;
     color: #fff;
+    margin-top: 0;
   }
 }
 
-@keyframes load {
+@keyframes loading {
   0% {
     opacity: 0;
     transform: translateY(-20px);

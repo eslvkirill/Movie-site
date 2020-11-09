@@ -1,0 +1,87 @@
+.test {
+  border-radius: 10px;
+  background-color: rgb(151, 6, 151);
+  /* width: 18%; */
+  max-width: 30%;
+  height: auto;
+  padding: 2px;
+  position: absolute;
+  right: 22px;
+  color: rgb(255, 244, 232);
+  top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  box-shadow: -8px 8px 9px 0px rgba(0, 0, 0, 0.33);
+  cursor: default;
+
+  h1 {
+    margin-left: 10px;
+    margin-bottom: 1rem;
+    margin-top: 0.4rem;
+    font-weight: bold;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+
+  div {
+    margin-left: 10px;
+    font-size: 1rem;
+    margin-top: 0rem;
+    margin-bottom: 0.5rem;
+    margin-right: -30px;
+
+    span {
+      color: #fdd005;
+    }
+  }
+}
+
+/* .test.exiting {
+  animation: load 4000ms ease-out forwards;
+  /* animation: load 500ms ease-in alternate-reverse; */
+/*} 
+/* .test.exited {     
+
+  opacity: 0;
+  transform: translateX(0px);
+} */
+.test.entering {
+  animation: load 2500ms ease-out forwards;
+}
+
+.test.entered {
+  animation: load2 1700ms ease-out forwards;
+  opacity: 0;
+}
+
+.test.exiting {
+  animation: load 2500ms ease-out forwards;
+}
+
+.test.exited {
+  animation: load2 1700ms ease-out;
+}
+
+@keyframes load {
+  0% {
+    opacity: 0;
+    transform: translateX(-150px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-50px);
+  }
+}
+
+@keyframes load2 {
+  0% {
+    opacity: 1;
+    transform: translateX(-50px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(150px);
+  }
+}

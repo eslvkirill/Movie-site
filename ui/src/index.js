@@ -10,9 +10,6 @@ const app = (
     <App />
   </BrowserRouter>
 );
-ReactDOM.render(
-  <React.StrictMode>{app}</React.StrictMode>,
-  document.getElementById("root")
-);
+ReactDOM.render(<>{app}</>, document.getElementById("root"));
 
 serviceWorker.unregister();

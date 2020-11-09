@@ -1,14 +1,9 @@
 import React, { Component } from "react";
-import classes from "./Auth.module.scss";
-import Button from "../../components/UiItem/Button/Button";
-import Input from "../../components/UiItem/Input/Input";
 // import { NavLink } from "react-router-dom";
 import axios from "axios";
-
-// function validateEmail(email) {
-//   const re = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
-//   return re.test(String(email).toLowerCase());
-// }
+import Button from "../../components/UiItem/Button/Button";
+import Input from "../../components/UiItem/Input/Input";
+import "./Auth.scss";
 
 export default class Auth extends Component {
   state = {
@@ -148,7 +143,7 @@ export default class Auth extends Component {
 
   render() {
     return (
-      <div className={classes.Auth}>
+      <div className="Auth">
         <p>Личный кабинет</p>
         <form
           onSubmit={this.submitHandler}
@@ -156,7 +151,7 @@ export default class Auth extends Component {
           // method="post"
         >
           <div>{this.renderInputs()}</div>
-          <div className={classes.Buttons}>
+          <div className="Buttons">
             <Button
               type="success"
               onClick={this.loginHandler}

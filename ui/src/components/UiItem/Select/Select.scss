@@ -1,0 +1,19 @@
+.Select {
+  margin: 0 1.2rem 1.4rem 1.2rem;
+  caret-color: #a35b09;
+  max-width: 460px;
+
+  .error {
+    color: #f01f30;
+    font-size: 0.78rem;
+    width: 80%;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    margin: auto;
+    margin-bottom: 15px;
+    margin-top: 5px;
+    border: 0px solid black;
+    box-sizing: border-box;
+  }
+}

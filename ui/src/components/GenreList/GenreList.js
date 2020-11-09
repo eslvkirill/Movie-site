@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import classes from "./GenreList.module.scss";
+import axios from "axios";
 import Input from "../UiItem/Input/Input";
 import Button from "../UiItem/Button/Button";
 import Loader from "../UiItem/Loader/Loader";
 import GenreItem from "./GenreItem/GenreItem";
-import axios from "axios";
+import { validate } from "../../exportFunctions/validation/validation";
+import "./GenreList.scss";
 
 export default class GenreList extends Component {
   state = {
@@ -73,32 +74,6 @@ export default class GenreList extends Component {
       console.log(e);
     }
   };
-
-  validateControl(value, validation) {
-    if (!validation) {
-      return true;
-    }
-
-    let isValid = true;
-
-    if (validation.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-
-    // if (validation.email) {
-    //   isValid = validateEmail(value) && isValid;
-    // }
-
-    if (validation.minLength) {
-      isValid = value.length >= validation.minLength && isValid;
-    }
-
-    if (validation.maxLength) {
-      isValid = value.length <= validation.maxLength && isValid;
-    }
-
-    return isValid;
-  }
 
   button1Click = (genreId) => {
     const genres = this.state.genres;
@@ -178,7 +153,7 @@ export default class GenreList extends Component {
 
     control.value = event.target.value;
     control.touched = true;
-    control.valid = this.validateControl(control.value, control.validation);
+    control.valid = validate(control.value, control.validation);
 
     formControls[controlName] = control;
 
@@ -239,7 +214,7 @@ export default class GenreList extends Component {
 
   render() {
     return (
-      <div className={classes.GenreList}>
+      <div className="GenreList">
         <form onSubmit={(event) => this.submitNewGenre(event)}>
           {this.renderInputs()}
           {/* <input
@@ -250,7 +225,7 @@ export default class GenreList extends Component {
           /> */}
           <Button
             onClick={this.genreHandler}
-            className={classes.AddGenre}
+            className="AddGenre"
             disabled={!this.state.isFormValid}
           >
             Добавить жанр
