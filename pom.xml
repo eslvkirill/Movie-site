@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.4.RELEASE</version>
+        <version>2.3.3.RELEASE</version>
         <relativePath/>
     </parent>
     <groupId>com.movie.site</groupId>
@@ -16,9 +16,11 @@
 
     <properties>
         <java.version>14</java.version>
-        <org.apache.maven.compiler.plugin.version>3.8.1</org.apache.maven.compiler.plugin.version>
-        <org.projectlombok.version>1.18.16</org.projectlombok.version>
-        <org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <lombok.version>1.18.16</lombok.version>
+        <mapstruct.version>1.4.1.Final</mapstruct.version>
+        <aws.java.sdk.version>1.11.892</aws.java.sdk.version>
+        <spring.cloud.aws.autoconfigure.version>2.2.4.RELEASE</spring.cloud.aws.autoconfigure.version>
     </properties>
 
     <dependencies>
@@ -83,12 +85,24 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>${org.mapstruct.version}</version>
+            <version>${mapstruct.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>${aws.java.sdk.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-aws-autoconfigure</artifactId>
+            <version>${spring.cloud.aws.autoconfigure.version}</version>
         </dependency>
     </dependencies>
 
@@ -108,7 +122,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${org.apache.maven.compiler.plugin.version}</version>
+                <version>${maven.compiler.plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -116,12 +130,12 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>${org.projectlombok.version}</version>
+                            <version>${lombok.version}</version>
                         </path>
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
-                            <version>${org.mapstruct.version}</version>
+                            <version>${mapstruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>

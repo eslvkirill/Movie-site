@@ -9,4 +9,8 @@ public class GenreNotFoundException extends RuntimeException {
     public GenreNotFoundException(Long id) {
         super("Couldn't find genre with id: " + id);
     }
+
+    public GenreNotFoundException(Iterable<Long> ids) {
+        super("Couldn't find any genre with ids: " + ids);
+    }
 }

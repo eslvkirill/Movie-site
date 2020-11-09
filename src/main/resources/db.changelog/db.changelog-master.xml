@@ -65,4 +65,115 @@
             <column name="name" value="Комедия"/>
         </insert>
     </changeSet>
+
+    <changeSet id="2020-10-31 create table for Movie entity" author="Befors">
+        <createTable tableName="movie">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="eng_title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rus_title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="year" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="poster_key" type="varchar(512)"/>
+            <column name="background1_key" type="varchar(512)"/>
+            <column name="background2_key" type="varchar(512)"/>
+            <column name="tagline" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="plot" type="clob">
+                <constraints nullable="false"/>
+            </column>
+            <column name="age_rating" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="trailer_url" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="oscars" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2020-11-01 create tables for the audio and subtitles fields of the Movie entity"
+               author="Befors">
+        <createTable tableName="movie_audio">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="movie_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_ma_movie_id"
+                             references="movie(id)"/>
+            </column>
+            <column name="language" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="movie_subtitle">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="movie_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_ms_movie_id"
+                             references="movie(id)"/>
+            </column>
+            <column name="language" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2020-11-01 create table for the SourceData entity" author="Befors">
+        <createTable tableName="source_data">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="movie_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_sd_movie_id"
+                             references="movie(id)"/>
+            </column>
+            <column name="url" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating" type="real">
+                <constraints nullable="false"/>
+            </column>
+            <column name="source" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2020-11-02 create table with the many-to-many relationship for the
+        Movie and Genre entities" author="Befors">
+        <createTable tableName="movie_genre">
+            <column name="movie_id" type="bigint">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_movie_genre"
+                             foreignKeyName="fk_mg_movie_id"
+                             references="movie(id)"/>
+            </column>
+            <column name="genre_id" type="bigint">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_movie_genre"
+                             foreignKeyName="fk_mg_genre_id"
+                             references="genre(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>
