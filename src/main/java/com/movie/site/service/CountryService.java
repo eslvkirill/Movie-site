@@ -1,8 +1,8 @@
 package com.movie.site.service;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface CountryService {
 
-    List<String> findAll();
+    Collection<String> findAll();
 }

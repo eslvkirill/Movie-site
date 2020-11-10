@@ -176,4 +176,38 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="2020-11-11 fix the problem that a movie can only have one country"
+               author="Befors">
+        <delete tableName="movie_subtitle"/>
+        <delete tableName="movie_audio"/>
+        <delete tableName="movie_genre"/>
+        <delete tableName="source_data"/>
+        <delete tableName="movie"/>
+
+        <dropColumn tableName="movie">
+            <column name="country"/>
+        </dropColumn>
+
+        <createTable tableName="movie_country">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="movie_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_mc_movie_id"
+                             references="movie(id)"/>
+            </column>
+            <column name="country" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2020-11-11 add a column for the movie viewing time" author="Befors">
+        <addColumn tableName="movie">
+            <column name="time" type="time">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

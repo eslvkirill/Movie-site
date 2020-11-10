@@ -1,5 +1,6 @@
 package com.movie.site.dto.request;
 
+import com.movie.site.annotation.Country;
 import com.movie.site.annotation.File;
 import com.movie.site.model.enums.AgeRating;
 import com.movie.site.model.enums.Language;
@@ -10,6 +11,7 @@ import org.hibernate.validator.constraints.URL;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Data
@@ -25,9 +27,9 @@ public class CreateMovieDtoRequest {
     @Size(max = 255)
     private String rusTitle;
 
-    @NotBlank
-    @Size(max = 255)
-    private String country;
+    @NotEmpty
+    @Country
+    private Set<String> countries;
 
     @Min(1888)
     private int year;
@@ -74,4 +76,7 @@ public class CreateMovieDtoRequest {
     @NotBlank
     @URL(regexp = "http(?:s?):\\/\\/(?:www\\.)?imdb.com\\/title\\/tt[\\d]+\\/?[\\w\\?=\\_\\-&]*")
     private String imdbUrl;
+
+    @NotNull
+    private LocalTime time;
 }
