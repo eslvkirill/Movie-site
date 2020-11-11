@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class EnumNotFoundException extends RuntimeException {
 
     public EnumNotFoundException(Class<? extends Enum<?>> clazz, String value) {
-        super("Couldn't find an object in the enum " + clazz.getSimpleName() +
-                " by the specified value: " + value);
+        super("Couldn't find an object in the " + clazz.getSimpleName() +
+                " enum by the specified value: " + value);
     }
 }

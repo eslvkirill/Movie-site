@@ -5,6 +5,7 @@ import com.movie.site.model.Movie;
 import com.movie.site.model.enums.AgeRating;
 import com.movie.site.model.enums.Language;
 import com.movie.site.service.CountryService;
+import com.movie.site.service.GenreService;
 import com.movie.site.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,14 @@ public class MovieRestController {
 
     private final MovieService movieService;
     private final CountryService countryService;
+    private final GenreService genreService;
 
     @GetMapping("/saving")
     public Map<String, Object> save(@RequestParam(required = false) OptionalLong id) {
         return Map.of("countries", countryService.findAll(),
                 "ageRatings", AgeRating.values(),
-                "languages", Language.values());
+                "languages", Language.values(),
+                "genres", genreService.findAll());
     }
 
     @PostMapping

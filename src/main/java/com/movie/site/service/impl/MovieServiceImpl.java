@@ -27,8 +27,8 @@ import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static com.movie.site.util.ParsingUtils.find;
 
 @Service
 @RequiredArgsConstructor
@@ -76,9 +76,11 @@ public class MovieServiceImpl implements MovieService {
 
         JsonNode omdbRoot = objectMapper.readTree(omdbResult);
         JsonNode ratings = omdbRoot.get(RATINGS_NODE);
+        String awards = find(AWARDS_REG_EXP, omdbRoot.get(AWARDS_NODE).asText());
 
-        movie.setOscars(Integer.parseInt(Objects.requireNonNull(
-                find(AWARDS_REG_EXP, omdbRoot.get(AWARDS_NODE).asText()))));
+        if (awards != null) {
+            movie.setOscars(Integer.parseInt(awards));
+        }
 
         String lowerCaseTitle = movie.getEngTitle().toLowerCase();
         EnumMap<Source, String> urls = new EnumMap<>(Source.class);
@@ -132,15 +134,5 @@ public class MovieServiceImpl implements MovieService {
                 .setBackground2Key(amazonS3ClientService.upload(movieDto.getBackground2(), prefix));
 
         return movieRepository.save(persistedMovie);
-    }
-
-    private static String find(String regExp, String input) {
-        Matcher matcher = Pattern.compile(regExp).matcher(input);
-
-        if (matcher.find()) {
-            return matcher.group(matcher.groupCount());
-        }
-
-        return null;
     }
 }

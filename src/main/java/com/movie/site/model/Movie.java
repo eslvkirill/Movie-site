@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Entity
@@ -22,7 +23,13 @@ public class Movie implements Serializable {
 
     private String engTitle;
     private String rusTitle;
-    private String country;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "movie_country",
+            joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "country")
+    private Set<String> countries;
+
     private int year;
     private String posterKey;
 
@@ -64,4 +71,5 @@ public class Movie implements Serializable {
     private int oscars;
     private int price;
     private boolean active;
+    private LocalTime time;
 }

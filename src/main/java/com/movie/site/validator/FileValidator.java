@@ -10,6 +10,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.movie.site.util.ParsingUtils.find;
+import static com.movie.site.util.ValidationUtils.addConstraintViolation;
+
 public class FileValidator implements ConstraintValidator<File, MultipartFile> {
 
     private Set<String> fileExtensions;
@@ -32,22 +35,13 @@ public class FileValidator implements ConstraintValidator<File, MultipartFile> {
 
             isValid = false;
         } else {
-            Matcher matcher = Pattern.compile(EXTENSION_REG_EXP)
-                    .matcher(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-
-            if (!matcher.find() || !fileExtensions.contains(matcher.group(1))) {
-                addConstraintViolation("должно иметь допустимое разрешение", ctx);
+            if (!fileExtensions.contains(find(EXTENSION_REG_EXP, multipartFile.getOriginalFilename()))) {
+                addConstraintViolation("должно иметь допустимое расширение", ctx);
 
                 isValid = false;
             }
         }
 
         return isValid;
-    }
-
-    private static void addConstraintViolation(String message,
-                                               ConstraintValidatorContext ctx) {
-        ctx.buildConstraintViolationWithTemplate(message)
-                .addConstraintViolation();
     }
 }
