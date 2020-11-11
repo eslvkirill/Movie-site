@@ -1,15 +1,8 @@
 import React from "react";
-import AllFilms from "../../components/AllFilms/AllFilms";
 import "./HomePage.scss";
 
-function HomePage() {
-  return (
-    <>
-      <main className="HomePage">
-        <AllFilms />
-      </main>
-    </>
-  );
-}
+const HomePage = () => {
+  return <main className="HomePage"></main>;
+};
 
 export default HomePage;

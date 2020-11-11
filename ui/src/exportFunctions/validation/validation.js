@@ -70,7 +70,10 @@ export function validate(value, validation = null) {
   }
 
   if (validation.select) {
-    isValid = value !== null && value.length >= 1 && isValid;
+    isValid =
+      value !== null &&
+      (Object.keys(value).length !== 0 || value.length >= 1) &&
+      isValid;
   }
 
   if (validation.imageFile) {
@@ -83,33 +86,20 @@ export function validate(value, validation = null) {
       isValid;
   }
 
-  // (sFileExtension === "pdf" ||
-  //             sFileExtension === "doc" ||
-  //             sFileExtension === "docx") || iFileSize > 10485760)
-
   return isValid;
 }
 
-export function validateForm(formInputsControls, formSelectControls) {
+export function validateForm(formControls) {
   let isFormValid = true;
 
-  for (let control in formInputsControls) {
-    if (formInputsControls.hasOwnProperty(control)) {
+  Object.keys(formControls).forEach((name) => {
+    for (let control in formControls[name]) {
       isFormValid =
-        formInputsControls[control].valid &&
-        formInputsControls[control].value !== "" &&
+        formControls[name][control].valid &&
+        formControls[name][control].value !== "" &&
         isFormValid;
     }
-  }
-
-  for (let control in formSelectControls) {
-    if (formSelectControls.hasOwnProperty(control)) {
-      isFormValid =
-        formSelectControls[control].valid &&
-        formSelectControls[control].value !== "" &&
-        isFormValid;
-    }
-  }
+  });
 
   return isFormValid;
 }

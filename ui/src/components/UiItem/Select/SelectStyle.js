@@ -147,6 +147,7 @@ const SelectStyle = {
     cursor: "pointer",
     background: "#fff",
     transition: ".2s",
+    fontSize: "1rem",
 
     ":hover": {
       background: "rgb(252, 237, 220)",

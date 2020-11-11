@@ -4,7 +4,7 @@ export function createInput(config, validation) {
     validation,
     valid: !validation,
     touched: false,
-    autoComplete: "off",
+    autoComplete: "on",
     value: "",
   };
 }
@@ -15,7 +15,7 @@ export function createInputFile(config, validation) {
     validation,
     valid: !validation,
     touched: false,
-    autoComplete: "off",
+    autoComplete: "on",
     value: "",
     type: "file",
     accept: "image/*",

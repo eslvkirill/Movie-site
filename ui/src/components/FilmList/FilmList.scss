@@ -6,13 +6,13 @@
 }
 
 .FilmList {
-  margin-top: 3rem;
+  margin-top: 2rem;
   @include flexible();
 
   > div {
     width: 100%;
     @include flexible();
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
 
   .AddTitle {
