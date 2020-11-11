@@ -103,17 +103,17 @@ function createFormInput() {
     poster: createNewInputFile(
       1,
       "Постер фильма",
-      "*Файл должен быть картинкой, не превышающей размер 1Мб"
+      "Файл должен быть картинкой, не превышающей размер 1Мб"
     ),
     background1: createNewInputFile(
       2,
       "Фон страницы фильма №1",
-      "*Файл должен быть картинкой, не превышающей размер 1Мб"
+      "Файл должен быть картинкой, не превышающей размер 1Мб"
     ),
     background2: createNewInputFile(
       3,
       "Фон страницы фильма №2",
-      "*Файл должен быть картинкой, не превышающей размер 1Мб"
+      "Файл должен быть картинкой, не превышающей размер 1Мб"
     ),
   };
 }
@@ -312,7 +312,6 @@ export default class FilmList extends Component {
     this.clearSelect();
     this.setState({ isFormValid: false });
     // this.setState({ showBlock: true });
-
     console.log(this.state);
   };
 
@@ -389,13 +388,9 @@ export default class FilmList extends Component {
         );
 
       if (controlName === "genres") {
-        const genreValue = control.value.map((genreValue) => genreValue.value);
-        film[controlName] = genreValue;
-        console.log(genreValue);
+        film[controlName] = control.value.map((genreValue) => genreValue.value);
       }
     }
-
-    console.log(this.state);
 
     control.touched = true;
 
