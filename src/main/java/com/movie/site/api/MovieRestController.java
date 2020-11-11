@@ -1,6 +1,7 @@
 package com.movie.site.api;
 
 import com.movie.site.dto.request.CreateMovieDtoRequest;
+import com.movie.site.dto.response.GetByIdMovieDtoResponse;
 import com.movie.site.model.Movie;
 import com.movie.site.model.enums.AgeRating;
 import com.movie.site.model.enums.Language;
@@ -44,5 +45,10 @@ public class MovieRestController {
                 .toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GetByIdMovieDtoResponse> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(movieService.findById(id));
     }
 }

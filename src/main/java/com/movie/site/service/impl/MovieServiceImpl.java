@@ -3,9 +3,13 @@ package com.movie.site.service.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movie.site.dto.request.CreateMovieDtoRequest;
+import com.movie.site.dto.response.GetByIdMovieDtoResponse;
+import com.movie.site.exception.ForbiddenException;
+import com.movie.site.exception.MovieNotFoundException;
 import com.movie.site.mapper.MovieMapper;
 import com.movie.site.model.Movie;
 import com.movie.site.model.SourceData;
+import com.movie.site.model.enums.Role;
 import com.movie.site.model.enums.Source;
 import com.movie.site.repository.MovieRepository;
 import com.movie.site.service.AmazonS3ClientService;
@@ -13,6 +17,8 @@ import com.movie.site.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -23,10 +29,7 @@ import org.xml.sax.InputSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static com.movie.site.util.ParsingUtils.find;
 
@@ -134,5 +137,22 @@ public class MovieServiceImpl implements MovieService {
                 .setBackground2Key(amazonS3ClientService.upload(movieDto.getBackground2(), prefix));
 
         return movieRepository.save(persistedMovie);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public GetByIdMovieDtoResponse findById(Long id) {
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new MovieNotFoundException(id));
+        Collection<? extends GrantedAuthority> userAuthorities = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities();
+
+        if (!movie.isActive() && !userAuthorities.contains(Role.ADMIN)) {
+            throw new ForbiddenException();
+        }
+
+        return movieMapper.toDto(movie);
     }
 }
