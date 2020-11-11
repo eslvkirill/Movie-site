@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movie.site.service.CountryService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -12,6 +14,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "countries")
 public class CountryServiceImpl implements CountryService {
 
     private final RestTemplate restClient;
@@ -23,6 +26,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     @SneakyThrows
+    @Cacheable
     public Collection<String> findAll() {
         String result = restClient.getForObject(COUNTRIES_API, String.class);
         JsonNode countriesNode = objectMapper.readTree(result);
