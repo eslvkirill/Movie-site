@@ -5,7 +5,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import Auth from "./components/Auth/Auth";
 import AdminPanel from "./components/AdminPanel/AdminPanel";
 import FilmCreactionPanel from "./containers/FilmCreationPanel/FilmCreationPanel";
-import FilmPage from "./pages/FilmPage/FilmPage";
+// import FilmPage from "./pages/FilmPage/FilmPage";
 import "./App.scss";
 
 const app = (
@@ -14,7 +14,7 @@ const app = (
       <Route path="/login" component={Auth} />
       <Route path="/adminPanel" component={AdminPanel} />
       <Route path="/creactionFilm" component={FilmCreactionPanel} />
-      <Route path="/hotel" component={FilmPage} />
+      {/* <Route path="/hotel" component={FilmPage} /> */}
       <Route exact path="/" component={HomePage} />
     </Layout>
   </Fragment>
