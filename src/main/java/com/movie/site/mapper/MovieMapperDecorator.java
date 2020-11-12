@@ -15,8 +15,8 @@ public abstract class MovieMapperDecorator implements MovieMapper {
     private ReviewService reviewService;
 
     @Override
-    public GetByIdMovieDtoResponse toDto(Movie movie, Pageable reviewPageable) {
-        GetByIdMovieDtoResponse movieDto = delegate.toDto(movie, reviewPageable);
+    public GetByIdMovieDtoResponse toGetByIdDto(Movie movie, Pageable reviewPageable) {
+        GetByIdMovieDtoResponse movieDto = delegate.toGetByIdDto(movie, reviewPageable);
         movieDto.setReviews(reviewService.findAll(movie, reviewPageable));
 
         return movieDto;

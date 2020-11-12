@@ -21,6 +21,9 @@ public class AmazonS3ClientConfig {
     @Value("${cloud.aws.region.static}")
     private String region;
 
+    @Value("${cloud.aws.service-endpoint}")
+    private String serviceEndpoint;
+
     @Bean
     public AWSCredentials awsCredentials() {
         return new BasicAWSCredentials(accessKey, secretKey);
@@ -30,7 +33,9 @@ public class AmazonS3ClientConfig {
     public AmazonS3 amazonS3Client(AWSCredentials credentials) {
         return AmazonS3ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(region)
+                .withEndpointConfiguration(
+                        new AmazonS3ClientBuilder.EndpointConfiguration(serviceEndpoint, region)
+                )
                 .build();
     }
 }
