@@ -1,0 +1,94 @@
+nav {
+  // border: 4px solid black;
+  width: 100%;
+}
+
+nav ul {
+  font-family: "Exo", sans-serif;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: flex-end;
+  max-width: 1500px;
+  margin: 40px auto;
+  margin-right: 2%;
+}
+
+nav ul li {
+  list-style: none;
+  position: relative;
+  padding: 16px;
+}
+
+nav ul li:hover {
+  transition: 0.3s ease;
+  box-shadow: 1px 5px 10px -5px black;
+  background-color: #bd5a31;
+  cursor: pointer;
+  a {
+    text-decoration: none;
+  }
+}
+
+nav ul li:hover .headline {
+  color: white;
+}
+
+nav ul li:active .headline {
+  color: black;
+}
+
+nav ul li a {
+  text-decoration: none;
+  padding: 0 20px;
+  color: #9b6992;
+  font-weight: bold;
+}
+
+#name {
+  cursor: default;
+  box-shadow: 1px 5px 10px -5px black;
+  background-color: #bd5a31;
+  padding: 16px 20px;
+  order: -1;
+}
+
+nav ul #name a {
+  color: #fff;
+}
+
+#sec:hover ~ #name,
+#thr:hover ~ #name,
+#fou:hover ~ #name,
+#one:hover ~ #name {
+  box-shadow: none;
+  background-color: transparent;
+}
+
+#sec:hover ~ #name a,
+#thr:hover ~ #name a,
+#fou:hover ~ #name a,
+#one:hover ~ #name a {
+  color: #9b6992;
+}
+
+#last:hover {
+  box-shadow: none;
+  background-color: transparent;
+}
+
+// #exit {
+//   font-family: "Exo", sans-serif;
+//   margin: -32px 0 -10px 0;
+//   position: relative;
+//   top: 16px;
+//   left: 5px;
+//   box-shadow: 1px 5px 10px -5px black;
+//   background-color: #bd001f;
+//   padding: 16px 20px;
+//   border-radius: 0px;
+// }
+
+// #exit:hover {
+//   background: #ac1800;
+//   transition: 0.3s;
+// }

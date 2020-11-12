@@ -1,0 +1,586 @@
+@mixin flexible() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+@mixin gradient-animation($deg, $start, $end, $transTime) {
+  background-size: 100%;
+  background-image: linear-gradient($deg, $start, $end);
+  position: relative;
+  z-index: 100;
+
+  &:before {
+    background-image: linear-gradient($deg, $end, $start);
+    content: "";
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    border-radius: 40px;
+    z-index: -100;
+    transition: opacity $transTime;
+  }
+  &:hover {
+    &:before {
+      opacity: 1;
+    }
+  }
+}
+
+.FilmPage {
+  font-family: "Amatic SC", sans-serif;
+  position: absolute;
+
+  .FirstSection {
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(rgba(250, 250, 250, 0.2), rgba(0, 0, 0, 0.8));
+    // url(../../images/Page1/GrandBudapestHotel.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center top;
+
+    .Wrapper {
+      display: flex;
+      flex-direction: column;
+      padding: 12% 13%;
+      cursor: default;
+
+      .Genres {
+        font-size: 20px;
+        font-weight: bold;
+        color: rgb(255, 244, 232);
+      }
+
+      .Title {
+        text-transform: uppercase;
+        font-size: 50px;
+        font-weight: bold;
+        color: #fafafa;
+
+        span {
+          text-transform: uppercase;
+          font-size: 25px;
+          font-weight: bold;
+          color: #fafafa;
+        }
+
+        .Year {
+          float: right;
+          margin-right: 5%;
+          background-color: transparent;
+          border-radius: 30px;
+          border: 5px ridge rgb(255, 244, 232);
+          color: #fafafa;
+          font-weight: bold;
+          font-size: 25px;
+          padding: 18px 30px;
+          text-decoration: none;
+        }
+      }
+
+      .Time {
+        text-transform: uppercase;
+        font-size: 20px;
+        font-weight: bold;
+        color: #fafafa;
+      }
+
+      .Description {
+        color: #fafafa;
+        font-size: 25px;
+        margin-bottom: 1rem;
+      }
+
+      .Cast {
+        color: #fafafa;
+        font-size: 20px;
+        width: 50%;
+
+        span {
+          color: rgb(255, 244, 232);
+          font-weight: 600;
+          cursor: pointer;
+        }
+      }
+      .BottomOfSection {
+        @include flexible();
+        width: 100%;
+        margin: auto;
+        justify-content: space-between;
+
+        .TrailerButton {
+          @include flexible();
+          margin-top: 3%;
+          width: 26%;
+          background-color: transparent;
+          border-radius: 40px;
+          // border: 4px outset;
+          color: #fafafa;
+          font-weight: bold;
+          font-size: 23px;
+          padding: 15px 8px;
+          text-decoration: none;
+
+          @include gradient-animation(
+            90deg,
+            rgba(55, 16, 77, 1),
+            rgba(189, 90, 49, 1),
+            1.2s
+          );
+
+          span {
+            padding-left: 20px;
+          }
+
+          &:active {
+            transform: translateY(10px);
+            transition: 0.3s;
+          }
+        }
+        .ByButton {
+          display: flex;
+          // top: 55%;
+          // width: 0%;
+          // height: 250px;
+
+          a {
+            background: linear-gradient(
+                rgba(255, 255, 255, 0.1),
+                rgba(55, 16, 77, 0.8)
+              ),
+              rgb(189, 90, 49);
+            position: relative;
+            bottom: 30px;
+            right: 20px;
+            color: rgb(255, 244, 232);
+            padding: 25px 70px;
+            font-size: 28px;
+            letter-spacing: 3px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transition: 0.5s;
+
+            &:hover {
+              background: linear-gradient(
+                  rgba(255, 255, 255, 0.2),
+                  rgba(0, 0, 0, 0.6)
+                ),
+                rgb(255, 244, 232);
+              transition: 0.5s;
+              color: rgb(55, 16, 77);
+            }
+
+            &:active {
+              background: linear-gradient(
+                  rgba(255, 255, 255, 0.2),
+                  rgba(0, 0, 0, 0.4)
+                ),
+                #dba03f;
+              color: black;
+              transform: scale(0.9);
+            }
+
+            span {
+              &:nth-child(1) {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background: linear-gradient(to right, #fef8d7, #dba03f);
+                animation: animate1 linear 2s infinite;
+              }
+
+              &:nth-child(2) {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 2px;
+                height: 100%;
+                background: linear-gradient(to bottom, #fef8d7, #dba03f);
+                animation: animate2 linear 2s infinite;
+                animation-delay: 1s;
+              }
+
+              &:nth-child(3) {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background: linear-gradient(to left, #fef8d7, #dba03f);
+                animation: animate3 linear 2s infinite;
+              }
+
+              &:nth-child(4) {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 2px;
+                height: 100%;
+                background: linear-gradient(to top, #fef8d7, #dba03f);
+                animation: animate4 linear 2s infinite;
+                animation-delay: 1s;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .SecondSection {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    background: linear-gradient(rgba(250, 250, 250, 0.1), rgba(0, 0, 0, 0.8));
+    // url(../../images//Page2/hotel.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    cursor: default;
+
+    .Block {
+      color: #fafafa;
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+
+      .LeftSide {
+        text-align: center;
+        width: 90%;
+        position: relative;
+        z-index: 99;
+
+        .Trailer {
+          margin: auto auto;
+          margin-top: 2%;
+          margin-bottom: 7%;
+          color: rgba(55, 16, 77, 1);
+          font-weight: bold;
+          font-size: 60px;
+        }
+
+        .VideoContainer {
+          max-width: 650px;
+
+          .Video {
+            position: relative;
+            padding-bottom: 56.25%;
+            padding-top: 0px;
+            height: 0;
+            width: 100%;
+            margin-left: 5%;
+
+            iframe {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+
+        .Oscars {
+          margin-top: 7%;
+          max-width: 650px;
+          @include flexible();
+          justify-content: space-around;
+
+          img {
+            display: flex;
+          }
+        }
+      }
+
+      .RightSide {
+        float: right;
+        @include flexible();
+        flex-direction: column;
+        width: 90%;
+        position: relative;
+        top: 0;
+        z-index: 99;
+
+        .Title {
+          margin-bottom: 3%;
+          margin-top: 2%;
+          font-size: 60px;
+          color: rgba(189, 90, 49, 1);
+        }
+
+        .Tagline {
+          text-align: center;
+          width: 85%;
+          margin-left: 0%;
+          font-size: 30px;
+          margin-bottom: 4%;
+        }
+
+        .RatingsWrapper {
+          @include flexible();
+
+          .RatingsContainer {
+            @include flexible();
+            margin: auto;
+            margin-right: 6%;
+            margin-top: 3%;
+            margin-bottom: 2%;
+            text-align: center;
+            display: flex;
+            max-width: 750px;
+            flex-wrap: wrap;
+
+            .IMDbStars,
+            .KinopoiskStars,
+            .RottentomatoesStars,
+            .MetacriticStars {
+              font-size: 22px;
+              // padding: 15px;
+              padding-bottom: 25px;
+              padding-right: 20px;
+              padding-left: 20px;
+
+              .StarsWrapper {
+                @include flexible();
+                min-width: 100px;
+
+                .Star {
+                  padding: 0.5%;
+                  // display: flex;
+                  // flex-wrap: wrap;
+                  // justify-content: center;
+                  // max-width: 550px;
+
+                  img {
+                    width: 40px;
+                  }
+                }
+              }
+            }
+            .StarsWrapper {
+              @include flexible();
+              max-width: 270px;
+
+              .Star {
+                padding: 0.5%;
+
+                img {
+                  width: 40px;
+                }
+              }
+            }
+            // .IMDbStars,
+            // .MetacriticStars {
+            //   margin-left: -4%;
+            //   margin-right: 4%;
+            // }
+            .IMDbStars,
+            .MetacriticStars,
+            .KinopoiskStars,
+            .RottentomatoesStars {
+              margin-right: -2%;
+            }
+          }
+
+          .Rating {
+            font-size: 22px;
+            margin-bottom: 1%;
+          }
+
+          ul.Icons {
+            perspective: 100000000px;
+            @include flexible();
+            margin-top: 5%;
+            margin-right: 10%;
+            margin-left: 0%;
+            margin-bottom: 0;
+            list-style: none;
+            padding: 0;
+            width: 550px;
+            max-width: 600px;
+            justify-content: space-between;
+
+            li {
+              display: inline-block;
+              margin: 0 0%;
+            }
+
+            a {
+              display: inline-block;
+              width: 100px;
+              height: 100px;
+              text-decoration: none;
+              cursor: pointer;
+              text-align: center;
+              line-height: 100px;
+              position: relative;
+              transition: 0.5s;
+              background: #5c5b5b;
+              transform-style: preserve-3d;
+
+              &:hover {
+                transform: rotateX(90deg);
+              }
+            }
+
+            a.Kinopoisk {
+              .Front {
+                background: #f19120;
+              }
+              .Back {
+                background: #fff;
+              }
+            }
+
+            a.Imdb {
+              .Front {
+                background: #e5b821;
+              }
+              .Back {
+                background: #232227;
+              }
+            }
+
+            a.Rottentomatoes {
+              .Front {
+                background: red;
+                // border: 4px solid green;
+              }
+              .Back {
+                background: green;
+                // border: 4px solid red;
+              }
+            }
+
+            a.Metacritic {
+              .Front {
+                background: #001a34;
+                border: 4px solid #f7c632;
+              }
+              .Back {
+                background: #fff;
+                border: 4px solid #f7c632;
+              }
+            }
+
+            .Front,
+            .Back {
+              width: 100px;
+              height: 100px;
+              position: absolute;
+              top: 0;
+              left: 0;
+              transform: translateZ(50px);
+              color: #212121;
+              font-size: 38px;
+            }
+
+            .Back {
+              transform: rotateX(-90deg) translateZ(50.25px);
+              backface-visibility: hidden;
+            }
+
+            .Kinopoisk {
+              .Front {
+                color: #fff;
+              }
+              .Back {
+                color: #f19120;
+              }
+            }
+
+            .Imdb {
+              .Front {
+                color: #232227;
+              }
+              .Back {
+                color: #e5b821;
+              }
+            }
+
+            .Rottentomatoes {
+              .Front,
+              .Back {
+                color: #ece80d;
+              }
+            }
+
+            .Metacritic {
+              .Front {
+                color: #fff;
+              }
+              .Back {
+                color: #001a34;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @keyframes animate1 {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes animate2 {
+    0% {
+      transform: translateY(-100%);
+    }
+
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  @keyframes animate3 {
+    0% {
+      transform: translateX(100%);
+    }
+
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes animate4 {
+    0% {
+      transform: translateY(100%);
+    }
+
+    100% {
+      transform: translateY(-100%);
+    }
+  }
+}
+
+// background: linear-gradient(
+//   90deg,
+//   rgb(255, 244, 232) 0%,
+//   rgb(255, 235, 213) 46%,
+//   rgb(250, 230, 208) 76%
+// );
+
+// background: linear-gradient(
+//   90deg,
+//   rgb(220, 207, 228) 0%,
+//   rgb(203, 185, 212) 46%,
+//   rgb(185, 159, 199) 76%
+// );
