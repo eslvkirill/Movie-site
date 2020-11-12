@@ -46,13 +46,7 @@ function createFormInput() {
       "Введите слоган фильма",
       "Поле не должно быть пустым и превышать 255 символов"
     ),
-    plot: createInput(
-      {
-        placeholder: "Опишите краткий сюжет",
-        errorMessage: "*Поле не может быть пустым",
-      },
-      { required: true, minLength: 1 }
-    ),
+    plot: createNewInput("Опишите краткий сюжет", "Поле не может быть пустым"),
     year: createInput(
       {
         type: "number",
@@ -65,7 +59,18 @@ function createFormInput() {
         minLength: 4,
         maxLength: 4,
         minValue: 1888,
-        // maxValue: 2030
+      }
+    ),
+    time: createInput(
+      {
+        type: "time",
+        placeholder: "Введите продолжительность фильма",
+        errorMessage: "*Время должно быть реальным",
+      },
+      {
+        required: true,
+        minValue: "00:01",
+        maxValue: "12:00",
       }
     ),
     trailerUrl: createInput(
@@ -143,11 +148,9 @@ function createFormSelect() {
     ),
     // actors: createNewSelect("Выберите актеров"),
     // directors: createNewSelect("Выберите режиссеров"),
-    country: createNewSelect(
+    countries: createNewSelect(
       "Выберите страны производства",
-      "Укажите хотя-бы одну страну производства",
-      false,
-      true
+      "Укажите хотя-бы одну страну производства"
     ),
     audio: createNewSelect(
       "Выберите языки аудиодорожек",
@@ -178,38 +181,36 @@ export default class FilmList extends Component {
       },
       showBlock: false,
     };
-    this.initialState = this.state;
   }
 
   async componentDidMount() {
     try {
-      const responseGenres = await axios.get("/api/genres");
-
-      const genres = responseGenres.data;
-
-      const initialGenres = genres.map((genre) => ({
-        label: genre.name,
-        value: genre.id,
-      }));
-
       const response = await axios.get("/api/movies/saving");
       console.log(response.data);
 
-      const formSelectControls = this.state.formControls.formSelectControls;
+      const formControls = this.state.formControls;
+      const formSelectControls = formControls.formSelectControls;
 
       Object.keys(response.data).map((dataName) => {
         const data = response.data[dataName];
-        const initialState = data.map((data, index) => ({
+
+        let initialState = data.map((data, index) => ({
           label: data,
           value: index,
         }));
+
+        if (dataName === "genres") {
+          initialState = response.data[dataName].map((genre) => ({
+            label: genre.name,
+            value: genre.id,
+          }));
+        }
 
         Object.keys(formSelectControls).map((controlName) => {
           const control = formSelectControls[controlName];
 
           if (
             dataName === controlName ||
-            (dataName === "countries" && controlName === "country") ||
             (dataName === "ageRatings" && controlName === "ageRating") ||
             (dataName === "languages" &&
               (controlName === "audio" || controlName === "subtitles"))
@@ -221,18 +222,7 @@ export default class FilmList extends Component {
 
         return initialState;
       });
-
-      Object.keys(formSelectControls).map((controlName) => {
-        const control = formSelectControls[controlName];
-
-        if (controlName === "genres") {
-          control.options = initialGenres;
-        }
-
-        return formSelectControls;
-      });
-
-      this.setState({ formSelectControls });
+      this.setState({ formControls });
     } catch (e) {
       console.log(e);
     }
@@ -319,6 +309,7 @@ export default class FilmList extends Component {
     const formControls = this.state.formControls;
     const formInputsControls = formControls.formInputsControls;
     const control = { ...formInputsControls[controlName] };
+    const film = this.state.film;
 
     control.value = event.target.value;
     control.touched = true;
@@ -330,8 +321,6 @@ export default class FilmList extends Component {
 
     if (control.type === "file") {
       const filename = event.target.files[0];
-
-      console.log(this.state);
 
       if (filename === undefined) {
         control.valid = false;
@@ -346,15 +335,11 @@ export default class FilmList extends Component {
         span.style.color = "#c76c04";
         span.style.right = "17%";
       }
-    }
 
-    const film = this.state.film;
-
-    if (control.type === "file") {
-      film[controlName] = event.target.files[0];
-    }
-
-    film[controlName] = control.value;
+      film[controlName] = filename;
+      console.log(film[controlName]);
+      console.log(this.state);
+    } else film[controlName] = control.value;
 
     formInputsControls[controlName] = control;
 
@@ -368,7 +353,6 @@ export default class FilmList extends Component {
     const formControls = this.state.formControls;
     const formSelectControls = formControls.formSelectControls;
     const control = { ...formSelectControls[controlName] };
-
     const film = this.state.film;
 
     control.value = event;
@@ -376,6 +360,7 @@ export default class FilmList extends Component {
     if (control.value === "") control.errorMessage = "";
 
     control.valid = validate(control.value, control.validation);
+    control.touched = true;
 
     if (control.isMulti === false && control.value !== null) {
       if (controlName) film[controlName] = Object.values(control.value)[0];
@@ -386,13 +371,11 @@ export default class FilmList extends Component {
         film[controlName] = control.value.map(
           (selectValue) => selectValue.label
         );
-
-      if (controlName === "genres") {
-        film[controlName] = control.value.map((genreValue) => genreValue.value);
-      }
+      if (controlName === "genres")
+        film[controlName] = control.value.map(
+          (selectValue) => selectValue.value
+        );
     }
-
-    control.touched = true;
 
     formSelectControls[controlName] = control;
 
