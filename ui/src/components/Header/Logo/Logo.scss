@@ -1,0 +1,30 @@
+.Logo {
+  padding-top: 2%;
+  padding-left: 3%;
+  font-size: 35px;
+  position: absolute;
+  // z-index: 1000;
+
+  a {
+    text-decoration: none;
+    font-family: "Comic Sans MS", arial;
+    text-transform: uppercase;
+    transition: 0.3s;
+    // color: rgba(55, 16, 77, 1);
+    color: rgb(249, 245, 252);
+    text-shadow: 4px 4px 3px rgba(189, 90, 49, 1);
+    // color: linear-gradient(
+    //   90deg,
+    //   rgba(55, 16, 77, 1) 0%,
+    //   rgba(189, 90, 49, 1) 100%
+    // );
+    text-shadow: 4px 4px 3px rgba(189, 90, 49, 1);
+
+    &:hover {
+      text-decoration: none;
+      transition: 0.3s;
+      color: rgb(232, 226, 236);
+      text-shadow: 4px 4px 3px rgb(255, 77, 0);
+    }
+  }
+}
