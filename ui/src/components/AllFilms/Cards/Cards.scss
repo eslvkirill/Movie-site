@@ -1,0 +1,52 @@
+.Cards {
+  height: 350px;
+  width: 400px;
+  max-width: 100%;
+  perspective: 1000px;
+  margin-top: 4rem;
+
+  .FrontSide {
+    color: #f7e7c9;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 1.5s;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+
+    span {
+      h1 {
+        font-size: 24px;
+      }
+
+      a {
+        position: absolute;
+        bottom: 0;
+        left: 34%;
+        padding: 5px;
+        margin-bottom: 3%;
+        color: #d487b1;
+        text-align: center;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .BackSide {
+    @extend .FrontSide;
+    flex-direction: column;
+    transform: rotateY(180deg);
+  }
+
+  &:hover .FrontSide {
+    transform: rotateY(180deg) scale(1.12);
+  }
+
+  &:hover .BackSide {
+    transform: rotateY(360deg) scale(1.12);
+  }
+}
