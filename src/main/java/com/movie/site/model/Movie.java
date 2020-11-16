@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalTime;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -72,4 +73,30 @@ public class Movie implements Serializable {
     private int price;
     private boolean active;
     private LocalTime time;
+
+    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+    private Set<Review> reviews;
+
+    public boolean containsReview(User user) {
+        return reviews.stream()
+                .anyMatch(elem -> elem.getUser().equals(user));
+    }
+
+    public boolean containsReview(Review review) {
+        return reviews.contains(review);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return year == movie.year &&
+                engTitle.equals(movie.engTitle);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(engTitle, year);
+    }
 }

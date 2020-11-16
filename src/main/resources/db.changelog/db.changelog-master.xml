@@ -210,4 +210,29 @@
             </column>
         </addColumn>
     </changeSet>
+
+    <changeSet id="2020-16-11 create table for the Review entity" author="Befors">
+        <createTable tableName="review">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_review_user_id"
+                             references="user(id)"/>
+            </column>
+            <column name="movie_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_review_movie_id"
+                             references="movie(id)"/>
+            </column>
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message" type="clob">
+                <constraints nullable="false"/>
+            </column>
+            <column name="datetime" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

@@ -1,31 +1,29 @@
 package com.movie.site.model;
 
-import com.movie.site.model.enums.Source;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Table(name = "source_data")
-public class SourceData implements Serializable {
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String url;
-    private float rating;
+    private String title;
+    private String message;
+    private LocalDateTime datetime;
 
-    @Enumerated(EnumType.STRING)
-    private Source source;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movie_id")

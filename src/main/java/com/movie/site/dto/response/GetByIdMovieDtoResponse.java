@@ -5,6 +5,7 @@ import com.movie.site.model.enums.Language;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalTime;
 import java.util.Set;
@@ -24,7 +25,7 @@ public class GetByIdMovieDtoResponse {
     private byte[] background2;
     private String tagline;
     private String plot;
-    private Set<SourceDataDto> sourceData;
+    private Set<SourceDataDtoResponse> sourceData;
     private Set<Language> audio;
     private Set<Language> subtitles;
     private Set<GenreDtoResponse> genres;
@@ -33,4 +34,5 @@ public class GetByIdMovieDtoResponse {
     private int oscars;
     private int price;
     private LocalTime time;
+    private Page<ReviewDtoResponse> reviews;
 }

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SourceDataDto {
+public class SourceDataDtoResponse {
 
     private String url;
     private float rating;

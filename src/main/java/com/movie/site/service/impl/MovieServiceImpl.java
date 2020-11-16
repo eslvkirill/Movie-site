@@ -3,7 +3,10 @@ package com.movie.site.service.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movie.site.dto.request.CreateMovieDtoRequest;
+import com.movie.site.dto.request.CreateReviewDtoRequest;
+import com.movie.site.dto.request.UpdateReviewDtoRequest;
 import com.movie.site.dto.response.GetByIdMovieDtoResponse;
+import com.movie.site.dto.response.ReviewDtoResponse;
 import com.movie.site.exception.ForbiddenException;
 import com.movie.site.exception.MovieNotFoundException;
 import com.movie.site.mapper.MovieMapper;
@@ -14,9 +17,13 @@ import com.movie.site.model.enums.Source;
 import com.movie.site.repository.MovieRepository;
 import com.movie.site.service.AmazonS3ClientService;
 import com.movie.site.service.MovieService;
+import com.movie.site.service.ReviewService;
+import com.movie.site.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -39,6 +46,8 @@ import static com.movie.site.util.ParsingUtils.find;
 public class MovieServiceImpl implements MovieService {
 
     private final AmazonS3ClientService amazonS3ClientService;
+    private final ReviewService reviewService;
+    private final UserService userService;
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
     private final RestTemplate restClient;
@@ -141,9 +150,8 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     @Transactional(readOnly = true)
-    public GetByIdMovieDtoResponse findById(Long id) {
-        Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new MovieNotFoundException(id));
+    public GetByIdMovieDtoResponse findById(Long id, Pageable reviewPageable) {
+        Movie movie = findMovieById(id);
         Collection<? extends GrantedAuthority> userAuthorities = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
@@ -153,6 +161,49 @@ public class MovieServiceImpl implements MovieService {
             throw new ForbiddenException();
         }
 
-        return movieMapper.toDto(movie);
+        return movieMapper.toDto(movie, reviewPageable);
+    }
+
+    @Override
+    public ReviewDtoResponse addReview(Long id, CreateReviewDtoRequest reviewDto) {
+        Movie movie = findMovieById(id);
+
+        return reviewService.create(movie, reviewDto);
+    }
+
+    @Override
+    public void updateReview(Long movieId, Long reviewId,
+                                UpdateReviewDtoRequest reviewDto) {
+        Movie movie = findMovieById(movieId);
+
+        reviewService.update(movie, reviewId, reviewDto);
+    }
+
+    @Override
+    public void removeReview(Long movieId, Long reviewId) {
+        Movie movie = findMovieById(movieId);
+
+        reviewService.delete(movie, reviewId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ReviewDtoResponse> findAllReviews(Long id, Pageable pageable) {
+        Movie movie = findMovieById(id);
+
+        return reviewService.findAll(movie, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean hasAlreadyWrittenReview(Long id) {
+        Movie movie = findMovieById(id);
+
+        return movie.containsReview(userService.current());
+    }
+
+    private Movie findMovieById(Long id) {
+        return movieRepository.findById(id)
+                .orElseThrow(() -> new MovieNotFoundException(id));
     }
 }

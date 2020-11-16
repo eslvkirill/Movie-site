@@ -3,7 +3,6 @@ package com.movie.site.api;
 import com.movie.site.dto.request.CreateGenreDtoRequest;
 import com.movie.site.dto.request.UpdateGenreDtoRequest;
 import com.movie.site.dto.response.GenreDtoResponse;
-import com.movie.site.model.Genre;
 import com.movie.site.service.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +26,7 @@ public class GenreRestController {
 
     @PostMapping
     public ResponseEntity<Long> create(@Valid @RequestBody CreateGenreDtoRequest genreDto) {
-        Genre genre = genreService.create(genreDto);
+        GenreDtoResponse genre = genreService.create(genreDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(genre.getId());
     }
