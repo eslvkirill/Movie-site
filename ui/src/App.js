@@ -16,7 +16,7 @@ const app = (
       <Route path="/login" component={Auth} />
       <Route path="/adminPanel" component={AdminPanel} />
       <Route path="/creactionFilm" component={FilmCreactionPanel} />
-      <Route path="/hotel" component={FilmPage} />
+      <Route path="/api/movies/8" component={FilmPage} />
       {/* <Route path="/api/movies/:id" component={FilmPage} /> */}
       <Route exact path="/" component={HomePage} />
     </Layout>

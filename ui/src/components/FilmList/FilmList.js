@@ -46,7 +46,17 @@ function createFormInput() {
       "Введите слоган фильма",
       "Поле не должно быть пустым и превышать 255 символов"
     ),
-    plot: createNewInput("Опишите краткий сюжет", "Поле не может быть пустым"),
+    plot: createInput(
+      {
+        type: "text",
+        placeholder: "Опишите краткий сюжет",
+        errorMessage: "Поле не может быть пустым",
+      },
+      {
+        required: true,
+        minLength: 1,
+      }
+    ),
     year: createInput(
       {
         type: "number",
@@ -319,6 +329,10 @@ export default class FilmList extends Component {
     idSpan = controlName + control.id;
     const span = document.getElementById(idSpan);
 
+    // if (control.validation.youTube) {
+    //   let nn = control.value.replace(/watch\?v=/g, "embed/");
+    // }
+
     if (control.type === "file") {
       const filename = event.target.files[0];
 
@@ -340,6 +354,9 @@ export default class FilmList extends Component {
       console.log(film[controlName]);
       console.log(this.state);
     } else film[controlName] = control.value;
+
+    if (controlName === "trailerUrl")
+      film[controlName] = control.value.replace(/watch\?v=/g, "embed/");
 
     formInputsControls[controlName] = control;
 
@@ -448,7 +465,7 @@ export default class FilmList extends Component {
           className="FilmList"
           onSubmit={(event) => this.submitNewFilm(event)}
         >
-          <div className="AddTitle">Создание фильма</div>
+          {/* <div className="AddTitle">Создание фильма</div> */}
           <div className="FilmListInputs">
             {this.renderInputs()}
             {this.renderSelects()}

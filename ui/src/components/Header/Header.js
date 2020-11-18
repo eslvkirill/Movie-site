@@ -4,7 +4,7 @@ import Navbar from "./Navbar/Navbar";
 import "./Header.scss";
 
 const Header = () => (
-  <header>
+  <header className="Header">
     <Logo />
     <Navbar />
   </header>
