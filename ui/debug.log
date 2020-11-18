@@ -1,5 +1,6 @@
-[1021/130048.978:ERROR:directory_reader_win.cc(43)] FindFirstFile: Системе не удается найти указанный путь. (0x3)
+[1021/130048.978:ERROR:directory_reader_win.cc(43)] FindFirstFile: пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ. (0x3)
 [1021/162524.849:ERROR:process_info.cc(359)] UncheckedAllocate
 [1021/162524.935:ERROR:process_info.cc(359)] UncheckedAllocate
 [1021/164036.841:ERROR:process_info.cc(359)] UncheckedAllocate
-[1021/174441.353:ERROR:filesystem_win.cc(148)] DeleteFile C:\Users\РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ\AppData\Local\Google\Chrome\User Data\Crashpad\reports\2769f193-f043-4cc9-96c2-11785a28996e.dmp: Процесс не может получить доступ к файлу, так как этот файл занят другим процессом. (0x20)
+[1021/174441.353:ERROR:filesystem_win.cc(148)] DeleteFile C:\Users\РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ\AppData\Local\Google\Chrome\User Data\Crashpad\reports\2769f193-f043-4cc9-96c2-11785a28996e.dmp: пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. (0x20)
+[1117/183321.272:ERROR:directory_reader_win.cc(43)] FindFirstFile: Системе не удается найти указанный путь. (0x3)

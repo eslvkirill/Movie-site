@@ -4,39 +4,37 @@ import Button from "../../UiItem/Button/Button";
 import "./Navbar.scss";
 
 const Navbar = () => (
-  <nav>
+  <nav className="Navbar">
     <ul>
-      <li id="sec">
-        <Link className="headline" to="/login" id="second">
+      <li>
+        <Link className="list" to="/login">
           Логин
         </Link>
       </li>
-      <li id="thr">
-        <Link className="headline" to="/hotel" id="third">
+      <li>
+        <Link className="list" to="/api/movies/8">
           Фильм
         </Link>
       </li>
-      <li id="fou">
-        <Link className="headline" to="/creactionFilm" id="four">
+      <li>
+        <Link className="list" to="/creactionFilm">
           Создание
         </Link>
       </li>
-
-      <li id="one">
-        <Link className="headline" to="/adminPanel" id="first">
+      <li>
+        <Link className="list" to="/adminPanel">
           Панель администратора
         </Link>
       </li>
-
-      <li id="last">
+      <li>
         {/* <form action="/logout" method="post"> */}
-        <Button id="exit" type="exit" className="submit">
+        <Button type="exit" className="submit">
           Выход
         </Button>
         {/* </form> */}
       </li>
-      <li id="name">
-        <Link to="/" className="headline" id="first">
+      <li>
+        <Link to="/" className="list">
           name
         </Link>
       </li>
