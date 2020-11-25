@@ -13,7 +13,9 @@ const app = (
   <Fragment>
     <Layout>
       <Header />
+      {/* <ErrorBoundary> */}
       <Route path="/login" component={Auth} />
+      {/* </ErrorBoundary> */}
       <Route path="/adminPanel" component={AdminPanel} />
       <Route path="/creactionFilm" component={FilmCreactionPanel} />
       <Route path="/api/movies/8" component={FilmPage} />
