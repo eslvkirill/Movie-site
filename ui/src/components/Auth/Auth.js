@@ -14,7 +14,7 @@ export default class Auth extends Component {
         // type: "email",
         type: "text",
         placeholder: "Email адрес",
-        errorMessage: "Email адрес должен быть вида: ivanov@yandex.ru",
+        errorMessage: "*Email адрес должен быть вида: ivanov@yandex.ru",
         valid: false,
         touched: false,
         validation: {
@@ -27,7 +27,7 @@ export default class Auth extends Component {
         value: "",
         type: "password",
         placeholder: "Пароль",
-        errorMessage: "Пароль должен быть длиной от 5-ти символов",
+        errorMessage: "*Пароль должен быть длиной от 5-ти символов",
         valid: false,
         touched: false,
         validation: {
@@ -97,6 +97,7 @@ export default class Auth extends Component {
     //     isFormValid: true,
     //   };
     // });
+    console.log(this.state);
   };
 
   onChangeHandler = (event, controlName) => {
