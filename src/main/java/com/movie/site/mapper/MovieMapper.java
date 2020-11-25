@@ -5,12 +5,17 @@ import com.movie.site.dto.response.GetByIdMovieDtoResponse;
 import com.movie.site.model.Movie;
 import com.movie.site.service.AmazonS3ClientService;
 import com.movie.site.service.GenreService;
+import com.movie.site.service.ReviewService;
+import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
+import org.springframework.data.domain.Pageable;
 
 @Mapper(uses = {GenreMapper.class, SourceDataMapper.class,
-        GenreService.class, AmazonS3ClientService.class})
+        GenreService.class, AmazonS3ClientService.class,
+        ReviewService.class})
+@DecoratedWith(MovieMapperDecorator.class)
 public interface MovieMapper {
 
     @Mappings({
@@ -20,13 +25,13 @@ public interface MovieMapper {
     Movie toEntity(CreateMovieDtoRequest movieDto);
 
     @Mappings({
-            @Mapping(target = "poster", source = "posterKey",
+            @Mapping(target = "poster", source = "movie.posterKey",
                     qualifiedByName = "downloadFile"),
-            @Mapping(target = "background1", source = "background1Key",
+            @Mapping(target = "background1", source = "movie.background1Key",
                     qualifiedByName = "downloadFile"),
-            @Mapping(target = "background2", source = "background2Key",
-                    qualifiedByName = "downloadFile")
-
+            @Mapping(target = "background2", source = "movie.background2Key",
+                    qualifiedByName = "downloadFile"),
+            @Mapping(target = "reviews", ignore = true)
     })
-    GetByIdMovieDtoResponse toDto(Movie movie);
+    GetByIdMovieDtoResponse toDto(Movie movie, Pageable reviewPageable);
 }

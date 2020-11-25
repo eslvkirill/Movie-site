@@ -31,17 +31,17 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre create(CreateGenreDtoRequest genreDto) {
-        return genreRepository.save(genreMapper.toEntity(genreDto));
+    public GenreDtoResponse create(CreateGenreDtoRequest genreDto) {
+        return genreMapper.toDto(genreRepository.save(genreMapper.toEntity(genreDto)));
     }
 
     @Override
-    public Genre update(Long id, UpdateGenreDtoRequest genreDto) {
+    public GenreDtoResponse update(Long id, UpdateGenreDtoRequest genreDto) {
         Genre genre = findById(id);
 
         genreMapper.update(genreDto, genre);
 
-        return genreRepository.save(genre);
+        return genreMapper.toDto(genreRepository.save(genre));
     }
 
     @Override

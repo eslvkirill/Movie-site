@@ -13,9 +13,9 @@ public interface GenreService {
 
     Collection<GenreDtoResponse> findAll();
 
-    Genre create(CreateGenreDtoRequest genreDto);
+    GenreDtoResponse create(CreateGenreDtoRequest genreDto);
 
-    Genre update(Long id, UpdateGenreDtoRequest genreDto);
+    GenreDtoResponse update(Long id, UpdateGenreDtoRequest genreDto);
 
     @Named("findGenresByIds")
     Set<Genre> findAllByIds(Iterable<Long> ids);
