@@ -38,10 +38,17 @@ public class CreateMovieDtoRequest {
     private MultipartFile poster;
 
     @File(extensions = {"jpg", "jpeg", "png", "svg"})
-    private MultipartFile background1;
+    private MultipartFile background;
 
-    @File(extensions = {"jpg", "jpeg", "png", "svg"})
-    private MultipartFile background2;
+    @NotBlank
+    @Pattern(regexp = "#[a-z\\d]{3,}")
+    @Size(max = 20)
+    private String pageColor1;
+
+    @NotBlank
+    @Pattern(regexp = "#[a-z\\d]{3,}")
+    @Size(max = 20)
+    private String pageColor2;
 
     @NotBlank
     @Size(max = 255)
@@ -63,7 +70,7 @@ public class CreateMovieDtoRequest {
     private AgeRating ageRating;
 
     @NotBlank
-    @URL(regexp = "http(?:s?):\\/\\/(?:www\\.)?youtu(?:be\\.com\\/watch\\?v=|\\.be\\/)([\\w\\-\\_]*)(&(amp;)?[\\w\\?=]*)?")
+    @URL(regexp = "http(?:s?):\\/\\/(?:www\\.)?youtu(?:be\\.com\\/embed\\/)([\\w\\-]*)(&(amp;)?[\\w\\?=]*)?")
     private String trailerUrl;
 
     @Positive
@@ -74,7 +81,7 @@ public class CreateMovieDtoRequest {
     private String kinopoiskUrl;
 
     @NotBlank
-    @URL(regexp = "http(?:s?):\\/\\/(?:www\\.)?imdb.com\\/title\\/tt[\\d]+\\/?[\\w\\?=\\_\\-&]*")
+    @URL(regexp = "http(?:s?):\\/\\/(?:www\\.)?imdb.com\\/title\\/tt[\\d]+\\/?[\\w\\?=\\-&]*")
     private String imdbUrl;
 
     @NotNull

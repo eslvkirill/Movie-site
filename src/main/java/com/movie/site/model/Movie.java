@@ -33,12 +33,9 @@ public class Movie implements Serializable {
 
     private int year;
     private String posterKey;
-
-    @Column(name = "background1_key")
-    private String background1Key;
-
-    @Column(name = "background2_key")
-    private String background2Key;
+    private String backgroundKey;
+    private String pageColor1;
+    private String pageColor2;
     private String tagline;
     private String plot;
 

@@ -58,7 +58,6 @@ public class MovieServiceImpl implements MovieService {
 
     private static final String OMDB_API_ROOT = "http://www.omdbapi.com/";
     private static final String KINOPOISK_API_PATTERN = "https://rating.kinopoisk.ru/%s.xml";
-    private static final String ROTTEN_TOMATOES_URL_PATTERN = "https://www.rottentomatoes.com/m/%s_%d/";
     private static final String METACRITIC_ROOT_PATTERN = "https://www.metacritic.com/movie/%s/";
     private static final String ID_PARAM = "i";
     private static final String APIKEY_PARAM = "apikey";
@@ -69,7 +68,6 @@ public class MovieServiceImpl implements MovieService {
     private static final String RATING_VALUE_NODE = "Value";
     private static final String RATING_REG_EXP = "[\\d.]+";
     private static final String KINOPOISK_RATING_NODE = "kp_rating";
-    private static final String ROTTEN_TOMATOES_SEPARATOR = "_";
     private static final String METACRITIC_SEPARATOR = "-";
     private static final String ID_REG_EXP = "[\\d]+";
     private static final String IMDB_ID_PREFIX = "tt";
@@ -97,8 +95,6 @@ public class MovieServiceImpl implements MovieService {
         String lowerCaseTitle = movie.getEngTitle().toLowerCase();
         EnumMap<Source, String> urls = new EnumMap<>(Source.class);
         urls.put(Source.IMDB, movieDto.getImdbUrl());
-        urls.put(Source.ROTTEN_TOMATOES, String.format(ROTTEN_TOMATOES_URL_PATTERN,
-                lowerCaseTitle.replace(" ", ROTTEN_TOMATOES_SEPARATOR), movie.getYear()));
         urls.put(Source.METACRITIC, String.format(METACRITIC_ROOT_PATTERN,
                 lowerCaseTitle.replace(" ", METACRITIC_SEPARATOR)));
 
@@ -107,13 +103,14 @@ public class MovieServiceImpl implements MovieService {
         ratings.forEach(node -> {
             Source source = Source.of(node.get(RATING_SOURCE_NODE).asText());
 
-            sourceData.add(SourceData.builder()
-                    .url(urls.get(source))
-                    .rating(Float.parseFloat(Objects.requireNonNull(
-                            find(RATING_REG_EXP, node.get(RATING_VALUE_NODE).asText()))))
-                    .source(source)
-                    .movie(movie)
-                    .build());
+            Optional.ofNullable(urls.get(source))
+                    .ifPresent(sourceUrl -> sourceData.add(SourceData.builder()
+                            .url(sourceUrl)
+                            .rating(Float.parseFloat(Objects.requireNonNull(
+                                    find(RATING_REG_EXP, node.get(RATING_VALUE_NODE).asText()))))
+                            .source(source)
+                            .movie(movie)
+                            .build()));
         });
 
         String kinopoiskId = find(ID_REG_EXP, movieDto.getKinopoiskUrl());
@@ -141,9 +138,7 @@ public class MovieServiceImpl implements MovieService {
         persistedMovie
                 .setPosterKey(amazonS3ClientService.upload(movieDto.getPoster(), prefix));
         persistedMovie
-                .setBackground1Key(amazonS3ClientService.upload(movieDto.getBackground1(), prefix));
-        persistedMovie
-                .setBackground2Key(amazonS3ClientService.upload(movieDto.getBackground2(), prefix));
+                .setBackgroundKey(amazonS3ClientService.upload(movieDto.getBackground(), prefix));
 
         return movieRepository.save(persistedMovie);
     }
@@ -173,7 +168,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void updateReview(Long movieId, Long reviewId,
-                                UpdateReviewDtoRequest reviewDto) {
+                             UpdateReviewDtoRequest reviewDto) {
         Movie movie = findMovieById(movieId);
 
         reviewService.update(movie, reviewId, reviewDto);
