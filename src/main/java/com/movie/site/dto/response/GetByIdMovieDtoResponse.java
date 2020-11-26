@@ -20,9 +20,9 @@ public class GetByIdMovieDtoResponse {
     private String rusTitle;
     private Set<String> countries;
     private int year;
-    private byte[] poster;
-    private byte[] background1;
-    private byte[] background2;
+    private byte[] background;
+    private String pageColor1;
+    private String pageColor2;
     private String tagline;
     private String plot;
     private Set<SourceDataDtoResponse> sourceData;

@@ -25,11 +25,7 @@ public interface MovieMapper {
     Movie toEntity(CreateMovieDtoRequest movieDto);
 
     @Mappings({
-            @Mapping(target = "poster", source = "movie.posterKey",
-                    qualifiedByName = "downloadFile"),
-            @Mapping(target = "background1", source = "movie.background1Key",
-                    qualifiedByName = "downloadFile"),
-            @Mapping(target = "background2", source = "movie.background2Key",
+            @Mapping(target = "background", source = "movie.backgroundKey",
                     qualifiedByName = "downloadFile"),
             @Mapping(target = "reviews", ignore = true)
     })
