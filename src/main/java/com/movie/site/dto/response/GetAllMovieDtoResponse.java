@@ -18,7 +18,9 @@ public class GetAllMovieDtoResponse {
     private String rusTitle;
     private int year;
     private byte[] poster;
+    private String pageColor1;
     private Set<Genre> genres;
     private int price;
     private LocalTime time;
+    private float rating;
 }

@@ -1,8 +1,6 @@
 package com.movie.site.api;
 
-import com.movie.site.dto.request.CreateMovieDtoRequest;
-import com.movie.site.dto.request.CreateReviewDtoRequest;
-import com.movie.site.dto.request.UpdateReviewDtoRequest;
+import com.movie.site.dto.request.*;
 import com.movie.site.dto.response.GetAllMovieDtoResponse;
 import com.movie.site.dto.response.GetByIdMovieDtoResponse;
 import com.movie.site.dto.response.ReviewDtoResponse;
@@ -15,7 +13,6 @@ import com.movie.site.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,10 +55,10 @@ public class MovieRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GetByIdMovieDtoResponse> getById(
+    public GetByIdMovieDtoResponse getById(
             @PathVariable Long id,
             @PageableDefault(size = 3, sort = "datetime") Pageable reviewPageable) {
-        return ResponseEntity.ok(movieService.findById(id, reviewPageable));
+        return movieService.findById(id, reviewPageable);
     }
 
     @PostMapping("/{id}/reviews")
@@ -95,15 +92,30 @@ public class MovieRestController {
         return movieService.findAllReviews(id, pageable);
     }
 
-    @GetMapping("/{id}/reviews/verification")
-    @PreAuthorize("isAuthenticated()")
-    public boolean hasAlreadyWrittenReview(@PathVariable Long id) {
-        return movieService.hasAlreadyWrittenReview(id);
-    }
-
     @GetMapping
-    public Slice<GetAllMovieDtoResponse> getAll(
+    public Page<GetAllMovieDtoResponse> getAll(
             @PageableDefault(size = 9, sort = "id") Pageable pageable) {
         return movieService.findAll(pageable);
+    }
+
+    @PostMapping("/{id}/ratings")
+    @PreAuthorize("isAuthenticated()")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addRating(@PathVariable Long id,
+                          @Valid @RequestBody CreateRatingDtoRequest ratingDto) {
+        movieService.addRating(id, ratingDto);
+    }
+
+    @PutMapping("/{id}/ratings")
+    @PreAuthorize("isAuthenticated()")
+    public void updateRating(@PathVariable Long id,
+                             @Valid @RequestBody UpdateRatingDtoRequest ratingDto) {
+        movieService.updateRating(id, ratingDto);
+    }
+
+    @DeleteMapping("/{id}/ratings")
+    @PreAuthorize("isAuthenticated()")
+    public void removeRating(@PathVariable Long id) {
+        movieService.removeRating(id);
     }
 }

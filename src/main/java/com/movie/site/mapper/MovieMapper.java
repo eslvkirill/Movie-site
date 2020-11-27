@@ -4,6 +4,7 @@ import com.movie.site.dto.request.CreateMovieDtoRequest;
 import com.movie.site.dto.response.GetAllMovieDtoResponse;
 import com.movie.site.dto.response.GetByIdMovieDtoResponse;
 import com.movie.site.model.Movie;
+import com.movie.site.model.User;
 import com.movie.site.service.AmazonS3ClientService;
 import com.movie.site.service.GenreService;
 import com.movie.site.service.ReviewService;
@@ -12,8 +13,8 @@ import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 
 @Mapper(uses = {GenreMapper.class, SourceDataMapper.class,
         GenreService.class, AmazonS3ClientService.class,
@@ -30,15 +31,26 @@ public interface MovieMapper {
     @Mappings({
             @Mapping(target = "background", source = "movie.backgroundKey",
                     qualifiedByName = "downloadFile"),
-            @Mapping(target = "reviews", ignore = true)
+            @Mapping(target = "reviews", ignore = true),
+            @Mapping(target = "totalRating", expression = "java(movie.averageRating())"),
+            @Mapping(target = "numberOfRatings",
+                    expression = "java(movie.numberOfRatings())"),
+            @Mapping(target = "userRating", expression = "java(movie.getRatingValue(user))"),
+            @Mapping(target = "userHasAlreadyWrittenReview",
+                    expression = "java(movie.containsReview(user))"),
+            @Mapping(target = "id", source = "movie.id")
     })
-    GetByIdMovieDtoResponse toGetByIdDto(Movie movie, Pageable reviewPageable);
+    GetByIdMovieDtoResponse toGetByIdDto(Movie movie, Pageable reviewPageable, User user);
 
-    @Mapping(target = "poster", source = "posterKey", qualifiedByName = "downloadFile")
+    @Mappings({
+            @Mapping(target = "poster", source = "posterKey",
+                    qualifiedByName = "downloadFile"),
+            @Mapping(target = "rating", expression = "java(movie.averageRating())")
+    })
     GetAllMovieDtoResponse toGetAllDto(Movie movie);
 
     @SneakyThrows
-    default Slice<GetAllMovieDtoResponse> toDtoSlice(Slice<Movie> movies) {
+    default Page<GetAllMovieDtoResponse> toDtoPage(Page<Movie> movies) {
         return movies.map(this::toGetAllDto);
     }
 }
