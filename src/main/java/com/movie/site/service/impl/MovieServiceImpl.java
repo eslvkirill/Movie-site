@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movie.site.dto.request.CreateMovieDtoRequest;
 import com.movie.site.dto.request.CreateReviewDtoRequest;
 import com.movie.site.dto.request.UpdateReviewDtoRequest;
+import com.movie.site.dto.response.GetAllMovieDtoResponse;
 import com.movie.site.dto.response.GetByIdMovieDtoResponse;
 import com.movie.site.dto.response.ReviewDtoResponse;
 import com.movie.site.exception.ForbiddenException;
@@ -24,8 +25,8 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -101,11 +102,11 @@ public class MovieServiceImpl implements MovieService {
         Set<SourceData> sourceData = new HashSet<>();
 
         ratings.forEach(node -> {
-            Source source = Source.of(node.get(RATING_SOURCE_NODE).asText());
+            Optional<Source> sourceOpt = Optional
+                    .ofNullable(Source.of(node.get(RATING_SOURCE_NODE).asText()));
 
-            Optional.ofNullable(urls.get(source))
-                    .ifPresent(sourceUrl -> sourceData.add(SourceData.builder()
-                            .url(sourceUrl)
+            sourceOpt.ifPresent(source -> sourceData.add(SourceData.builder()
+                            .url(urls.get(source))
                             .rating(Float.parseFloat(Objects.requireNonNull(
                                     find(RATING_REG_EXP, node.get(RATING_VALUE_NODE).asText()))))
                             .source(source)
@@ -147,16 +148,14 @@ public class MovieServiceImpl implements MovieService {
     @Transactional(readOnly = true)
     public GetByIdMovieDtoResponse findById(Long id, Pageable reviewPageable) {
         Movie movie = findMovieById(id);
-        Collection<? extends GrantedAuthority> userAuthorities = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getAuthorities();
+        Collection<? extends GrantedAuthority> userAuthorities =
+                userService.current().getAuthorities();
 
         if (!movie.isActive() && !userAuthorities.contains(Role.ADMIN)) {
             throw new ForbiddenException();
         }
 
-        return movieMapper.toDto(movie, reviewPageable);
+        return movieMapper.toGetByIdDto(movie, reviewPageable);
     }
 
     @Override
@@ -195,6 +194,22 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = findMovieById(id);
 
         return movie.containsReview(userService.current());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Slice<GetAllMovieDtoResponse> findAll(Pageable pageable) {
+        Slice<Movie> movies;
+        Collection<? extends GrantedAuthority> userAuthorities =
+                userService.current().getAuthorities();
+
+        if (userAuthorities.contains(Role.ADMIN)) {
+            movies = movieRepository.findAll(pageable);
+        } else {
+            movies = movieRepository.findAllByActiveIsTrue(pageable);
+        }
+
+        return movieMapper.toDtoSlice(movies);
     }
 
     private Movie findMovieById(Long id) {
