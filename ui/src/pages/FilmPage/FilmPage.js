@@ -22,6 +22,7 @@ export default class FilmPage extends Component {
   async componentDidMount() {
     try {
       await axios.get("/api/movies/8").then((response) => {
+        console.log(response.data);
         const film = response.data;
         let sourceData = film.sourceData;
 
@@ -306,7 +307,7 @@ export default class FilmPage extends Component {
                 </div>
               </div>
             </section>
-            <ReviewSection />
+            <ReviewSection reviews={this.state.film.reviews} />
           </>
         ) : (
           ""

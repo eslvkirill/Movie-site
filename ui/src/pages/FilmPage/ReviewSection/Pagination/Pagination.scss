@@ -11,13 +11,17 @@
 
   .link {
     cursor: pointer;
-    margin: auto 0.2px auto -2px;
+    margin: auto 0px auto 0px;
     padding: 0.5rem 0.75rem;
     line-height: 1.25;
     color: #bd4300;
     background-color: #f7d9a8;
     border: 2px solid #bd4200b9;
     transition: 0.3s;
+
+    &:first-child {
+      width: 35.987px;
+    }
 
     &:hover {
       background-color: #37104d49;

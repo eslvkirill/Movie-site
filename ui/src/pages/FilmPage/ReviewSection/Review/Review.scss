@@ -13,6 +13,7 @@
     margin-bottom: 30px;
     font-size: 16px;
     cursor: default;
+    height: 100%;
 
     .reviewHead {
       display: flex;
@@ -56,17 +57,59 @@
     .reviewsTitle {
       margin: -10px auto 0.5rem;
       color: #f7d5ba;
-      padding-left: 10px;
       font-size: 20px;
       font-style: italic;
       font-weight: bold;
+
+      Input {
+        margin-left: 0px;
+        transition: 0.3s;
+
+        &:disabled {
+          background: transparent;
+          border: none;
+          border-radius: 0;
+          font-size: 20px;
+          font-style: italic;
+          font-weight: bold;
+          color: #f7d5ba;
+          margin: 0;
+          padding: 0;
+          height: auto;
+          margin-left: 10px;
+          max-width: 80%;
+          transition: 0.3s;
+        }
+      }
+    }
+
+    .reviewText {
+      Textarea {
+        transition: 0.3s;
+
+        &:disabled {
+          background: transparent;
+          border: none;
+          border-radius: 0;
+          font-size: 16px;
+          color: #f7e7c9;
+          margin: 0;
+          padding: 0;
+          height: inherit;
+          transition: 0.3s;
+          // min-height: 100%;
+          // max-height: 1000rem;
+          // overflow: hidden;
+        }
+      }
     }
 
     .reviewEdit {
       display: flex;
       justify-content: flex-end;
 
-      a {
+      div {
+        cursor: pointer;
         display: flex;
         justify-content: flex-end;
         text-decoration: none;

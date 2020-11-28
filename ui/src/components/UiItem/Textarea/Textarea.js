@@ -10,6 +10,7 @@ const Textarea = (props) => (
       placeholder={props.placeholder}
       autoComplete={props.autoComplete}
       value={props.value}
+      disabled={props.disabled}
       onChange={props.onChange}
     />
     {isInvalid(props) ? (
