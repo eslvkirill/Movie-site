@@ -19,7 +19,7 @@ public class AmazonS3ClientServiceImpl implements AmazonS3ClientService {
 
     private final AmazonS3 amazonS3Client;
 
-    @Value("${cloud.aws.s3.bucket-name}")
+    @Value("${cloud.aws.bucket-name}")
     private String bucketName;
 
     @Override

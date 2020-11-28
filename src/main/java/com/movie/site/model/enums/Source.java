@@ -11,7 +11,6 @@ public enum Source {
 
     KINOPOISK("Kinopoisk"),
     IMDB("Internet Movie Database"),
-    ROTTEN_TOMATOES("Rotten Tomatoes"),
     METACRITIC("Metacritic");
 
     private final String name;

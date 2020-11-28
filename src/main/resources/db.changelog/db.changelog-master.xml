@@ -235,4 +235,31 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="2020-11-26 replace the background2_key with two color fields" author="Befors">
+        <delete tableName="movie_subtitle"/>
+        <delete tableName="movie_audio"/>
+        <delete tableName="movie_genre"/>
+        <delete tableName="source_data"/>
+        <delete tableName="movie_country"/>
+        <delete tableName="review"/>
+        <delete tableName="movie"/>
+
+        <dropColumn tableName="movie">
+            <column name="background2_key"/>
+        </dropColumn>
+        <renameColumn tableName="movie"
+                      oldColumnName="background1_key"
+                      newColumnName="background_key"/>
+        <addColumn tableName="movie">
+            <column name="page_color1" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="movie">
+            <column name="page_color2" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

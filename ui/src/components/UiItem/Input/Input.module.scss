@@ -1,42 +1,54 @@
+@mixin flexible() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 input {
+  @include flexible();
   font-family: "Arial";
   font-size: 16px;
   padding: 11px 12px;
-  border: 1px solid #db6736;
+  border: 3px solid #c76c04;
   border-radius: 10px;
+  font-weight: normal;
   outline: none;
-  background: #fcfafa;
-  width: 16rem;
+  background: #fafafa;
+  color: #c76c04;
+  caret-color: #a35b09;
+  width: 22rem;
   margin-bottom: 8px;
   width: 100%;
-  height: 42.4px;
-  display: flex;
-  margin: auto;
-  justify-content: center;
-  align-items: center;
+  height: 48.8px;
   max-width: 390.4px;
+  margin: 0 1.2rem 1.4rem 1.2rem;
+  transition: 0.3s;
 
   &::placeholder {
-    color: #37104d;
+    color: rgb(168, 145, 118);
+    transition: 0.3s;
+    font-size: 18px;
   }
 
   &:focus {
-    background: #e7e7ff;
+    background: rgb(255, 244, 232);
+    transition: 0.3s;
   }
 
   + span {
+    @include flexible();
     max-width: 390.4px;
-  }
-}
-
-.Input {
-  span {
     color: #f01f30;
-    font-size: 13.3px;
-    display: flex;
-    margin-left: 7px;
-    margin-bottom: 7px;
-    margin-top: -25px;
+    font-size: 0.78rem;
+    width: 80%;
+    box-sizing: border-box;
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }
 
@@ -70,18 +82,6 @@ input {
     opacity: 0;
   }
 
-  // span:first-child {
-  //   width: 400px;
-  //   height: 48.8px;
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  //   font-size: 13px;
-  //   line-height: 48.8px;
-  //   text-indent: 10px;
-  //   pointer-events: none;
-  // }
-
   .Choice {
     border-radius: 0px 10px 10px 0px;
     cursor: pointer;
@@ -105,17 +105,13 @@ input {
   }
 
   .FileError {
-    color: #f01f30;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
-    text-align: center;
-    margin: auto;
-    margin-bottom: 15px;
-    margin-top: 32.2px;
-    font-size: 0.77rem;
+    color: #f01f30;
     width: 90%;
-    display: flex;
+    text-align: center;
+    font-size: 0.78rem;
+    margin: 32.2px auto 35px;
   }
 }

@@ -6,6 +6,7 @@ import {
   faImdb,
   faMediumM,
 } from "@fortawesome/free-brands-svg-icons";
+import ReviewSection from "./ReviewSection/ReviewSection";
 import "./FilmPage.scss";
 
 //FilmPage({ page })
@@ -21,6 +22,7 @@ export default class FilmPage extends Component {
   async componentDidMount() {
     try {
       await axios.get("/api/movies/8").then((response) => {
+        console.log(response.data);
         const film = response.data;
         let sourceData = film.sourceData;
 
@@ -223,7 +225,7 @@ export default class FilmPage extends Component {
                 <a href="#trailer" className="TrailerButton">
                   Посмотреть трейлер
                 </a>
-                <a href="#trailer" className="TrailerButton ReviewButton">
+                <a href="#ReviewSection" className="TrailerButton ReviewButton">
                   Прочитать отзывы
                 </a>
               </div>
@@ -248,51 +250,65 @@ export default class FilmPage extends Component {
         </section>
 
         {!this.state.loading ? (
-          <section
-            className="SecondSection"
-            style={this.backgroundStyle("background2", "0, 0, 0, 0.2")}
-          >
-            <div className="Block">
-              <div className="LeftSide">
-                <div id="trailer" className="Trailer">
-                  Official Trailer
+          <>
+            <section
+              className="SecondSection"
+              style={this.backgroundStyle("background2", "0, 0, 0, 0.2")}
+              //           style={{
+              //             width: "100vw",
+              //             height: "100vh",
+              //             background: `linear-gradient(
+              //   105deg,
+
+              //   #b6dbe0 50%, #0f687a 50%
+              // )`,
+              //          }}
+            >
+              <div className="Block">
+                <div className="LeftSide">
+                  <div id="trailer" className="Trailer">
+                    Official Trailer
+                  </div>
+                  <div className="VideoContainer">
+                    <div className="Video">
+                      <iframe
+                        title="Movie Trailer"
+                        width="710"
+                        height="445"
+                        // src="https://www.youtube.com/embed/OUw5JaaGNQc?"
+                        src={
+                          this.state.film.trailerUrl
+                            ? this.state.film.trailerUrl
+                            : ""
+                        }
+                        controls="0"
+                        frameBorder="0px"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  </div>
+                  <div className="Oscars">{this.renderOscars()}</div>
                 </div>
-                <div className="VideoContainer">
-                  <div className="Video">
-                    <iframe
-                      title="Movie Trailer"
-                      width="710"
-                      height="445"
-                      // src="https://www.youtube.com/embed/OUw5JaaGNQc?"
-                      src={
-                        this.state.film.trailerUrl
-                          ? this.state.film.trailerUrl
-                          : ""
-                      }
-                      controls="0"
-                      frameBorder="0px"
-                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
+              </div>
+              <div className="Block">
+                <div className="RightSide">
+                  <div className="Title">{this.state.film.engTitle}</div>
+                  <br />
+                  <div className="Tagline">
+                    &lt;&lt;{this.state.film.tagline}&gt;&gt;
+                  </div>
+                  <div className="RatingsWrapper">
+                    <div className="RatingsContainer">
+                      {this.renderRatings()}
+                    </div>
+                    <ul className="Icons">{this.renderIcons()}</ul>
                   </div>
                 </div>
-                <div className="Oscars">{this.renderOscars()}</div>
               </div>
-            </div>
-            <div className="Block">
-              <div className="RightSide">
-                <div className="Title">{this.state.film.engTitle}</div>
-                <br />
-                <div className="Tagline">
-                  &lt;&lt;{this.state.film.tagline}&gt;&gt;
-                </div>
-                <div className="RatingsWrapper">
-                  <div className="RatingsContainer">{this.renderRatings()}</div>
-                  <ul className="Icons">{this.renderIcons()}</ul>
-                </div>
-              </div>
-            </div>
-          </section>
+            </section>
+            <ReviewSection reviews={this.state.film.reviews} />
+          </>
         ) : (
           ""
         )}

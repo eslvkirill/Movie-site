@@ -1,0 +1,161 @@
+.reviewWrapper {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 2.2rem auto 2rem;
+  width: 100%;
+
+  .reviewCard {
+    width: 70%;
+    padding: 11px 12px;
+    border: 3.5px inset #f7d9a8;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    font-size: 16px;
+    cursor: default;
+    height: 100%;
+
+    .reviewHead {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+
+      .reviewAuthorName {
+        color: #bd4300;
+        font-weight: bold;
+      }
+
+      .rightSide {
+        display: flex;
+        flex-direction: row;
+
+        .reviewDate {
+          color: #fafafa;
+          margin-right: 1.2rem;
+        }
+
+        .delete {
+          cursor: pointer;
+          margin-top: -0.6rem;
+          font-size: 1.5rem;
+          color: #fa2307d5;
+          transition: 0.3s;
+
+          &:hover {
+            color: #fa230793;
+            transform: scale(0.98);
+            transition: 0.3s;
+          }
+
+          &:active {
+            transform: scale(0.83);
+          }
+        }
+      }
+    }
+
+    .reviewsTitle {
+      margin: -10px auto 0.5rem;
+      color: #f7d5ba;
+      font-size: 20px;
+      font-style: italic;
+      font-weight: bold;
+
+      Input {
+        margin-left: 0px;
+        transition: 0.3s;
+
+        &:disabled {
+          background: transparent;
+          border: none;
+          border-radius: 0;
+          font-size: 20px;
+          font-style: italic;
+          font-weight: bold;
+          color: #f7d5ba;
+          margin: 0;
+          padding: 0;
+          height: auto;
+          margin-left: 10px;
+          max-width: 80%;
+          transition: 0.3s;
+        }
+      }
+    }
+
+    .reviewText {
+      Textarea {
+        transition: 0.3s;
+
+        &:disabled {
+          background: transparent;
+          border: none;
+          border-radius: 0;
+          font-size: 16px;
+          color: #f7e7c9;
+          margin: 0;
+          padding: 0;
+          height: inherit;
+          transition: 0.3s;
+          // min-height: 100%;
+          // max-height: 1000rem;
+          // overflow: hidden;
+        }
+      }
+    }
+
+    .reviewEdit {
+      display: flex;
+      justify-content: flex-end;
+
+      div {
+        cursor: pointer;
+        display: flex;
+        justify-content: flex-end;
+        text-decoration: none;
+        color: #bd4300;
+        font-style: italic;
+        font-size: 18px;
+        transition: 0.3s;
+
+        &:hover {
+          color: #bd2f00c5;
+          transition: 0.3s;
+
+          span {
+            transition: 0.3s;
+            color: #fafafadc;
+          }
+        }
+
+        span {
+          display: flex;
+          color: #fafafa;
+          transform: rotate(77deg);
+          font-size: 20px;
+          margin-top: -0.3rem;
+          transition: 0.3s;
+        }
+      }
+    }
+  }
+}
+
+.review-enter {
+  opacity: 0;
+}
+
+.review-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.review-exit {
+  opacity: 1;
+  display: none;
+}
+
+.review-exit-active {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
+}

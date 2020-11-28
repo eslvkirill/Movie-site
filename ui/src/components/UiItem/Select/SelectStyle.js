@@ -139,7 +139,6 @@ const SelectStyle = {
     color: state.isSelected ? primaryColor : primaryColor,
     fontWeight: state.isSelected ? "bold" : "normal",
     padding: 5,
-    // borderRadius: 10,
     maxHeight: 50,
     display: "flex",
     justifyContent: "start",

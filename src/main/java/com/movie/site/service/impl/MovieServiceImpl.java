@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movie.site.dto.request.CreateMovieDtoRequest;
 import com.movie.site.dto.request.CreateReviewDtoRequest;
 import com.movie.site.dto.request.UpdateReviewDtoRequest;
+import com.movie.site.dto.response.GetAllMovieDtoResponse;
 import com.movie.site.dto.response.GetByIdMovieDtoResponse;
 import com.movie.site.dto.response.ReviewDtoResponse;
 import com.movie.site.exception.ForbiddenException;
@@ -24,8 +25,8 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -58,7 +59,6 @@ public class MovieServiceImpl implements MovieService {
 
     private static final String OMDB_API_ROOT = "http://www.omdbapi.com/";
     private static final String KINOPOISK_API_PATTERN = "https://rating.kinopoisk.ru/%s.xml";
-    private static final String ROTTEN_TOMATOES_URL_PATTERN = "https://www.rottentomatoes.com/m/%s_%d/";
     private static final String METACRITIC_ROOT_PATTERN = "https://www.metacritic.com/movie/%s/";
     private static final String ID_PARAM = "i";
     private static final String APIKEY_PARAM = "apikey";
@@ -69,7 +69,6 @@ public class MovieServiceImpl implements MovieService {
     private static final String RATING_VALUE_NODE = "Value";
     private static final String RATING_REG_EXP = "[\\d.]+";
     private static final String KINOPOISK_RATING_NODE = "kp_rating";
-    private static final String ROTTEN_TOMATOES_SEPARATOR = "_";
     private static final String METACRITIC_SEPARATOR = "-";
     private static final String ID_REG_EXP = "[\\d]+";
     private static final String IMDB_ID_PREFIX = "tt";
@@ -97,23 +96,22 @@ public class MovieServiceImpl implements MovieService {
         String lowerCaseTitle = movie.getEngTitle().toLowerCase();
         EnumMap<Source, String> urls = new EnumMap<>(Source.class);
         urls.put(Source.IMDB, movieDto.getImdbUrl());
-        urls.put(Source.ROTTEN_TOMATOES, String.format(ROTTEN_TOMATOES_URL_PATTERN,
-                lowerCaseTitle.replace(" ", ROTTEN_TOMATOES_SEPARATOR), movie.getYear()));
         urls.put(Source.METACRITIC, String.format(METACRITIC_ROOT_PATTERN,
                 lowerCaseTitle.replace(" ", METACRITIC_SEPARATOR)));
 
         Set<SourceData> sourceData = new HashSet<>();
 
         ratings.forEach(node -> {
-            Source source = Source.of(node.get(RATING_SOURCE_NODE).asText());
+            Optional<Source> sourceOpt = Optional
+                    .ofNullable(Source.of(node.get(RATING_SOURCE_NODE).asText()));
 
-            sourceData.add(SourceData.builder()
-                    .url(urls.get(source))
-                    .rating(Float.parseFloat(Objects.requireNonNull(
-                            find(RATING_REG_EXP, node.get(RATING_VALUE_NODE).asText()))))
-                    .source(source)
-                    .movie(movie)
-                    .build());
+            sourceOpt.ifPresent(source -> sourceData.add(SourceData.builder()
+                            .url(urls.get(source))
+                            .rating(Float.parseFloat(Objects.requireNonNull(
+                                    find(RATING_REG_EXP, node.get(RATING_VALUE_NODE).asText()))))
+                            .source(source)
+                            .movie(movie)
+                            .build()));
         });
 
         String kinopoiskId = find(ID_REG_EXP, movieDto.getKinopoiskUrl());
@@ -141,9 +139,7 @@ public class MovieServiceImpl implements MovieService {
         persistedMovie
                 .setPosterKey(amazonS3ClientService.upload(movieDto.getPoster(), prefix));
         persistedMovie
-                .setBackground1Key(amazonS3ClientService.upload(movieDto.getBackground1(), prefix));
-        persistedMovie
-                .setBackground2Key(amazonS3ClientService.upload(movieDto.getBackground2(), prefix));
+                .setBackgroundKey(amazonS3ClientService.upload(movieDto.getBackground(), prefix));
 
         return movieRepository.save(persistedMovie);
     }
@@ -152,16 +148,14 @@ public class MovieServiceImpl implements MovieService {
     @Transactional(readOnly = true)
     public GetByIdMovieDtoResponse findById(Long id, Pageable reviewPageable) {
         Movie movie = findMovieById(id);
-        Collection<? extends GrantedAuthority> userAuthorities = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getAuthorities();
+        Collection<? extends GrantedAuthority> userAuthorities =
+                userService.current().getAuthorities();
 
         if (!movie.isActive() && !userAuthorities.contains(Role.ADMIN)) {
             throw new ForbiddenException();
         }
 
-        return movieMapper.toDto(movie, reviewPageable);
+        return movieMapper.toGetByIdDto(movie, reviewPageable);
     }
 
     @Override
@@ -173,7 +167,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void updateReview(Long movieId, Long reviewId,
-                                UpdateReviewDtoRequest reviewDto) {
+                             UpdateReviewDtoRequest reviewDto) {
         Movie movie = findMovieById(movieId);
 
         reviewService.update(movie, reviewId, reviewDto);
@@ -200,6 +194,22 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = findMovieById(id);
 
         return movie.containsReview(userService.current());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Slice<GetAllMovieDtoResponse> findAll(Pageable pageable) {
+        Slice<Movie> movies;
+        Collection<? extends GrantedAuthority> userAuthorities =
+                userService.current().getAuthorities();
+
+        if (userAuthorities.contains(Role.ADMIN)) {
+            movies = movieRepository.findAll(pageable);
+        } else {
+            movies = movieRepository.findAllByActiveIsTrue(pageable);
+        }
+
+        return movieMapper.toDtoSlice(movies);
     }
 
     private Movie findMovieById(Long id) {
