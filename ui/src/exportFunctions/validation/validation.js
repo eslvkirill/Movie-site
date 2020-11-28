@@ -104,6 +104,19 @@ export function validateForm(formControls) {
   return isFormValid;
 }
 
+export function validateInputs(formControls) {
+  let isFormValid = true;
+
+  Object.keys(formControls).forEach((name) => {
+    isFormValid =
+      formControls[name].valid &&
+      formControls[name].value !== "" &&
+      isFormValid;
+  });
+
+  return isFormValid;
+}
+
 export function isInvalid({ valid, touched, shouldValidate }) {
   return !valid && shouldValidate && touched;
 }

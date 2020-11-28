@@ -27,7 +27,7 @@ const Navbar = () => (
         </Link>
       </li>
       <li>
-        {/* <form action="/logout" method="post"> */}
+        {/* <form action="/logout" method="get"> */}
         <Button type="exit" className="submit">
           Выход
         </Button>

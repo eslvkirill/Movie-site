@@ -1,10 +1,9 @@
 .Auth {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-70%);
   font-family: "Comic Sans MS", arial;
   width: 346px;
+  display: flex;
+  flex-direction: column;
+  margin: 10.5rem auto auto;
 
   p {
     display: flex;
@@ -13,6 +12,15 @@
     color: #db6736;
     font-size: 2.2rem;
     margin-bottom: 1.2rem;
+  }
+
+  .errorAuth {
+    color: #f01f30;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.7rem;
+    margin-top: 0.3rem;
+    font-size: 0.78rem;
   }
 
   .Buttons {

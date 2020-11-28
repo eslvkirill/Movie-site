@@ -4,7 +4,10 @@ import Input from "../UiItem/Input/Input";
 import Button from "../UiItem/Button/Button";
 import Loader from "../UiItem/Loader/Loader";
 import GenreItem from "./GenreItem/GenreItem";
-import { validate } from "../../exportFunctions/validation/validation";
+import {
+  validate,
+  validateInputs,
+} from "../../exportFunctions/validation/validation";
 import "./GenreList.scss";
 
 export default class GenreList extends Component {
@@ -157,15 +160,9 @@ export default class GenreList extends Component {
 
     formControls[controlName] = control;
 
-    let isFormValid = true;
-
-    Object.keys(formControls).forEach((name) => {
-      isFormValid = formControls[name].valid && isFormValid;
-    });
-
     this.setState({
       formControls,
-      isFormValid,
+      isFormValid: validateInputs(formControls),
       newItem: control.value,
     });
   };

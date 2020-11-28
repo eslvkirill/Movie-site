@@ -1,130 +1,104 @@
-import React, { Component } from "react";
-// import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
+import { createInput } from "../../exportFunctions/creationEntity/createInput";
+import {
+  validate,
+  validateInputs,
+} from "../../exportFunctions/validation/validation";
 import Button from "../../components/UiItem/Button/Button";
 import Input from "../../components/UiItem/Input/Input";
 import "./Auth.scss";
 
-export default class Auth extends Component {
-  state = {
-    isFormValid: false,
-    formControls: {
-      email: {
-        value: "",
-        // type: "email",
-        type: "text",
-        placeholder: "Email адрес",
-        errorMessage: "*Email адрес должен быть вида: ivanov@yandex.ru",
-        valid: false,
-        touched: false,
-        validation: {
-          required: true,
-          minLength: 4,
-          // email: true,
-        },
-      },
-      password: {
-        value: "",
-        type: "password",
-        placeholder: "Пароль",
-        errorMessage: "*Пароль должен быть длиной от 5-ти символов",
-        valid: false,
-        touched: false,
-        validation: {
-          required: true,
-          minLength: 4,
-        },
-      },
+function createNewInput(type, placeholder, errorMessage) {
+  return createInput(
+    {
+      type: type,
+      placeholder: placeholder,
+      errorMessage: "*" + errorMessage,
     },
+    {
+      required: true,
+      minLength: 4,
+      maxLength: 255,
+      // email: true
+    }
+  );
+}
+
+function createFormControls() {
+  return {
+    email: createNewInput(
+      "text",
+      // type: "email",
+      "Email адрес",
+      "Email адрес должен быть вида: ivanov@yandex.ru"
+    ),
+    password: createNewInput(
+      "password",
+      "Пароль",
+      "Пароль должен быть длиной от 5-ти символов"
+    ),
+  };
+}
+
+const Auth = () => {
+  const [formControls, setFormControls] = useState(createFormControls());
+  const [isFormValid, setFormValid] = useState(false);
+  const [authorized, setAuthorized] = useState(false);
+  const [authStatus, setAuthStatus] = useState(0);
+
+  const loginHandler = async (email, password) => {
+    try {
+      const authData = {
+        email: formControls.email.value,
+        password: formControls.password.value,
+      };
+
+      email = authData.email;
+      password = authData.password;
+
+      await axios({
+        method: "post",
+        contentType: "application/x-www-form-urlencoded",
+        url: "/login",
+        data: encodeURI(`email=${email}&password=${password}`),
+      })
+        .then((response) => console.log(response))
+        .then(() => setAuthorized(!authorized));
+    } catch (e) {
+      console.log(e.response.status);
+      if (e.response.status === 404) {
+        setAuthStatus(e.response.status);
+        setFormControls(createFormControls());
+        setFormValid(false);
+      }
+      // throw new Error("cdcd");
+    }
   };
 
-  loginHandler = async (email, password) => {
-    // try {
-    const authData = {
-      email: this.state.formControls.email.value,
-      password: this.state.formControls.password.value,
-    };
+  const registerHandler = () => {};
 
-    email = authData.email;
-    password = authData.password;
-
-    const response = await axios({
-      method: "post",
-      contentType: "application/x-www-form-urlencoded",
-      url: "/login",
-      data: encodeURI(`email=${email}&password=${password}`),
-    });
-
-    console.log(response);
-    // } catch (e) {
-    //   console.log(e);
-    // }
-  };
-
-  validateControl(value, validation) {
-    if (!validation) {
-      return true;
-    }
-
-    let isValid = true;
-
-    if (validation.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-
-    // if (validation.email) {
-    //   isValid = validateEmail(value) && isValid;
-    // }
-
-    if (validation.minLength) {
-      isValid = value.length >= validation.minLength && isValid;
-    }
-
-    if (validation.maxLength) {
-      isValid = value.length <= validation.maxLength && isValid;
-    }
-
-    return isValid;
-  }
-
-  registerHandler = () => {};
-
-  submitHandler = (event) => {
+  const submitHandler = (event) => {
     event.preventDefault();
-    // this.setState((prevState) => {
-    //   return {
-    //     ...prevState,
-    //     isFormValid: true,
-    //   };
-    // });
-    console.log(this.state);
   };
 
-  onChangeHandler = (event, controlName) => {
-    const formControls = { ...this.state.formControls };
-    const control = { ...formControls[controlName] };
+  const onChangeHandler = (event, controlName) => {
+    const control = formControls[controlName];
 
     control.value = event.target.value;
     control.touched = true;
-    control.valid = this.validateControl(control.value, control.validation);
+    control.valid = validate(control.value, control.validation);
 
     formControls[controlName] = control;
 
-    let isFormValid = true;
-
-    Object.keys(formControls).forEach((name) => {
-      isFormValid = formControls[name].valid && isFormValid;
-    });
-
-    this.setState({
-      formControls,
-      isFormValid,
-    });
+    setFormControls((prevState) => ({ ...prevState, ...formControls }));
+    setFormValid(validateInputs(formControls));
   };
 
-  renderInputs() {
-    return Object.keys(this.state.formControls).map((controlName, index) => {
-      const control = this.state.formControls[controlName];
+  const renderInputs = () => {
+    return Object.keys(formControls).map((controlName, index) => {
+      const control = formControls[controlName];
       return (
         <Input
           key={controlName + index}
@@ -136,40 +110,41 @@ export default class Auth extends Component {
           label={control.label}
           shouldValidate={!!control.validation}
           errorMessage={control.errorMessage}
-          onChange={(event) => this.onChangeHandler(event, controlName)}
+          onChange={(event) => onChangeHandler(event, controlName)}
         />
       );
     });
+  };
+
+  if (authorized) {
+    return <Redirect from="/login" to="/" />;
   }
 
-  render() {
-    return (
-      <div className="Auth">
-        <p>Личный кабинет</p>
-        <form
-          onSubmit={this.submitHandler}
-          // action="http://localhost:8080/login"
-          // method="post"
-        >
-          <div>{this.renderInputs()}</div>
-          <div className="Buttons">
-            <Button
-              type="success"
-              onClick={this.loginHandler}
-              disabled={!this.state.isFormValid}
-            >
-              Войти
-            </Button>
-            <Button
-              type="primary"
-              onClick={this.registerHandler}
-              disabled={!this.state.isFormValid}
-            >
-              Зарегистрироваться
-            </Button>
-          </div>
-        </form>
-      </div>
-    );
-  }
-}
+  // if (this.state.authorized) {
+  //   throw new Error("I crashed!");
+  // }
+
+  return (
+    <div className="Auth">
+      <p>Личный кабинет</p>
+      <form onSubmit={submitHandler}>
+        <div>{renderInputs()}</div>
+        {authStatus === 404 && (
+          <span className="errorAuth">
+            Пользователь с такими данными не зарегистрирован
+          </span>
+        )}
+        <div className="Buttons">
+          <Button type="success" onClick={loginHandler} disabled={!isFormValid}>
+            Войти
+          </Button>
+          <Button type="primary" onClick={registerHandler}>
+            Зарегистрироваться
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default Auth;
