@@ -1,0 +1,64 @@
+.addReviewWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 1.5rem;
+
+  .addReview {
+    display: flex;
+    flex-direction: column;
+    width: 700px;
+
+    Input {
+      max-width: 700px;
+      margin-bottom: 0.7rem;
+      height: 48.8px;
+
+      + span {
+        font-size: 0.78rem;
+        margin: -0.4rem auto 0.7rem;
+      }
+    }
+
+    #message {
+      resize: none;
+      margin-bottom: 0.8rem;
+      height: 250px;
+    }
+  }
+
+  Button {
+    width: 12rem;
+    font-size: 17px;
+    margin-bottom: 1.2rem;
+    padding: 10px 3px;
+    background: #bd4300;
+    color: #fafafa;
+
+    &:hover {
+      background: #c73200e8;
+      color: rgb(255, 244, 232);
+    }
+  }
+}
+
+.fade-enter {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.fade-exit {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}

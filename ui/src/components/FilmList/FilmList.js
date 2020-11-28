@@ -50,7 +50,7 @@ function createFormInput() {
       {
         type: "text",
         placeholder: "Опишите краткий сюжет",
-        errorMessage: "Поле не может быть пустым",
+        errorMessage: "*Поле не может быть пустым",
       },
       {
         required: true,
