@@ -12,11 +12,6 @@ const Navbar = () => (
         </Link>
       </li>
       <li>
-        <Link className="list" to="/api/movies/8">
-          Фильм
-        </Link>
-      </li>
-      <li>
         <Link className="list" to="/creactionFilm">
           Создание
         </Link>

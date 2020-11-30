@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Input from "../UiItem/Input/Input";
 import Button from "../UiItem/Button/Button";
-import Loader from "../UiItem/Loader/Loader";
+import ContentLoader from "../UiItem/Loaders/ContentLoader/ContentLoader";
 import GenreItem from "./GenreItem/GenreItem";
 import {
   validate,
@@ -230,7 +230,7 @@ export default class GenreList extends Component {
         </form>
         <hr />
         {this.state.loading ? (
-          <Loader />
+          <ContentLoader />
         ) : (
           <GenreItem
             genres={this.state.genres}

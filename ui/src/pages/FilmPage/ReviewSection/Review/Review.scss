@@ -21,7 +21,6 @@
       margin-bottom: 15px;
 
       .reviewAuthorName {
-        color: #bd4300;
         font-weight: bold;
       }
 
@@ -113,18 +112,17 @@
         display: flex;
         justify-content: flex-end;
         text-decoration: none;
-        color: #bd4300;
         font-style: italic;
         font-size: 18px;
         transition: 0.3s;
 
         &:hover {
-          color: #bd2f00c5;
+          opacity: 0.725;
+          transform: scale(0.99);
           transition: 0.3s;
 
           span {
             transition: 0.3s;
-            color: #fafafadc;
           }
         }
 

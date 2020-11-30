@@ -4,7 +4,9 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 @import url('https://fonts.googleapis.com/css?family=Abril+Fatface');
 @import url('https://fonts.googleapis.com/css?family=Amatic+SC');
+@import url('https://fonts.googleapis.com/css?family=Amatic+SC');
 @import url('http://allfont.ru/allfont.css?fonts=comic-sans-ms');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
 
 body {
   margin: 0;
@@ -13,6 +15,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  &::-webkit-scrollbar {
+    width: 11px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #bd5a31;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    background: #37104d;
+  }
 }
 
 code {

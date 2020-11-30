@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import {
   createInput,
+  createColorInput,
   createInputFile,
 } from "../../exportFunctions/creationEntity/createInput";
 import { createSelect } from "../../exportFunctions/creationEntity/createSelect";
@@ -11,7 +12,7 @@ import {
 } from "../../exportFunctions/validation/validation";
 import Input from "../UiItem/Input/Input";
 import Button from "../UiItem/Button/Button";
-import TemplateSelect from "../UiItem/Select/Select";
+import Select from "../UiItem/Select/Select";
 import FadeBlock from "../UiItem/FadeBlock/FadeBlock";
 import "./FilmList.scss";
 
@@ -39,7 +40,7 @@ function createFormInput() {
       "Поле не должно быть пустым и превышать 255 символов"
     ),
     engTitle: createNewInput(
-      "Введите название на языке оригинала",
+      "Название на языке оригинала",
       "Поле не должно быть пустым и превышать 255 символов"
     ),
     tagline: createNewInput(
@@ -74,7 +75,7 @@ function createFormInput() {
     time: createInput(
       {
         type: "time",
-        placeholder: "Введите продолжительность фильма",
+        placeholder: "Продолжительность фильма:",
         errorMessage: "*Время должно быть реальным",
       },
       {
@@ -115,19 +116,22 @@ function createFormInput() {
       },
       { required: true, number: true, minLength: 1, price: true }
     ),
+    pageColor1: createColorInput(
+      { placeholder: "Основной цвет оформления:" },
+      { required: true, minLength: 1 }
+    ),
+    pageColor2: createColorInput(
+      { placeholder: "Побочный цвет оформления:" },
+      { required: true, minLength: 1 }
+    ),
     poster: createNewInputFile(
       1,
       "Постер фильма",
       "Файл должен быть картинкой, не превышающей размер 1Мб"
     ),
-    background1: createNewInputFile(
+    background: createNewInputFile(
       2,
-      "Фон страницы фильма №1",
-      "Файл должен быть картинкой, не превышающей размер 1Мб"
-    ),
-    background2: createNewInputFile(
-      3,
-      "Фон страницы фильма №2",
+      "Фон страницы фильма",
       "Файл должен быть картинкой, не превышающей размер 1Мб"
     ),
   };
@@ -274,6 +278,8 @@ export default class FilmList extends Component {
 
       control.value = "";
 
+      if (control.type === "color") control.value = "#bd5a31";
+
       if (control.type === "file") {
         const span = document.getElementById(control.idSpan);
         span.textContent = control.title;
@@ -329,10 +335,6 @@ export default class FilmList extends Component {
     idSpan = controlName + control.id;
     const span = document.getElementById(idSpan);
 
-    // if (control.validation.youTube) {
-    //   let nn = control.value.replace(/watch\?v=/g, "embed/");
-    // }
-
     if (control.type === "file") {
       const filename = event.target.files[0];
 
@@ -355,8 +357,10 @@ export default class FilmList extends Component {
       console.log(this.state);
     } else film[controlName] = control.value;
 
-    if (controlName === "trailerUrl")
+    if (controlName === "trailerUrl") {
       film[controlName] = control.value.replace(/watch\?v=/g, "embed/");
+      console.log(film[controlName]);
+    }
 
     formInputsControls[controlName] = control;
 
@@ -434,7 +438,7 @@ export default class FilmList extends Component {
     return Object.keys(formSelectControls).map((controlName, index) => {
       const control = formSelectControls[controlName];
       return (
-        <TemplateSelect
+        <Select
           key={controlName + index}
           valid={control.valid}
           touched={control.touched}

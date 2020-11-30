@@ -1,6 +1,5 @@
 import React from "react";
 import AllFilms from "../../components/AllFilms/AllFilms";
-import Slider from "../../components/Slider/Slider";
 import "./HomePage.scss";
 
 const HomePage = () => (
@@ -15,7 +14,7 @@ const HomePage = () => (
       </div>
       <hr className="SecondLine" />
     </div>
-    <Slider />
+
     <AllFilms />
   </main>
 );
