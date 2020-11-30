@@ -2,6 +2,7 @@ package com.movie.site.model;
 
 import com.movie.site.model.enums.AgeRating;
 import com.movie.site.model.enums.Language;
+import com.movie.site.model.id.RatingId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -71,16 +72,57 @@ public class Movie implements Serializable {
     private boolean active;
     private LocalTime time;
 
-    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "movie")
     private Set<Review> reviews;
 
+    @OneToMany(mappedBy = "id.movie", fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Rating> ratings;
+
     public boolean containsReview(User user) {
-        return reviews.stream()
-                .anyMatch(elem -> elem.getUser().equals(user));
+        Review review = new Review();
+        review.setUser(user);
+        review.setMovie(this);
+
+        return containsReview(review);
     }
 
     public boolean containsReview(Review review) {
         return reviews.contains(review);
+    }
+
+    public boolean addRating(Rating rating) {
+        return ratings.add(rating);
+    }
+
+    public boolean removeRatingById(RatingId ratingId) {
+        Rating rating = new Rating();
+        rating.setId(ratingId);
+
+        return removeRating(rating);
+    }
+
+    public boolean removeRating(Rating rating) {
+        return ratings.remove(rating);
+    }
+
+    public float averageRating() {
+        return (float) ratings.stream()
+                .mapToInt(Rating::getValue)
+                .average()
+                .orElse(0);
+    }
+
+    public int numberOfRatings() {
+        return ratings.size();
+    }
+
+    public int getRatingValue(User user) {
+        return ratings.stream()
+                .filter(rating -> rating.getUser().equals(user))
+                .mapToInt(Rating::getValue)
+                .findFirst()
+                .orElse(0);
     }
 
     @Override

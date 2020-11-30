@@ -262,4 +262,24 @@
             </column>
         </addColumn>
     </changeSet>
+
+    <changeSet id="2020-28-11 create table for the Rating entity" author="Befors">
+        <createTable tableName="rating">
+            <column name="user_id" type="bigint">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_rating"
+                             foreignKeyName="fk_r_user_id"
+                             references="user(id)"/>
+            </column>
+            <column name="movie_id" type="bigint">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_rating"
+                             foreignKeyName="fk_r_movie_id"
+                             references="movie(id)"/>
+            </column>
+            <column name="value" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

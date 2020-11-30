@@ -11,6 +11,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 @Data
@@ -34,7 +36,9 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role != null ? Collections.singletonList(role) : Collections.emptyList();
+        return Optional.ofNullable(role)
+                .map(Collections::singletonList)
+                .orElseGet(Collections::emptyList);
     }
 
     @Override
@@ -60,5 +64,18 @@ public class User implements Serializable, UserDetails {
     @Override
     public boolean isEnabled() {
         return active;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return email.equals(user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
     }
 }

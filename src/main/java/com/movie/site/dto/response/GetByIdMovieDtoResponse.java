@@ -35,4 +35,8 @@ public class GetByIdMovieDtoResponse {
     private int price;
     private LocalTime time;
     private Page<ReviewDtoResponse> reviews;
+    private boolean userHasAlreadyWrittenReview;
+    private float totalRating;
+    private int numberOfRatings;
+    private int userRating;
 }

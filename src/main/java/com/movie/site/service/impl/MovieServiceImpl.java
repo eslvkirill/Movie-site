@@ -2,19 +2,23 @@ package com.movie.site.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movie.site.dto.request.CreateMovieDtoRequest;
-import com.movie.site.dto.request.CreateReviewDtoRequest;
-import com.movie.site.dto.request.UpdateReviewDtoRequest;
+import com.movie.site.dto.request.*;
 import com.movie.site.dto.response.GetAllMovieDtoResponse;
 import com.movie.site.dto.response.GetByIdMovieDtoResponse;
 import com.movie.site.dto.response.ReviewDtoResponse;
 import com.movie.site.exception.ForbiddenException;
 import com.movie.site.exception.MovieNotFoundException;
+import com.movie.site.exception.MovieRatingNotFoundException;
+import com.movie.site.exception.RepeatedRatingException;
 import com.movie.site.mapper.MovieMapper;
+import com.movie.site.mapper.RatingMapper;
 import com.movie.site.model.Movie;
+import com.movie.site.model.Rating;
 import com.movie.site.model.SourceData;
+import com.movie.site.model.User;
 import com.movie.site.model.enums.Role;
 import com.movie.site.model.enums.Source;
+import com.movie.site.model.id.RatingId;
 import com.movie.site.repository.MovieRepository;
 import com.movie.site.service.AmazonS3ClientService;
 import com.movie.site.service.MovieService;
@@ -51,6 +55,7 @@ public class MovieServiceImpl implements MovieService {
     private final UserService userService;
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
+    private final RatingMapper ratingMapper;
     private final RestTemplate restClient;
     private final ObjectMapper objectMapper;
 
@@ -148,21 +153,21 @@ public class MovieServiceImpl implements MovieService {
     @Transactional(readOnly = true)
     public GetByIdMovieDtoResponse findById(Long id, Pageable reviewPageable) {
         Movie movie = findMovieById(id);
-        Collection<? extends GrantedAuthority> userAuthorities =
-                userService.current().getAuthorities();
+        User user = userService.current();
 
-        if (!movie.isActive() && !userAuthorities.contains(Role.ADMIN)) {
-            throw new ForbiddenException();
-        }
+        checkPermissionToAccessMovie(movie, user);
 
-        return movieMapper.toGetByIdDto(movie, reviewPageable);
+        return movieMapper.toGetByIdDto(movie, reviewPageable, user);
     }
 
     @Override
     public ReviewDtoResponse addReview(Long id, CreateReviewDtoRequest reviewDto) {
         Movie movie = findMovieById(id);
+        User user = userService.current();
 
-        return reviewService.create(movie, reviewDto);
+        checkPermissionToAccessMovie(movie, user);
+
+        return reviewService.create(movie, user, reviewDto);
     }
 
     @Override
@@ -170,12 +175,16 @@ public class MovieServiceImpl implements MovieService {
                              UpdateReviewDtoRequest reviewDto) {
         Movie movie = findMovieById(movieId);
 
+        checkPermissionToAccessMovie(movie, userService.current());
+
         reviewService.update(movie, reviewId, reviewDto);
     }
 
     @Override
     public void removeReview(Long movieId, Long reviewId) {
         Movie movie = findMovieById(movieId);
+
+        checkPermissionToAccessMovie(movie, userService.current());
 
         reviewService.delete(movie, reviewId);
     }
@@ -185,21 +194,15 @@ public class MovieServiceImpl implements MovieService {
     public Page<ReviewDtoResponse> findAllReviews(Long id, Pageable pageable) {
         Movie movie = findMovieById(id);
 
+        checkPermissionToAccessMovie(movie, userService.current());
+
         return reviewService.findAll(movie, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean hasAlreadyWrittenReview(Long id) {
-        Movie movie = findMovieById(id);
-
-        return movie.containsReview(userService.current());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Slice<GetAllMovieDtoResponse> findAll(Pageable pageable) {
-        Slice<Movie> movies;
+    public Page<GetAllMovieDtoResponse> findAll(Pageable pageable) {
+        Page<Movie> movies;
         Collection<? extends GrantedAuthority> userAuthorities =
                 userService.current().getAuthorities();
 
@@ -209,11 +212,66 @@ public class MovieServiceImpl implements MovieService {
             movies = movieRepository.findAllByActiveIsTrue(pageable);
         }
 
-        return movieMapper.toDtoSlice(movies);
+        return movieMapper.toDtoPage(movies);
+    }
+
+    @Override
+    public void addRating(Long id, CreateRatingDtoRequest ratingDto) {
+        Movie movie = findMovieById(id);
+        User user = userService.current();
+        Rating rating = ratingMapper.toEntity(ratingDto);
+        rating.setId(user, movie);
+
+        checkPermissionToAccessMovie(movie, user);
+
+        if (!movie.addRating(rating)) {
+            throw new RepeatedRatingException(movie.getId(), user.getEmail());
+        }
+
+        movieRepository.save(movie);
+    }
+
+    @Override
+    public void updateRating(Long id, UpdateRatingDtoRequest ratingDto) {
+        Movie movie = findMovieById(id);
+        User user = userService.current();
+        Rating rating = new Rating();
+        rating.setId(user, movie);
+
+        checkPermissionToAccessMovie(movie, user);
+
+        if (!movie.removeRating(rating)) {
+            throw new MovieRatingNotFoundException(movie.getId(), user.getEmail());
+        }
+
+        Rating updatedRating = ratingMapper.update(ratingDto, rating);
+
+        movie.addRating(updatedRating);
+        movieRepository.save(movie);
+    }
+
+    @Override
+    public void removeRating(Long id) {
+        Movie movie = findMovieById(id);
+        User user = userService.current();
+
+        checkPermissionToAccessMovie(movie, user);
+
+        if (!movie.removeRatingById(new RatingId(user, movie))) {
+            throw new MovieRatingNotFoundException(movie.getId(), user.getEmail());
+        }
+
+        movieRepository.save(movie);
     }
 
     private Movie findMovieById(Long id) {
         return movieRepository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException(id));
+    }
+
+    private void checkPermissionToAccessMovie(Movie movie, User user) {
+        if (!movie.isActive() && !user.getAuthorities().contains(Role.ADMIN)) {
+            throw new ForbiddenException();
+        }
     }
 }
