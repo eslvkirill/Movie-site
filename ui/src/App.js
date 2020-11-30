@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Layout from "./containers/Layout/Layout";
 import HomePage from "./pages/HomePage/HomePage";
@@ -10,19 +10,16 @@ import FilmPage from "./pages/FilmPage/FilmPage";
 import "./App.scss";
 
 const app = (
-  <Fragment>
-    <Layout>
-      <Header />
-      {/* <ErrorBoundary> */}
-      <Route path="/login" component={Auth} />
-      {/* </ErrorBoundary> */}
-      <Route path="/adminPanel" component={AdminPanel} />
-      <Route path="/creactionFilm" component={FilmCreactionPanel} />
-      <Route path="/api/movies/8" component={FilmPage} />
-      {/* <Route path="/api/movies/:id" component={FilmPage} /> */}
-      <Route exact path="/" component={HomePage} />
-    </Layout>
-  </Fragment>
+  <Layout>
+    <Header />
+    {/* <ErrorBoundary> */}
+    <Route path="/login" component={Auth} />
+    {/* </ErrorBoundary> */}
+    <Route path="/adminPanel" component={AdminPanel} />
+    <Route path="/creactionFilm" component={FilmCreactionPanel} />
+    <Route path="/api/movies/:id" component={FilmPage} />
+    <Route exact path="/" component={HomePage} />
+  </Layout>
 );
 
 function App() {

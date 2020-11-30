@@ -4,11 +4,15 @@ import { isInvalid } from "../../../exportFunctions/validation/validation";
 
 const Input = (props) => {
   const inputType = props.type || "text";
-  // const htmlFor = `${inputType}-${Math.random()}`;
   const cls = [classes.Input, classes[props.type]];
 
   return (
-    <div className={inputType === "file" ? classes.InputFile : classes.Input}>
+    <div className={inputType === "file" ? classes.InputFile : inputType}>
+      {inputType === "color" || inputType === "time" ? (
+        <div className={inputType === "color" ? classes.Color : classes.Time}>
+          {props.placeholder}
+        </div>
+      ) : null}
       <input
         placeholder={props.placeholder}
         type={inputType}

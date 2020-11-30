@@ -14,15 +14,9 @@
   min-height: 100vh;
   font-family: "Comic Sans MS", arial;
   color: #f7e7c9;
-  padding: 2.5rem 0 2rem;
-  background: linear-gradient(
-    200deg,
-    rgba(55, 16, 77, 1) 20%,
-    rgba(189, 90, 49, 1)
-  );
+  padding: 3rem 0 2rem;
 
   .reviewTitle {
-    color: #f7d9a8;
     justify-content: center;
     font-size: 2.2rem;
     text-align: center;
@@ -31,12 +25,12 @@
   }
 
   .reviewLine {
-    margin: 0 auto 2.2rem;
+    margin: 0 auto 2rem;
     border: 0;
-    width: 55%;
+    width: 50%;
     height: 2px;
     text-align: center;
-    background: #bd4300;
+    background: #fa230780;
 
     + Button {
       width: 15.6rem;

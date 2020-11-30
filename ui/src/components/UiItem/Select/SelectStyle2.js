@@ -1,6 +1,6 @@
 const primaryColor = "#c76c04";
 
-const SelectStyle = {
+const SelectStyle2 = {
   control: (provided) => ({
     margin: 0,
     padding: 0,
@@ -8,10 +8,10 @@ const SelectStyle = {
     alignItems: "center",
     minHeight: 48.8,
     ...provided,
-    width: 352,
+    width: 220,
     maxHeight: 48.8,
     height: 48.8,
-    fontSize: 18,
+    fontSize: 15,
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
@@ -119,6 +119,7 @@ const SelectStyle = {
     marginLeft: -18,
     marginTop: -2,
     paddingTop: 0,
+    paddingLeft: 18,
   }),
   container: (styles) => ({
     ...styles,
@@ -161,7 +162,7 @@ const SelectStyle = {
     ...provided,
     borderRadius: 10,
     maxHeight: 180,
-    width: 350,
+    width: 198,
     background: "#fff",
 
     "::-webkit-scrollbar": {
@@ -198,7 +199,7 @@ const SelectStyle = {
   noOptionsMessage: (styles) => ({
     ...styles,
     color: primaryColor,
-    fontSize: 20,
+    fontSize: 17,
   }),
   singleValue: (provided, state) => ({
     ...provided,
@@ -208,4 +209,4 @@ const SelectStyle = {
   }),
 };
 
-export default SelectStyle;
+export default SelectStyle2;

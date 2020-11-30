@@ -1,0 +1,69 @@
+.BackItem {
+  padding: 0 1rem 0 1rem;
+  color: #fafafa;
+  text-align: left;
+  text-shadow: 2px 4px 3px #6b2507;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+  width: 100%;
+
+  .titles {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5rem;
+
+    .engTitle {
+      font-size: 22px;
+    }
+
+    .rusTitle {
+      font-size: 18px;
+    }
+  }
+
+  .bottomOfBackItem {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+
+    .details {
+      width: 60%;
+
+      div {
+        font-size: 14px;
+        color: #fafafa;
+        padding-left: 0.8rem;
+        margin-bottom: 0.3rem;
+      }
+
+      > div {
+        color: #fff3ddf3;
+        font-size: 18px;
+      }
+    }
+
+    .linkToMoviePage {
+      display: flex;
+      height: 20%;
+      width: 40%;
+      margin: 8rem 0.5rem 0 0;
+      font-size: 18px;
+      align-items: flex-end;
+      justify-content: flex-end;
+      transition: 0.3s;
+
+      &:hover {
+        transition: 0.3s;
+        transform: scale(1.1);
+        color: #fff3dd;
+      }
+    }
+  }
+}

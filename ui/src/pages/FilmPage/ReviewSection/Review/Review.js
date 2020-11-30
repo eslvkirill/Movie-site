@@ -14,7 +14,12 @@ const Review = (props) => (
       >
         <div className="reviewCard">
           <div className="reviewHead">
-            <div className="reviewAuthorName">{review.username}</div>
+            <div
+              className="reviewAuthorName"
+              style={{ color: props.pageColor1 }}
+            >
+              {review.username}
+            </div>
             <div className="rightSide">
               <div className="reviewDate">{review.datetime}</div>
               <div
@@ -49,6 +54,7 @@ const Review = (props) => (
                   ? props.onOpenClick(review.id)
                   : props.onSaveClick(review.id)
               }
+              style={{ color: props.pageColor1 }}
             >
               <span>&#9998;</span>
               {review.open === true ? "Сохранить" : "Редактировать"}

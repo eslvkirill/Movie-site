@@ -75,4 +75,54 @@
       color: rgb(255, 244, 232);
     }
   }
+
+  .time {
+    #time {
+      cursor: pointer;
+      margin: -3px 0 0;
+      display: flex;
+      width: 27%;
+      background: transparent;
+      border: none;
+    }
+  }
+
+  .color,
+  .time {
+    cursor: default;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    width: 22rem;
+    height: 48.8px;
+    color: rgb(168, 145, 118);
+    background-color: #fafafa;
+    border: 3px solid #c76c04;
+    border-radius: 10px;
+    margin: 0 1.2rem 1.4rem 1.2rem;
+
+    > div {
+      display: flex;
+      width: 82%;
+      font-size: 17px;
+      padding: 9px 7px;
+    }
+
+    #pageColor1,
+    #pageColor2 {
+      cursor: pointer;
+      padding: 2px;
+      margin: -3px -2px 0 2px;
+      display: flex;
+      width: 28%;
+      background: transparent;
+      border: none;
+
+      &::-webkit-color-swatch {
+        border: 1px solid #fafafa;
+        border-radius: 10px;
+      }
+    }
+  }
 }

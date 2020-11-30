@@ -1,0 +1,82 @@
+.AllFilms {
+  text-align: center;
+  min-height: 100vh;
+
+  h2 {
+    color: #ddbdb2;
+    font-weight: bold;
+  }
+
+  .Center {
+    padding-top: 8rem;
+  }
+
+  ul {
+    display: block;
+    margin: 0 auto 2rem;
+    padding-left: 0px;
+
+    li {
+      list-style-type: none;
+      display: inline-block;
+      position: relative;
+      margin: 0 2rem 0rem 3rem;
+      padding: 0;
+    }
+
+    .buttonSection {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin: 4.5rem auto 0;
+      font-family: "Nunito", sans-serif;
+      cursor: default;
+
+      p {
+        margin: 0 auto 0.6rem;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        line-height: 20px;
+      }
+
+      progress {
+        margin: 0 auto 1.1rem;
+        appearance: none;
+        border: none;
+        width: 12rem;
+        height: 3px;
+
+        &::-webkit-progress-bar {
+          background: #fafafab9;
+        }
+        &::-webkit-progress-value {
+          transition: 0.3s;
+          background: #bd5a31;
+        }
+      }
+
+      .onLoad {
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 2px;
+        padding: 15px 55px;
+        border: 2px solid #ddd;
+        line-height: normal;
+        border-radius: 0px;
+        background: rgba(189, 90, 49, 0.4);
+        color: #fafafa;
+        font-size: 16px;
+        transition: 0.3s;
+
+        &:hover {
+          background: rgba(199, 88, 40, 0.733);
+          background: rgba(189, 91, 49, 0.658);
+          transition: 0.3s;
+          color: #fafafae2;
+          border-color: #fafafae2;
+        }
+      }
+    }
+  }
+}

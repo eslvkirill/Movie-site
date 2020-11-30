@@ -70,14 +70,20 @@ const DropdownForm = (props) => {
       const response = await axios({
         method: "post",
         contentType: "application/json",
-        url: "/api/movies/8/reviews",
+        url: `/api/movies/${props.filmId}/reviews`,
         data: review,
       });
 
       const lastPageResponse = await axios.get(
-        `/api/movies/8/reviews?page=${props.totalPages - 1}`
+        `/api/movies/${props.filmId}/reviews?page=${props.totalPages - 1}`
       );
-      if (lastPageResponse.data.content.length === lastPageResponse.data.size) {
+
+      if (props.totalPages === 0) {
+        props.setReviews(() => [...props.reviews, { ...response.data }]);
+        props.setTotalElements((totalElements) => totalElements + 1);
+      } else if (
+        lastPageResponse.data.content.length === lastPageResponse.data.size
+      ) {
         props.setReviewButtonActive((active) => !active);
         if (lastPageResponse.data.totalPages !== props.totalPages) {
           props.paginate(props.totalPages + 1);
@@ -87,9 +93,10 @@ const DropdownForm = (props) => {
           props.setTotalPages((totalPages) => totalPages);
         }
       } else {
-        props.setReviews(() => {
-          return [...lastPageResponse.data.content, response.data];
-        });
+        props.setReviews(() => [
+          ...lastPageResponse.data.content,
+          response.data,
+        ]);
         if (props.totalPages !== props.currentPage) {
           props.setCurrentPage((currentPage) => currentPage + 1);
         } else {
