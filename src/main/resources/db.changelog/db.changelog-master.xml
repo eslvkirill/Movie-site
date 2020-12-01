@@ -282,4 +282,19 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="2020-12-01 create table for the Person entity" author="Befors">
+        <createTable tableName="person">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_key" type="varchar(512)"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>
