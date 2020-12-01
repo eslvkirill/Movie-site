@@ -7,6 +7,7 @@ import com.movie.site.model.Movie;
 import com.movie.site.model.User;
 import com.movie.site.service.AmazonS3ClientService;
 import com.movie.site.service.GenreService;
+import com.movie.site.service.PersonService;
 import com.movie.site.service.ReviewService;
 import lombok.SneakyThrows;
 import org.mapstruct.DecoratedWith;
@@ -16,15 +17,17 @@ import org.mapstruct.Mappings;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-@Mapper(uses = {GenreMapper.class, SourceDataMapper.class,
+@Mapper(uses = {GenreMapper.class, SourceDataMapper.class, PersonMapper.class,
         GenreService.class, AmazonS3ClientService.class,
-        ReviewService.class})
+        ReviewService.class, PersonService.class})
 @DecoratedWith(MovieMapperDecorator.class)
 public interface MovieMapper {
 
     @Mappings({
             @Mapping(target = "active", constant = "true"),
-            @Mapping(target = "genres", qualifiedByName = "findGenresByIds")
+            @Mapping(target = "genres", qualifiedByName = "findGenresByIds"),
+            @Mapping(target = "actors", qualifiedByName = "findPeopleByIds"),
+            @Mapping(target = "directors", qualifiedByName = "findPeopleByIds")
     })
     Movie toEntity(CreateMovieDtoRequest movieDto);
 
@@ -39,6 +42,7 @@ public interface MovieMapper {
             @Mapping(target = "userHasAlreadyWrittenReview",
                     expression = "java(movie.containsReview(user))"),
             @Mapping(target = "id", source = "movie.id")
+
     })
     GetByIdMovieDtoResponse toGetByIdDto(Movie movie, Pageable reviewPageable, User user);
 

@@ -9,4 +9,8 @@ public class PersonNotFoundException extends RuntimeException {
     public PersonNotFoundException(Long id) {
         super("Couldn't find person with id: " + id);
     }
+
+    public PersonNotFoundException(Iterable<Long> ids) {
+        super("Couldn't find any person with ids: " + ids);
+    }
 }

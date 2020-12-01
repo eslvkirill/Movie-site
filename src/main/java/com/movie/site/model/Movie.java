@@ -79,6 +79,18 @@ public class Movie implements Serializable {
             cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Rating> ratings;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "actor",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "person_id"))
+    private Set<Person> actors;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "director",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "person_id"))
+    private Set<Person> directors;
+
     public boolean containsReview(User user) {
         Review review = new Review();
         review.setUser(user);

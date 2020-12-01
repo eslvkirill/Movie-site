@@ -39,4 +39,6 @@ public class GetByIdMovieDtoResponse {
     private float totalRating;
     private int numberOfRatings;
     private int userRating;
+    private Set<GetAllPersonDtoResponse> actors;
+    private Set<GetAllPersonDtoResponse> directors;
 }

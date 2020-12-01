@@ -86,4 +86,10 @@ public class CreateMovieDtoRequest {
 
     @NotNull
     private LocalTime time;
+
+    @NotEmpty
+    private Set<Long> actors;
+
+    @NotEmpty
+    private Set<Long> directors;
 }

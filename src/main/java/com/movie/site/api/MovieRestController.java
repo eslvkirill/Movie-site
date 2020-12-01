@@ -10,6 +10,7 @@ import com.movie.site.model.enums.Language;
 import com.movie.site.service.CountryService;
 import com.movie.site.service.GenreService;
 import com.movie.site.service.MovieService;
+import com.movie.site.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,13 +34,15 @@ public class MovieRestController {
     private final MovieService movieService;
     private final CountryService countryService;
     private final GenreService genreService;
+    private final PersonService personService;
 
     @GetMapping("/saving")
     public Map<String, Object> save(@RequestParam(required = false) OptionalLong id) {
         return Map.of("countries", countryService.findAll(),
                 "ageRatings", AgeRating.values(),
                 "languages", Language.values(),
-                "genres", genreService.findAll());
+                "genres", genreService.findAll(),
+                "people", personService.findAll());
     }
 
     @PostMapping
