@@ -297,4 +297,36 @@
             <column name="image_key" type="varchar(512)"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="2020-12-01 create tables with many-to-many relationship
+        for the Movie and Person entities" author="Befors">
+        <createTable tableName="actor">
+            <column name="movie_id" type="bigint">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_actor"
+                             foreignKeyName="fk_a_movie_id"
+                             references="movie(id)"/>
+            </column>
+            <column name="person_id" type="bigint">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_actor"
+                             foreignKeyName="fk_a_person_id"
+                             references="person(id)"/>
+            </column>
+        </createTable>
+        <createTable tableName="director">
+            <column name="movie_id" type="bigint">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_director"
+                             foreignKeyName="fk_d_movie_id"
+                             references="movie(id)"/>
+            </column>
+            <column name="person_id" type="bigint">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_director"
+                             foreignKeyName="fk_d_person_id"
+                             references="person(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

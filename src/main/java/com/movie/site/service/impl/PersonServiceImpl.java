@@ -3,8 +3,10 @@ package com.movie.site.service.impl;
 import com.movie.site.dto.request.CreatePersonDtoRequest;
 import com.movie.site.dto.request.UpdatePersonDtoRequest;
 import com.movie.site.dto.response.GetAllPersonDtoResponse;
+import com.movie.site.exception.GenreNotFoundException;
 import com.movie.site.exception.PersonNotFoundException;
 import com.movie.site.mapper.PersonMapper;
+import com.movie.site.model.Genre;
 import com.movie.site.model.Person;
 import com.movie.site.repository.PersonRepository;
 import com.movie.site.service.AmazonS3ClientService;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -47,8 +50,21 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Collection<GetAllPersonDtoResponse> findAll() {
         return personMapper.toGetAllDtoList(personRepository.findAll(Sort.by("lastName", "firstName")));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Set<Person> findAllByIds(Iterable<Long> ids) {
+        Set<Person> people = personRepository.findAllByIds(ids);
+
+        if (people.isEmpty()) {
+            throw new PersonNotFoundException(ids);
+        }
+
+        return people;
     }
 
     private Person findPersonById(Long id) {
