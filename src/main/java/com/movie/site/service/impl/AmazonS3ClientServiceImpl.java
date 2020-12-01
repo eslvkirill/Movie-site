@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
@@ -23,14 +24,10 @@ public class AmazonS3ClientServiceImpl implements AmazonS3ClientService {
     private String bucketName;
 
     @Override
-    @SneakyThrows
     public String upload(MultipartFile multipartFile, String prefix) {
         String key = prefix + UUID.randomUUID().toString();
-        ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentLength(multipartFile.getSize());
 
-        amazonS3Client.putObject(bucketName, key,
-                multipartFile.getInputStream(), objectMetadata);
+        putObject(multipartFile, key);
 
         return key;
     }
@@ -41,5 +38,31 @@ public class AmazonS3ClientServiceImpl implements AmazonS3ClientService {
         S3Object s3Object = amazonS3Client.getObject(bucketName, key);
 
         return IOUtils.toByteArray(s3Object.getObjectContent());
+    }
+
+    @Override
+    @SneakyThrows
+    public void update(MultipartFile multipartFile, String key) {
+        ObjectMetadata objectMetadata = amazonS3Client.getObjectMetadata(bucketName, key);
+
+        if (objectMetadata.getContentLength() == multipartFile.getSize()) {
+            String eTagOfStored = objectMetadata.getETag();
+            String eTagOfCurrent = DigestUtils.md5DigestAsHex(multipartFile.getBytes());
+
+            if (eTagOfStored.equals(eTagOfCurrent)) {
+                return;
+            }
+        }
+
+        putObject(multipartFile, key);
+    }
+
+    @SneakyThrows
+    private void putObject(MultipartFile multipartFile, String key) {
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(multipartFile.getSize());
+
+        amazonS3Client.putObject(bucketName, key,
+                multipartFile.getInputStream(), objectMetadata);
     }
 }

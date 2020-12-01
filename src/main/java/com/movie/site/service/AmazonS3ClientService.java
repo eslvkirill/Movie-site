@@ -9,4 +9,6 @@ public interface AmazonS3ClientService {
 
     @Named("downloadFile")
     byte[] download(String key);
+
+    void update(MultipartFile multipartFile, String key);
 }

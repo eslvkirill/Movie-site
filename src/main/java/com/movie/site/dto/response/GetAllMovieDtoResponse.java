@@ -22,5 +22,5 @@ public class GetAllMovieDtoResponse {
     private Set<Genre> genres;
     private int price;
     private LocalTime time;
-    private float rating;
+    private float totalRating;
 }

@@ -45,7 +45,7 @@ public interface MovieMapper {
     @Mappings({
             @Mapping(target = "poster", source = "posterKey",
                     qualifiedByName = "downloadFile"),
-            @Mapping(target = "rating", expression = "java(movie.averageRating())")
+            @Mapping(target = "totalRating", expression = "java(movie.averageRating())")
     })
     GetAllMovieDtoResponse toGetAllDto(Movie movie);
 
