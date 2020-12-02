@@ -18,7 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 @Mapper(uses = {GenreMapper.class, SourceDataMapper.class, PersonMapper.class,
-        GenreService.class, AmazonS3ClientService.class,
+        RatingMapper.class, GenreService.class, AmazonS3ClientService.class,
         ReviewService.class, PersonService.class})
 @DecoratedWith(MovieMapperDecorator.class)
 public interface MovieMapper {
@@ -35,10 +35,9 @@ public interface MovieMapper {
             @Mapping(target = "background", source = "movie.backgroundKey",
                     qualifiedByName = "downloadFile"),
             @Mapping(target = "reviews", ignore = true),
-            @Mapping(target = "totalRating", expression = "java(movie.averageRating())"),
+            @Mapping(target = "totalRating", expression = "java(movie.getTotalRating())"),
             @Mapping(target = "numberOfRatings",
                     expression = "java(movie.numberOfRatings())"),
-            @Mapping(target = "userRating", expression = "java(movie.getRatingValue(user))"),
             @Mapping(target = "userHasAlreadyWrittenReview",
                     expression = "java(movie.containsReview(user))"),
             @Mapping(target = "id", source = "movie.id")
@@ -49,7 +48,7 @@ public interface MovieMapper {
     @Mappings({
             @Mapping(target = "poster", source = "posterKey",
                     qualifiedByName = "downloadFile"),
-            @Mapping(target = "totalRating", expression = "java(movie.averageRating())")
+            @Mapping(target = "totalRating", expression = "java(movie.getTotalRating())")
     })
     GetAllMovieDtoResponse toGetAllDto(Movie movie);
 

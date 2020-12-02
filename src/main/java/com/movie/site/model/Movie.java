@@ -79,6 +79,8 @@ public class Movie implements Serializable {
             cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Rating> ratings;
 
+    private float totalRating;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "actor",
             joinColumns = @JoinColumn(name = "movie_id"),
@@ -118,23 +120,15 @@ public class Movie implements Serializable {
         return ratings.remove(rating);
     }
 
-    public float averageRating() {
-        return (float) ratings.stream()
-                .mapToInt(Rating::getValue)
-                .average()
-                .orElse(0);
-    }
-
     public int numberOfRatings() {
         return ratings.size();
     }
 
-    public int getRatingValue(User user) {
+    public Rating getRating(User user) {
         return ratings.stream()
                 .filter(rating -> rating.getUser().equals(user))
-                .mapToInt(Rating::getValue)
                 .findFirst()
-                .orElse(0);
+                .orElse(null);
     }
 
     @Override

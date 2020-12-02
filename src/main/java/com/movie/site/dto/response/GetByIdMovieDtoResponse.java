@@ -38,7 +38,7 @@ public class GetByIdMovieDtoResponse {
     private boolean userHasAlreadyWrittenReview;
     private float totalRating;
     private int numberOfRatings;
-    private int userRating;
+    private RatingDtoResponse userRating;
     private Set<GetAllPersonDtoResponse> actors;
     private Set<GetAllPersonDtoResponse> directors;
 }

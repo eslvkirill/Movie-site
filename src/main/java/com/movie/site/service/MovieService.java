@@ -25,9 +25,9 @@ public interface MovieService {
 
     Page<GetAllMovieDtoResponse> findAll(Pageable pageable);
 
-    void addRating(Long id, CreateRatingDtoRequest ratingDto);
+    Movie addRating(Long id, CreateRatingDtoRequest ratingDto);
 
-    void updateRating(Long id, UpdateRatingDtoRequest ratingDto);
+    Movie updateRating(Long id, UpdateRatingDtoRequest ratingDto);
 
-    void removeRating(Long id);
+    Movie removeRating(Long id);
 }

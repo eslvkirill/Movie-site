@@ -15,10 +15,14 @@ public abstract class MovieMapperDecorator implements MovieMapper {
     @Autowired
     private ReviewService reviewService;
 
+    @Autowired
+    private RatingMapper ratingMapper;
+
     @Override
     public GetByIdMovieDtoResponse toGetByIdDto(Movie movie, Pageable reviewPageable, User user) {
         GetByIdMovieDtoResponse movieDto = delegate.toGetByIdDto(movie, reviewPageable, user);
         movieDto.setReviews(reviewService.findAll(movie, reviewPageable));
+        movieDto.setUserRating(ratingMapper.toRatingDto(movie.getRating(user)));
 
         return movieDto;
     }
