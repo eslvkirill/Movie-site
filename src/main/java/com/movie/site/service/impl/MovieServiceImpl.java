@@ -29,7 +29,6 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -216,7 +215,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void addRating(Long id, CreateRatingDtoRequest ratingDto) {
+    public Movie addRating(Long id, CreateRatingDtoRequest ratingDto) {
         Movie movie = findMovieById(id);
         User user = userService.current();
         Rating rating = ratingMapper.toEntity(ratingDto);
@@ -228,11 +227,11 @@ public class MovieServiceImpl implements MovieService {
             throw new RepeatedRatingException(movie.getId(), user.getEmail());
         }
 
-        movieRepository.save(movie);
+        return movieRepository.save(movie);
     }
 
     @Override
-    public void updateRating(Long id, UpdateRatingDtoRequest ratingDto) {
+    public Movie updateRating(Long id, UpdateRatingDtoRequest ratingDto) {
         Movie movie = findMovieById(id);
         User user = userService.current();
         Rating rating = new Rating();
@@ -247,11 +246,12 @@ public class MovieServiceImpl implements MovieService {
         Rating updatedRating = ratingMapper.update(ratingDto, rating);
 
         movie.addRating(updatedRating);
-        movieRepository.save(movie);
+
+        return movieRepository.save(movie);
     }
 
     @Override
-    public void removeRating(Long id) {
+    public Movie removeRating(Long id) {
         Movie movie = findMovieById(id);
         User user = userService.current();
 
@@ -261,7 +261,7 @@ public class MovieServiceImpl implements MovieService {
             throw new MovieRatingNotFoundException(movie.getId(), user.getEmail());
         }
 
-        movieRepository.save(movie);
+        return movieRepository.save(movie);
     }
 
     private Movie findMovieById(Long id) {

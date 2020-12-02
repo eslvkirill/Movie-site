@@ -6,8 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -20,7 +19,7 @@ public class Rating implements Serializable {
     private RatingId id;
 
     @EqualsAndHashCode.Exclude
-    private int value;
+    private float value;
 
     public void setId(User user, Movie movie) {
         id = new RatingId(user, movie);
@@ -32,5 +31,16 @@ public class Rating implements Serializable {
 
     public Movie getMovie() {
         return id.getMovie();
+    }
+
+    @PrePersist
+    @PreUpdate
+    @PreRemove
+    public void beforeAnyPreOperation() {
+        Movie movie = getMovie();
+        movie.setTotalRating((float) movie.getRatings().stream()
+                .mapToDouble(Rating::getValue)
+                .average()
+                .orElse(0));
     }
 }

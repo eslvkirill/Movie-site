@@ -329,4 +329,27 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="2020-12-02 change the rating type to float and also add a column
+        for the total rating in the Movie entity" author="Befors">
+        <delete tableName="movie_subtitle"/>
+        <delete tableName="movie_audio"/>
+        <delete tableName="movie_genre"/>
+        <delete tableName="source_data"/>
+        <delete tableName="movie_country"/>
+        <delete tableName="review"/>
+        <delete tableName="rating"/>
+        <delete tableName="actor"/>
+        <delete tableName="director"/>
+        <delete tableName="movie"/>
+
+        <addColumn tableName="movie">
+            <column type="real" name="total_rating">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <modifyDataType tableName="rating" columnName="value" newDataType="real"/>
+    </changeSet>
+
+
 </databaseChangeLog>

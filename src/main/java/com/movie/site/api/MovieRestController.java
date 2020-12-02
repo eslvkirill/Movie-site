@@ -104,21 +104,30 @@ public class MovieRestController {
     @PostMapping("/{id}/ratings")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addRating(@PathVariable Long id,
-                          @Valid @RequestBody CreateRatingDtoRequest ratingDto) {
-        movieService.addRating(id, ratingDto);
+    public Map<String, Number> addRating(@PathVariable Long id,
+                                         @Valid @RequestBody CreateRatingDtoRequest ratingDto) {
+        Movie movie = movieService.addRating(id, ratingDto);
+
+        return Map.of("totalRating", movie.getTotalRating(),
+                "numberOfRatings", movie.numberOfRatings());
     }
 
     @PutMapping("/{id}/ratings")
     @PreAuthorize("isAuthenticated()")
-    public void updateRating(@PathVariable Long id,
-                             @Valid @RequestBody UpdateRatingDtoRequest ratingDto) {
-        movieService.updateRating(id, ratingDto);
+    public Map<String, Number> updateRating(@PathVariable Long id,
+                                            @Valid @RequestBody UpdateRatingDtoRequest ratingDto) {
+        Movie movie = movieService.updateRating(id, ratingDto);
+
+        return Map.of("totalRating", movie.getTotalRating(),
+                "numberOfRatings", movie.numberOfRatings());
     }
 
     @DeleteMapping("/{id}/ratings")
     @PreAuthorize("isAuthenticated()")
-    public void removeRating(@PathVariable Long id) {
-        movieService.removeRating(id);
+    public Map<String, Number> removeRating(@PathVariable Long id) {
+        Movie movie = movieService.removeRating(id);
+
+        return Map.of("totalRating", movie.getTotalRating(),
+                "numberOfRatings", movie.numberOfRatings());
     }
 }
