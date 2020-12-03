@@ -12,10 +12,7 @@ import com.movie.site.exception.MovieRatingNotFoundException;
 import com.movie.site.exception.RepeatedRatingException;
 import com.movie.site.mapper.MovieMapper;
 import com.movie.site.mapper.RatingMapper;
-import com.movie.site.model.Movie;
-import com.movie.site.model.Rating;
-import com.movie.site.model.SourceData;
-import com.movie.site.model.User;
+import com.movie.site.model.*;
 import com.movie.site.model.enums.Role;
 import com.movie.site.model.enums.Source;
 import com.movie.site.model.id.RatingId;
@@ -24,6 +21,7 @@ import com.movie.site.service.AmazonS3ClientService;
 import com.movie.site.service.MovieService;
 import com.movie.site.service.ReviewService;
 import com.movie.site.service.UserService;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
@@ -200,18 +198,16 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<GetAllMovieDtoResponse> findAll(Pageable pageable) {
-        Page<Movie> movies;
+    public Page<GetAllMovieDtoResponse> findAll(Pageable pageable,
+                                                Predicate predicate) {
         Collection<? extends GrantedAuthority> userAuthorities =
                 userService.current().getAuthorities();
 
-        if (userAuthorities.contains(Role.ADMIN)) {
-            movies = movieRepository.findAll(pageable);
-        } else {
-            movies = movieRepository.findAllByActiveIsTrue(pageable);
+        if (!userAuthorities.contains(Role.ADMIN)) {
+            predicate = QMovie.movie.active.isTrue().and(predicate);
         }
 
-        return movieMapper.toDtoPage(movies);
+        return movieMapper.toDtoPage(movieRepository.findAll(predicate, pageable));
     }
 
     @Override

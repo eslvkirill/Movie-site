@@ -11,9 +11,11 @@ import com.movie.site.service.CountryService;
 import com.movie.site.service.GenreService;
 import com.movie.site.service.MovieService;
 import com.movie.site.service.PersonService;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +48,7 @@ public class MovieRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@Valid @ModelAttribute CreateMovieDtoRequest movieDto) {
+    public ResponseEntity<Void> create(@Valid CreateMovieDtoRequest movieDto) {
         Movie movie = movieService.create(movieDto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequestUri()
@@ -97,8 +99,10 @@ public class MovieRestController {
 
     @GetMapping
     public Page<GetAllMovieDtoResponse> getAll(
-            @PageableDefault(size = 9, sort = "id") Pageable pageable) {
-        return movieService.findAll(pageable);
+            @PageableDefault(size = 9) Pageable pageable,
+            @Valid GetAllMovieDtoRequest movieDto,
+            @QuerydslPredicate(root = Movie.class) Predicate predicate) {
+        return movieService.findAll(pageable, predicate);
     }
 
     @PostMapping("/{id}/ratings")
@@ -129,5 +133,12 @@ public class MovieRestController {
 
         return Map.of("totalRating", movie.getTotalRating(),
                 "numberOfRatings", movie.numberOfRatings());
+    }
+
+    @GetMapping("/filters")
+    public Map<String, Object> getFilters() {
+        return Map.of("countries", countryService.findAll(),
+                "genres", genreService.findAll(),
+                "directors", personService.findDirectors());
     }
 }

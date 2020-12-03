@@ -40,7 +40,8 @@ public class Movie implements Serializable {
     private String tagline;
     private String plot;
 
-    @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
     private Set<SourceData> sourceData;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -75,8 +76,8 @@ public class Movie implements Serializable {
     @OneToMany(mappedBy = "movie")
     private Set<Review> reviews;
 
-    @OneToMany(mappedBy = "id.movie", fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "id.movie", cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private Set<Rating> ratings;
 
     private float totalRating;

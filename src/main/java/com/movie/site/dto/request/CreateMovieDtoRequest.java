@@ -34,10 +34,10 @@ public class CreateMovieDtoRequest {
     @Min(1888)
     private int year;
 
-    @File(extensions = {"jpg", "jpeg", "png", "svg"})
+    @File(extensions = {"jpg", "jpeg", "png", "svg", "gif", "webp"})
     private MultipartFile poster;
 
-    @File(extensions = {"jpg", "jpeg", "png", "svg"})
+    @File(extensions = {"jpg", "jpeg", "png", "svg", "gif", "webp"})
     private MultipartFile background;
 
     @NotBlank

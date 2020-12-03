@@ -4,12 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Data
@@ -24,6 +22,9 @@ public class Person implements Serializable {
     private String firstName;
     private String lastName;
     private String imageKey;
+
+    @ManyToMany(mappedBy = "directors", fetch = FetchType.LAZY)
+    private Set<Movie> directedMovies;
 
     public String getFullName() {
         return firstName + " " + lastName;
