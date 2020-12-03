@@ -5,6 +5,7 @@ import com.movie.site.dto.response.GetAllMovieDtoResponse;
 import com.movie.site.dto.response.GetByIdMovieDtoResponse;
 import com.movie.site.dto.response.ReviewDtoResponse;
 import com.movie.site.model.Movie;
+import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -23,7 +24,7 @@ public interface MovieService {
 
     Page<ReviewDtoResponse> findAllReviews(Long id, Pageable pageable);
 
-    Page<GetAllMovieDtoResponse> findAll(Pageable pageable);
+    Page<GetAllMovieDtoResponse> findAll(Pageable pageable, Predicate predicate);
 
     Movie addRating(Long id, CreateRatingDtoRequest ratingDto);
 

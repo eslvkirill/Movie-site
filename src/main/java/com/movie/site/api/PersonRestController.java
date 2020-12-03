@@ -20,7 +20,7 @@ public class PersonRestController {
     private final PersonService personService;
 
     @PostMapping
-    public ResponseEntity<Void> create(@Valid @ModelAttribute CreatePersonDtoRequest personDto) {
+    public ResponseEntity<Void> create(@Valid CreatePersonDtoRequest personDto) {
         Person person = personService.create(personDto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequestUri()

@@ -19,4 +19,6 @@ public interface PersonService {
 
     @Named("findPeopleByIds")
     Set<Person> findAllByIds(Iterable<Long> ids);
+
+    Collection<GetAllPersonDtoResponse> findDirectors();
 }

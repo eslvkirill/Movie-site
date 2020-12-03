@@ -22,6 +22,6 @@ public class CreatePersonDtoRequest {
     @Size(max = 100)
     private String lastName;
 
-    @File(extensions = {"jpg", "jpeg", "png", "svg"})
+    @File(extensions = {"jpg", "jpeg", "png", "svg", "gif", "webp"})
     private MultipartFile image;
 }

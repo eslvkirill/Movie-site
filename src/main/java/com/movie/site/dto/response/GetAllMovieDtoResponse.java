@@ -23,4 +23,5 @@ public class GetAllMovieDtoResponse {
     private int price;
     private LocalTime time;
     private float totalRating;
+    private Set<GetAllPersonDtoResponse> directors;
 }

@@ -1,16 +1,17 @@
 package com.movie.site.service.impl;
 
+import com.google.common.collect.Lists;
 import com.movie.site.dto.request.CreatePersonDtoRequest;
 import com.movie.site.dto.request.UpdatePersonDtoRequest;
 import com.movie.site.dto.response.GetAllPersonDtoResponse;
-import com.movie.site.exception.GenreNotFoundException;
 import com.movie.site.exception.PersonNotFoundException;
 import com.movie.site.mapper.PersonMapper;
-import com.movie.site.model.Genre;
 import com.movie.site.model.Person;
+import com.movie.site.model.QPerson;
 import com.movie.site.repository.PersonRepository;
 import com.movie.site.service.AmazonS3ClientService;
 import com.movie.site.service.PersonService;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     @Transactional(readOnly = true)
     public Collection<GetAllPersonDtoResponse> findAll() {
-        return personMapper.toGetAllDtoList(personRepository.findAll(Sort.by("lastName", "firstName")));
+        return personMapper.toGetAllDtoList(personRepository.findAll(Sort.by("firstName", "lastName")));
     }
 
     @Override
@@ -65,6 +66,16 @@ public class PersonServiceImpl implements PersonService {
         }
 
         return people;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<GetAllPersonDtoResponse> findDirectors() {
+        BooleanExpression hasAnyDirectedInStoke = QPerson
+                .person.directedMovies.any().active.isTrue();
+        Iterable<Person> directors = personRepository.findAll(hasAnyDirectedInStoke);
+
+        return personMapper.toGetAllDtoList(Lists.newArrayList(directors));
     }
 
     private Person findPersonById(Long id) {
