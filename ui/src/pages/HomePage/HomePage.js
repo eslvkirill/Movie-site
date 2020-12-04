@@ -1,5 +1,5 @@
 import React from "react";
-import AllFilms from "../../components/AllFilms/AllFilms";
+import AllFilms from "./AllFilms/AllFilms";
 import "./HomePage.scss";
 
 const HomePage = () => (

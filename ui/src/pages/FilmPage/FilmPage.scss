@@ -46,12 +46,48 @@
   .FirstSection {
     height: 105vh;
     width: 100vw;
+    display: flex;
+    align-items: center;
 
-    .Wrapper {
+    .totalRatingBlock {
+      cursor: default;
+      font-family: "Nunito", sans-serif;
+      padding: 7% 3% 9.8% 0;
       display: flex;
       flex-direction: column;
-      padding: 10% 13.5%;
+      justify-content: flex-end;
+      align-items: flex-end;
+
+      .totalRating {
+        font-size: 55px;
+        font-weight: bold;
+        color: rgb(255, 244, 232);
+        text-shadow: 0px 4px 1px #9b4724, 4px 2px 20px #9b4724,
+          0px 1px 3px #9b4724;
+        margin-bottom: -12px;
+      }
+
+      .numberOfRatings {
+        width: 7.7rem;
+        font-size: 18px;
+        color: #e0ddd9fd;
+        font-weight: 600;
+        letter-spacing: 0.1rem;
+        text-shadow: 0px 2px 1px #2b083f94, 0px 2px 33px #c25f35a9,
+          0px 1px 3px #2b083f94;
+        display: flex;
+        justify-content: flex-end;
+        padding: 3px 9px 3px 0px;
+        background-color: #621d9180;
+        border-radius: 15px 0 0 15px;
+      }
+    }
+
+    .Wrapper {
       cursor: default;
+      display: flex;
+      flex-direction: column;
+      padding: 15% 2.8% 9.8% 13.5%;
 
       .Genres {
         font-size: 20px;
@@ -72,12 +108,12 @@
         text-transform: uppercase;
         font-size: 50px;
         font-weight: bold;
-        color: #fafafa;
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
 
         p {
+          color: #fafafa;
           animation-delay: 1.66s;
 
           &::before {
@@ -86,13 +122,13 @@
             animation-delay: 2.7s;
             background: rgb(255, 244, 232);
           }
-        }
 
-        span {
-          text-transform: uppercase;
-          font-size: 25px;
-          font-weight: bold;
-          color: #fafafa;
+          span {
+            text-transform: uppercase;
+            font-size: 25px;
+            font-weight: bold;
+            color: #fafafa;
+          }
         }
 
         .RightSideOfTitle {
@@ -131,9 +167,8 @@
       }
 
       .Time {
-        margin-top: -12px;
-        text-transform: uppercase;
-        font-size: 20px;
+        margin: -4px 0 0 5px;
+        font-size: 23px;
         font-weight: bold;
         color: #fafafa;
       }
@@ -141,8 +176,7 @@
       .Plot {
         color: #fafafa;
         font-size: 22px;
-        margin-top: 1.2rem;
-        margin-bottom: 1.2rem;
+        margin: -4px 0 1.2rem;
       }
 
       .AfterPlotBlock {
@@ -645,7 +679,9 @@
 
 .Plot,
 .AfterPlotBlock,
-.Time {
+.Time,
+.filmRating,
+.totalRatingBlock {
   opacity: 0;
   animation: fadeIn 1s linear forwards;
   animation-delay: 3s;
