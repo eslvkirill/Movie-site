@@ -85,6 +85,7 @@ const AllFilms = () => {
                   time={film.time}
                   genres={film.genres}
                   year={film.year}
+                  directors={film.directors}
                 />
               </li>
             );

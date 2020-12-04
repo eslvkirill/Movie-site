@@ -1,0 +1,13 @@
+.adminPanel {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  height: auto;
+  margin-top: 5rem;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    color: rgb(252, 237, 220);
+  }
+}

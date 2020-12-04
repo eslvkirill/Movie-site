@@ -16,7 +16,7 @@ const BackItem = (props) => (
           длительность: <div>{props.time}</div>
         </div>
         <div className="director">
-          режиссёр: <div>Уэс Андерсон</div>
+          режиссёр: <div>{props.directors}</div>
         </div>
       </div>
       <div className="linkToMoviePage">➤ к фильму</div>

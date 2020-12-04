@@ -4,7 +4,7 @@ export function createInput(config, validation) {
     validation,
     valid: !validation,
     touched: false,
-    autoComplete: "on",
+    autoComplete: "off",
     value: "",
   };
 }

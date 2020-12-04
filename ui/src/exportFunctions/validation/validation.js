@@ -81,6 +81,8 @@ export function validate(value, validation = null) {
       (value.type === "image/png" ||
         value.type === "image/jpg" ||
         value.type === "image/jpeg" ||
+        value.type === "image/gif" ||
+        value.type === "image/webp" ||
         value.type === "image/svg") &&
       value.size < 10485760 &&
       isValid;

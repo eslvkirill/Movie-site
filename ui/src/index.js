@@ -12,9 +12,6 @@ const app = (
     <App />
   </BrowserRouter>
 );
-ReactDOM.render(
-  app,
-  document.getElementById("root")
-);
+ReactDOM.render(app, document.getElementById("root"));
 
 serviceWorker.unregister();

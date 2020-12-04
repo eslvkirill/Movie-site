@@ -7,7 +7,13 @@ const Input = (props) => {
   const cls = [classes.Input, classes[props.type]];
 
   return (
-    <div className={inputType === "file" ? classes.InputFile : inputType}>
+    <div
+      className={
+        inputType === "file"
+          ? classes.InputFile.concat(" " + inputType)
+          : inputType
+      }
+    >
       {inputType === "color" || inputType === "time" ? (
         <div className={inputType === "color" ? classes.Color : classes.Time}>
           {props.placeholder}
@@ -29,11 +35,8 @@ const Input = (props) => {
           <span
             id={props.idSpan}
             onClick={props.onClick}
+            className="placeholder"
             style={{
-              // position: "relative",
-              // bottom: "98%",
-              // right: "0%",
-              // zIndex: 99,
               width: 352,
               marginTop: -61,
               marginRight: -12,
@@ -54,7 +57,9 @@ const Input = (props) => {
           </span>
 
           {isInvalid(props) ? (
-            <span className={classes.FileError}>{props.errorMessage}</span>
+            <span className={`${classes.FileError} fileError`}>
+              {props.errorMessage}
+            </span>
           ) : null}
         </>
       ) : null}

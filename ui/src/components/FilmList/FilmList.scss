@@ -76,17 +76,6 @@
     }
   }
 
-  .time {
-    #time {
-      cursor: pointer;
-      margin: -3px 0 0;
-      display: flex;
-      width: 27%;
-      background: transparent;
-      border: none;
-    }
-  }
-
   .color,
   .time {
     cursor: default;
@@ -122,6 +111,27 @@
       &::-webkit-color-swatch {
         border: 1px solid #fafafa;
         border-radius: 10px;
+      }
+    }
+  }
+
+  .time {
+    > div {
+      margin-left: 5.5px;
+    }
+
+    #time {
+      cursor: pointer;
+      margin: -3px 0 0;
+      display: flex;
+      width: 40%;
+      background: transparent;
+      border: none;
+
+      + span {
+        margin: 3px 0 0 0;
+        display: block;
+        width: 22rem;
       }
     }
   }

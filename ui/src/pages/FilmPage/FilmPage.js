@@ -47,12 +47,18 @@ export default class FilmPage extends Component {
           Object.keys(film).map((name) => {
             if (Array.isArray(film[name]) && name !== "sourceData") {
               film[name] = film[name]
-                .map((value) => (name === "genres" ? value.name : value))
+                .map((value) =>
+                  name === "genres" || name === "actors" || name === "directors"
+                    ? value.name
+                    : value
+                )
                 .join(", ");
+              if (name === "actors" || name === "directors")
+                film[name] = film[name].split(", ").sort().join(", ");
             }
-            if (name === "time") {
+            if (name === "time")
               film[name] = `${film[name].hour}ч ${film[name].minute}м`;
-            }
+
             return film[name];
           });
 
@@ -151,6 +157,8 @@ export default class FilmPage extends Component {
       year,
       time,
       plot,
+      actors,
+      directors,
       countries,
       audio,
       subtitles,
@@ -198,13 +206,9 @@ export default class FilmPage extends Component {
                 <div className="Plot">{plot}</div>
                 <div className="AfterPlotBlock">
                   <div className="Cast">
-                    Режиссёр: <span className="People">Уэс Андерсон</span>
+                    Режиссёр: <span className="People">{directors}</span>
                     <br />В главных ролях:{" "}
-                    <span className="People">
-                      Рэйф Файнс, Тони Револори, Сирша Ронан, Эдриан Броуди,
-                      Уиллем Дефо, Эдвард Нортон, Матьё Амальрик, Джуд Лоу, Ф.
-                      Мюррэй Абрахам, Тильда Суинтон, Джефф Голдблюм
-                    </span>
+                    <span className="People">{actors}</span>
                   </div>
                   <div className="Details">
                     <div>

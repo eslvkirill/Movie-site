@@ -45,7 +45,7 @@ const Cards = (props) => (
             engTitle={props.engTitle}
             genres={props.genres}
             time={props.time}
-            // director={props.director}
+            directors={props.directors}
           />
         </div>
       </Link>

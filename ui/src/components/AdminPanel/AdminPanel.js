@@ -1,7 +1,13 @@
 import React from "react";
-import GenreList from "../../components/GenreList/GenreList";
-// import classes from "./AdminPanel.module.scss";
+import GenreList from "./GenreList/GenreList";
+import PersonList from "./PersonList/PersonList";
+import "./AdminPanel.scss";
 
-const AdminPanel = () => <GenreList />;
+const AdminPanel = () => (
+  <div className="adminPanel">
+    <PersonList />
+    <GenreList />
+  </div>
+);
 
 export default AdminPanel;
