@@ -243,7 +243,7 @@ public class MovieServiceImpl implements MovieService {
 
         movie.addRating(updatedRating);
 
-        return movieRepository.save(movie);
+        return movieRepository.saveAndFlush(movie);
     }
 
     @Override

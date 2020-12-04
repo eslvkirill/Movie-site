@@ -351,5 +351,10 @@
         <modifyDataType tableName="rating" columnName="value" newDataType="real"/>
     </changeSet>
 
-
+    <changeSet id="2020-12-04 reset ratings" author="Befors">
+        <delete tableName="rating"/>
+        <update tableName="movie">
+            <column name="total_rating" value="0"/>
+        </update>
+    </changeSet>
 </databaseChangeLog>
