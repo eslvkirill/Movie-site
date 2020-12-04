@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Select from "../../UiItem/Select/Select";
-import Button from "../../UiItem/Button/Button";
+import Select from "../../../../components/UiItem/Select/Select";
+import Button from "../../../../components/UiItem/Button/Button";
 import BackItem from "./BackItem/BackItem";
 import "./Cards.scss";
 
@@ -22,7 +22,7 @@ const Cards = (props) => (
           <div className="contentCard">
             <div className="topOfCardContent">
               <div className="year">{props.year}г.</div>
-              <div className="rating">8.8</div>
+              <div className="rating">{props.rating}</div>
             </div>
             <div className="titles">
               <div className="engTitle">{props.engTitle}</div>
@@ -34,7 +34,7 @@ const Cards = (props) => (
         <div
           className="BackSide"
           style={{
-            background: `linear-gradient(rgba(255, 255, 255, .1), rgba(0, 0, 0, 0.5)), #da9ca7`,
+            background: `linear-gradient(rgba(255, 255, 255, .1), rgba(0, 0, 0, 0.5)), ${props.backgroundColor}`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             backgroundPosition: "center center",

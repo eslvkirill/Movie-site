@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Button from "../UiItem/Button/Button";
-import ContentLoader from "../UiItem/Loaders/ContentLoader/ContentLoader";
-import ButtonLoader from "../UiItem/Loaders/ButtonLoader/ButtonLoader";
+import Button from "../../../components/UiItem/Button/Button";
+import ContentLoader from "../../../components/UiItem/Loaders/ContentLoader/ContentLoader";
+import ButtonLoader from "../../../components/UiItem/Loaders/ButtonLoader/ButtonLoader";
 import Cards from "./Cards/Cards";
 import "./AllFilms.scss";
 
@@ -10,6 +10,7 @@ const AllFilms = () => {
   const [films, setFilms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [numberOfElements, setNumberOfElements] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeButton, setActiveButton] = useState(true);
   const [isFetch, setFetch] = useState(true);
@@ -17,6 +18,7 @@ const AllFilms = () => {
   const paginate = async (pageNumber) => {
     await axios.get(`/api/movies?page=${pageNumber - 1}`).then((response) => {
       const newFilms = response.data.content;
+      console.log(response);
 
       newFilms.map((film) => {
         Object.keys(film).map((name) => {
@@ -25,6 +27,9 @@ const AllFilms = () => {
           }
           if (name === "time") {
             film[name] = `${film[name].hour}ч ${film[name].minute}м`;
+          }
+          if (name === "totalRating") {
+            film[name] = film[name].toFixed(1);
           }
           return film[name];
         });
@@ -37,6 +42,7 @@ const AllFilms = () => {
       setNumberOfElements(
         (prevNumber) => prevNumber + response.data.numberOfElements
       );
+      setTotalElements(response.data.totalElements);
       setCurrentPage(() => currentPage + 1);
       setFilms((films) => [...films, ...newFilms]);
       setLoading(false);
@@ -62,9 +68,7 @@ const AllFilms = () => {
           Загрузить ещё
         </Button>
       );
-    } else if (isFetch) {
-      return <ButtonLoader />;
-    }
+    } else if (isFetch) return <ButtonLoader />;
   };
 
   return (
@@ -86,6 +90,8 @@ const AllFilms = () => {
                   genres={film.genres}
                   year={film.year}
                   directors={film.directors}
+                  rating={film.totalRating}
+                  backgroundColor={film.pageColor1}
                 />
               </li>
             );
@@ -94,10 +100,10 @@ const AllFilms = () => {
             <p>
               Вы просмотрели{" "}
               {!activeButton
-                ? `${numberOfElements} из 4 фильмов`
+                ? `${numberOfElements} из ${totalElements} фильмов`
                 : "все фильмы"}
             </p>
-            <progress value={numberOfElements} max="4"></progress>
+            <progress value={numberOfElements} max={totalElements}></progress>
             {renderOnLoadButton()}
           </div>
         </ul>
