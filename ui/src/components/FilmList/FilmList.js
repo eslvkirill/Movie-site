@@ -75,7 +75,7 @@ function createFormInput() {
     time: createInput(
       {
         type: "time",
-        placeholder: "Продолжительность фильма:",
+        placeholder: "Продолжительность:",
         errorMessage: "*Время должно быть реальным",
       },
       {
@@ -160,8 +160,14 @@ function createFormSelect() {
       "Укажите жанры фильма",
       "Жанр фильма должен быть указан"
     ),
-    // actors: createNewSelect("Выберите актеров"),
-    // directors: createNewSelect("Выберите режиссеров"),
+    actors: createNewSelect(
+      "Выберите актёров",
+      "Укажите хотя бы одного актёра"
+    ),
+    directors: createNewSelect(
+      "Выберите режиссёров",
+      "Укажите хотя бы одного режиссёра"
+    ),
     countries: createNewSelect(
       "Выберите страны производства",
       "Укажите хотя-бы одну страну производства"
@@ -213,10 +219,10 @@ export default class FilmList extends Component {
           value: index,
         }));
 
-        if (dataName === "genres") {
-          initialState = response.data[dataName].map((genre) => ({
-            label: genre.name,
-            value: genre.id,
+        if (dataName === "genres" || dataName === "people") {
+          initialState = response.data[dataName].map((content) => ({
+            label: content.name,
+            value: content.id,
           }));
         }
 
@@ -226,6 +232,8 @@ export default class FilmList extends Component {
           if (
             dataName === controlName ||
             (dataName === "ageRatings" && controlName === "ageRating") ||
+            (dataName === "people" &&
+              (controlName === "actors" || controlName === "directors")) ||
             (dataName === "languages" &&
               (controlName === "audio" || controlName === "subtitles"))
           )
@@ -392,7 +400,11 @@ export default class FilmList extends Component {
         film[controlName] = control.value.map(
           (selectValue) => selectValue.label
         );
-      if (controlName === "genres")
+      if (
+        controlName === "genres" ||
+        controlName === "actors" ||
+        controlName === "directors"
+      )
         film[controlName] = control.value.map(
           (selectValue) => selectValue.value
         );
@@ -414,6 +426,7 @@ export default class FilmList extends Component {
         <Input
           key={controlName + index}
           id={controlName}
+          className={controlName}
           idSpan={controlName + control.id}
           type={control.type}
           placeholder={control.placeholder}

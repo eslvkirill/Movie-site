@@ -1,6 +1,6 @@
 import React from "react";
-import Input from "../../UiItem/Input/Input";
-import Button from "../../UiItem/Button/Button";
+import Input from "../../../UiItem/Input/Input";
+import Button from "../../../UiItem/Button/Button";
 import "./GenreItem.scss";
 
 const GenreItem = (props) => (

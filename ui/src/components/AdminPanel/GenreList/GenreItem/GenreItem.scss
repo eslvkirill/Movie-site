@@ -1,13 +1,13 @@
 .GenreItem {
   list-style: none;
   padding: 0;
-  margin-top: 1.5rem;
+  margin-top: 0.2rem;
 
   li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 75%;
+    width: 90%;
     margin: auto;
     margin-top: 1rem;
     border: 2px solid #c06b0a;
@@ -38,7 +38,16 @@
         color: #c06b0a;
       }
     }
+
+    Button {
+      font-family: "Comic Sans MS", arial;
+      font-size: 16px;
+      font-family: "Arial";
+      letter-spacing: normal;
+      font-weight: normal;
+    }
   }
+
   Input[value] {
     background: #fafafa;
   }

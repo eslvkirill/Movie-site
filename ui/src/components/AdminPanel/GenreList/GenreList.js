@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Input from "../UiItem/Input/Input";
-import Button from "../UiItem/Button/Button";
-import ContentLoader from "../UiItem/Loaders/ContentLoader/ContentLoader";
+import Input from "../../UiItem/Input/Input";
+import Button from "../../UiItem/Button/Button";
+import ContentLoader from "../../UiItem/Loaders/ContentLoader/ContentLoader";
 import GenreItem from "./GenreItem/GenreItem";
 import {
   validate,
   validateInputs,
-} from "../../exportFunctions/validation/validation";
+} from "../../../exportFunctions/validation/validation";
 import "./GenreList.scss";
 
 export default class GenreList extends Component {
@@ -24,7 +24,7 @@ export default class GenreList extends Component {
         // type: "email",
         type: "text",
         placeholder: "Введите новый жанр",
-        errorMessage: "Название жанра должно быть длинее 2-х букв",
+        errorMessage: "*Название жанра должно быть длинее 2-х букв",
         valid: false,
         touched: false,
         validation: {
@@ -102,11 +102,6 @@ export default class GenreList extends Component {
 
       this.setState({ genres, newItemId });
 
-      const genre = {
-        id: genres[index].id,
-        name: genres[index].name,
-      };
-
       if (genres[index].id === "") {
         genres[index].id = newItemId;
       }
@@ -120,8 +115,10 @@ export default class GenreList extends Component {
           "Content-Type": "application/json",
         },
         url: `/api/genres/${genres[index].id}`,
-        data: genre,
+        data: { name: genres[index].name },
       });
+
+      console.log(genres[index]);
     } catch (e) {
       console.log(e);
     }
@@ -212,20 +209,16 @@ export default class GenreList extends Component {
   render() {
     return (
       <div className="GenreList">
+        <h2>Добавление жанров фильмам</h2>
+
         <form onSubmit={(event) => this.submitNewGenre(event)}>
           {this.renderInputs()}
-          {/* <input
-            value={this.state.newItem}
-            type="text"
-            placeholder="Введите новый задачу"
-            onChange={(text) => this.addNewItem(text)}
-          /> */}
           <Button
+            type="add"
             onClick={this.genreHandler}
-            className="AddGenre"
             disabled={!this.state.isFormValid}
           >
-            Добавить жанр
+            Добавить
           </Button>
         </form>
         <hr />
