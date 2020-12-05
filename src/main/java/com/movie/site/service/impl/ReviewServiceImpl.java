@@ -34,7 +34,7 @@ public class ReviewServiceImpl implements ReviewService {
         review.setUser(user);
 
         if (movie.containsReview(user)) {
-            throw new RepeatedReviewException(movie.getId(), user.getEmail());
+            throw new RepeatedReviewException(movie.getId(), user.getUsername());
         }
 
         return reviewMapper.toDto(reviewRepository.save(review));

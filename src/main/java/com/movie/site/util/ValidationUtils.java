@@ -10,7 +10,12 @@ public class ValidationUtils {
 
     public static void addConstraintViolation(String message,
                                               ConstraintValidatorContext ctx) {
+        addConstraintViolation(message, null, ctx);
+    }
+
+    public static void addConstraintViolation(String message, String property,
+                                              ConstraintValidatorContext ctx) {
         ctx.buildConstraintViolationWithTemplate(message)
-                .addConstraintViolation();
+                .addPropertyNode(property).addConstraintViolation();
     }
 }

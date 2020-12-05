@@ -22,7 +22,7 @@ public interface ReviewMapper {
     Review toEntity(CreateReviewDtoRequest reviewDto);
 
     @Mapping(target = "username",
-            expression = "java(review.getUser().getFirstName() + \" \" + review.getUser().getLastName())")
+            expression = "java(review.getUser().getUsername())")
     ReviewDtoResponse toDto(Review review);
 
     Review update(UpdateReviewDtoRequest reviewDto, @MappingTarget Review review);

@@ -220,7 +220,7 @@ public class MovieServiceImpl implements MovieService {
         checkPermissionToAccessMovie(movie, user);
 
         if (!movie.addRating(rating)) {
-            throw new RepeatedRatingException(movie.getId(), user.getEmail());
+            throw new RepeatedRatingException(movie.getId(), user.getUsername());
         }
 
         return movieRepository.save(movie);
@@ -236,7 +236,7 @@ public class MovieServiceImpl implements MovieService {
         checkPermissionToAccessMovie(movie, user);
 
         if (!movie.removeRating(rating)) {
-            throw new MovieRatingNotFoundException(movie.getId(), user.getEmail());
+            throw new MovieRatingNotFoundException(movie.getId(), user.getUsername());
         }
 
         Rating updatedRating = ratingMapper.update(ratingDto, rating);
@@ -254,7 +254,7 @@ public class MovieServiceImpl implements MovieService {
         checkPermissionToAccessMovie(movie, user);
 
         if (!movie.removeRatingById(new RatingId(user, movie))) {
-            throw new MovieRatingNotFoundException(movie.getId(), user.getEmail());
+            throw new MovieRatingNotFoundException(movie.getId(), user.getUsername());
         }
 
         return movieRepository.save(movie);

@@ -1,9 +1,7 @@
 package com.movie.site.model;
 
 import com.movie.site.model.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -29,6 +27,7 @@ public class User implements Serializable, UserDetails {
     private String password;
     private String firstName;
     private String lastName;
+    private String username;
     private boolean active;
 
     @Enumerated(EnumType.STRING)
@@ -43,7 +42,7 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override
