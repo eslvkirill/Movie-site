@@ -357,4 +357,28 @@
             <column name="total_rating" value="0"/>
         </update>
     </changeSet>
+
+    <changeSet id="2020-12-05 add the username column to the user table" author="Befors">
+        <delete tableName="review"/>
+        <delete tableName="rating"/>
+        <delete tableName="user"/>
+
+        <addColumn tableName="user">
+            <column name="username" type="varchar(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="2020-12-05 insert test data for User entity with admin role" author="Befors">
+        <insert tableName="user">
+            <column name="email" value="admin@mail.ru"/>
+            <column name="password" value="$2y$12$ZAqXdD8YQbDWBPm5N6Dp1OVmONE60Ng1Lu5jGdshBbqRZPJHyAUBC"/>
+            <column name="first_name" value="Денис"/>
+            <column name="last_name" value="Бондаренко"/>
+            <column name="username" value="admin"/>
+            <column name="active" value="true"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>
