@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ReviewService {
 
-    ReviewDtoResponse create(Movie movie, User user, CreateReviewDtoRequest reviewDto);
+    ReviewDtoResponse create(Movie movie, CreateReviewDtoRequest reviewDto);
 
     ReviewDtoResponse update(Movie movie, Long id, UpdateReviewDtoRequest reviewDto);
 

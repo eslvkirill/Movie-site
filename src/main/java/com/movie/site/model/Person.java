@@ -23,7 +23,7 @@ public class Person implements Serializable {
     private String lastName;
     private String imageKey;
 
-    @ManyToMany(mappedBy = "directors", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "directors")
     private Set<Movie> directedMovies;
 
     public String getFullName() {

@@ -2,6 +2,7 @@ package com.movie.site.dto.response;
 
 import com.movie.site.model.enums.AgeRating;
 import com.movie.site.model.enums.Language;
+import com.movie.site.model.enums.MovieOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,4 +42,5 @@ public class GetByIdMovieDtoResponse {
     private RatingDtoResponse userRating;
     private Set<GetAllPersonDtoResponse> actors;
     private Set<GetAllPersonDtoResponse> directors;
+    private MovieOperation operation;
 }

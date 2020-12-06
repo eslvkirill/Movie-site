@@ -3,10 +3,10 @@ package com.movie.site.service.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movie.site.dto.request.*;
+import com.movie.site.dto.response.GetAllDetailsMovieDtoResponse;
 import com.movie.site.dto.response.GetAllMovieDtoResponse;
 import com.movie.site.dto.response.GetByIdMovieDtoResponse;
 import com.movie.site.dto.response.ReviewDtoResponse;
-import com.movie.site.exception.ForbiddenException;
 import com.movie.site.exception.MovieNotFoundException;
 import com.movie.site.exception.MovieRatingNotFoundException;
 import com.movie.site.exception.RepeatedRatingException;
@@ -17,10 +17,7 @@ import com.movie.site.model.enums.Role;
 import com.movie.site.model.enums.Source;
 import com.movie.site.model.id.RatingId;
 import com.movie.site.repository.MovieRepository;
-import com.movie.site.service.AmazonS3ClientService;
-import com.movie.site.service.MovieService;
-import com.movie.site.service.ReviewService;
-import com.movie.site.service.UserService;
+import com.movie.site.service.*;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -40,6 +37,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.util.*;
 
+import static com.movie.site.service.MovieService.checkPermissionToAccessMovie;
 import static com.movie.site.util.ParsingUtils.find;
 
 @Service
@@ -49,6 +47,7 @@ public class MovieServiceImpl implements MovieService {
 
     private final AmazonS3ClientService amazonS3ClientService;
     private final ReviewService reviewService;
+    private final SecurityService securityService;
     private final UserService userService;
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
@@ -108,12 +107,12 @@ public class MovieServiceImpl implements MovieService {
                     .ofNullable(Source.of(node.get(RATING_SOURCE_NODE).asText()));
 
             sourceOpt.ifPresent(source -> sourceData.add(SourceData.builder()
-                            .url(urls.get(source))
-                            .rating(Float.parseFloat(Objects.requireNonNull(
-                                    find(RATING_REG_EXP, node.get(RATING_VALUE_NODE).asText()))))
-                            .source(source)
-                            .movie(movie)
-                            .build()));
+                    .url(urls.get(source))
+                    .rating(Float.parseFloat(Objects.requireNonNull(
+                            find(RATING_REG_EXP, node.get(RATING_VALUE_NODE).asText()))))
+                    .source(source)
+                    .movie(movie)
+                    .build()));
         });
 
         String kinopoiskId = find(ID_REG_EXP, movieDto.getKinopoiskUrl());
@@ -149,8 +148,8 @@ public class MovieServiceImpl implements MovieService {
     @Override
     @Transactional(readOnly = true)
     public GetByIdMovieDtoResponse findById(Long id, Pageable reviewPageable) {
-        Movie movie = findMovieById(id);
-        User user = userService.current();
+        Movie movie = findById(id);
+        User user = userService.findCurrent();
 
         checkPermissionToAccessMovie(movie, user);
 
@@ -159,39 +158,26 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public ReviewDtoResponse addReview(Long id, CreateReviewDtoRequest reviewDto) {
-        Movie movie = findMovieById(id);
-        User user = userService.current();
-
-        checkPermissionToAccessMovie(movie, user);
-
-        return reviewService.create(movie, user, reviewDto);
+        return reviewService.create(findById(id), reviewDto);
     }
 
     @Override
     public void updateReview(Long movieId, Long reviewId,
                              UpdateReviewDtoRequest reviewDto) {
-        Movie movie = findMovieById(movieId);
-
-        checkPermissionToAccessMovie(movie, userService.current());
-
-        reviewService.update(movie, reviewId, reviewDto);
+        reviewService.update(findById(movieId), reviewId, reviewDto);
     }
 
     @Override
     public void removeReview(Long movieId, Long reviewId) {
-        Movie movie = findMovieById(movieId);
-
-        checkPermissionToAccessMovie(movie, userService.current());
-
-        reviewService.delete(movie, reviewId);
+        reviewService.delete(findById(movieId), reviewId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<ReviewDtoResponse> findAllReviews(Long id, Pageable pageable) {
-        Movie movie = findMovieById(id);
+        Movie movie = findById(id);
 
-        checkPermissionToAccessMovie(movie, userService.current());
+        checkPermissionToAccessMovie(movie, securityService.getCurrentUser());
 
         return reviewService.findAll(movie, pageable);
     }
@@ -200,27 +186,30 @@ public class MovieServiceImpl implements MovieService {
     @Transactional(readOnly = true)
     public Page<GetAllMovieDtoResponse> findAll(Pageable pageable,
                                                 Predicate predicate) {
-        Collection<? extends GrantedAuthority> userAuthorities =
-                userService.current().getAuthorities();
+        Optional<User> user = Optional.ofNullable(userService.findCurrent());
+        boolean admin = user.map(u -> u.getAuthorities().contains(Role.ADMIN))
+                .orElse(false);
 
-        if (!userAuthorities.contains(Role.ADMIN)) {
+        if (!admin) {
             predicate = QMovie.movie.active.isTrue().and(predicate);
         }
 
-        return movieMapper.toDtoPage(movieRepository.findAll(predicate, pageable));
+        Page<Movie> movies = movieRepository.findAll(predicate, pageable);
+
+        return movieMapper.toGetAllDtoPage(movies, user.orElse(null));
     }
 
     @Override
     public Movie addRating(Long id, CreateRatingDtoRequest ratingDto) {
-        Movie movie = findMovieById(id);
-        User user = userService.current();
+        Movie movie = findById(id);
+        User user = securityService.getCurrentUser();
         Rating rating = ratingMapper.toEntity(ratingDto);
         rating.setId(user, movie);
 
         checkPermissionToAccessMovie(movie, user);
 
         if (!movie.addRating(rating)) {
-            throw new RepeatedRatingException(movie.getId(), user.getUsername());
+            throw new RepeatedRatingException(id, user.getUsername());
         }
 
         return movieRepository.save(movie);
@@ -228,15 +217,13 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie updateRating(Long id, UpdateRatingDtoRequest ratingDto) {
-        Movie movie = findMovieById(id);
-        User user = userService.current();
+        Movie movie = findById(id);
+        User user = securityService.getCurrentUser();
         Rating rating = new Rating();
         rating.setId(user, movie);
 
-        checkPermissionToAccessMovie(movie, user);
-
         if (!movie.removeRating(rating)) {
-            throw new MovieRatingNotFoundException(movie.getId(), user.getUsername());
+            throw new MovieRatingNotFoundException(id, user.getUsername());
         }
 
         Rating updatedRating = ratingMapper.update(ratingDto, rating);
@@ -248,26 +235,30 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie removeRating(Long id) {
-        Movie movie = findMovieById(id);
-        User user = userService.current();
-
-        checkPermissionToAccessMovie(movie, user);
+        Movie movie = findById(id);
+        User user = securityService.getCurrentUser();
 
         if (!movie.removeRatingById(new RatingId(user, movie))) {
-            throw new MovieRatingNotFoundException(movie.getId(), user.getUsername());
+            throw new MovieRatingNotFoundException(id, user.getUsername());
         }
 
         return movieRepository.save(movie);
     }
 
-    private Movie findMovieById(Long id) {
+    @Override
+    @Transactional(readOnly = true)
+    public Movie findById(Long id) {
         return movieRepository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException(id));
     }
 
-    private void checkPermissionToAccessMovie(Movie movie, User user) {
-        if (!movie.isActive() && !user.getAuthorities().contains(Role.ADMIN)) {
-            throw new ForbiddenException();
-        }
+    @Override
+    @Transactional(readOnly = true)
+    public List<GetAllDetailsMovieDtoResponse> findAllByPossibleBuyer(User user,
+                                                                      Pageable pageable) {
+        List<Movie> movies = movieRepository
+                .findAllByPossibleBuyersContains(user, pageable);
+
+        return movieMapper.toGetAllDetailsDtoList(movies);
     }
 }

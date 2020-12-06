@@ -26,7 +26,7 @@ public class Movie implements Serializable {
     private String engTitle;
     private String rusTitle;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     @CollectionTable(name = "movie_country",
             joinColumns = @JoinColumn(name = "movie_id"))
     @Column(name = "country")
@@ -40,18 +40,17 @@ public class Movie implements Serializable {
     private String tagline;
     private String plot;
 
-    @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private Set<SourceData> sourceData;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     @CollectionTable(name = "movie_audio",
             joinColumns = @JoinColumn(name = "movie_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "language")
     private Set<Language> audio;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     @CollectionTable(name = "movie_subtitle",
             joinColumns = @JoinColumn(name = "movie_id"))
     @Enumerated(EnumType.STRING)
@@ -82,7 +81,7 @@ public class Movie implements Serializable {
 
     private float totalRating;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "actor",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "person_id"))
@@ -93,6 +92,9 @@ public class Movie implements Serializable {
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "person_id"))
     private Set<Person> directors;
+
+    @ManyToMany(mappedBy = "cart")
+    private Set<User> possibleBuyers;
 
     public boolean containsReview(User user) {
         Review review = new Review();

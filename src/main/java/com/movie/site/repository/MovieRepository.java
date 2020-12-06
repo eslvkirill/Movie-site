@@ -3,11 +3,14 @@ package com.movie.site.repository;
 import com.movie.site.model.Genre;
 import com.movie.site.model.Movie;
 import com.movie.site.model.QMovie;
+import com.movie.site.model.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 
+import java.util.List;
 import java.util.Objects;
 
 public interface MovieRepository extends JpaRepository<Movie, Long>,
@@ -28,4 +31,6 @@ public interface MovieRepository extends JpaRepository<Movie, Long>,
                         .toArray(String[]::new))
                 .map(countries -> path.any().in(countries)));
     }
+
+    List<Movie> findAllByPossibleBuyersContains(User user, Pageable pageable);
 }

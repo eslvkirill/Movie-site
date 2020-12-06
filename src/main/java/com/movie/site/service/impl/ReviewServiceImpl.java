@@ -12,24 +12,31 @@ import com.movie.site.model.Review;
 import com.movie.site.model.User;
 import com.movie.site.repository.ReviewRepository;
 import com.movie.site.service.ReviewService;
+import com.movie.site.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.movie.site.service.MovieService.checkPermissionToAccessMovie;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class ReviewServiceImpl implements ReviewService {
 
+    private final SecurityService securityService;
     private final ReviewRepository reviewRepository;
     private final ReviewMapper reviewMapper;
 
     @Override
-    public ReviewDtoResponse create(Movie movie, User user, CreateReviewDtoRequest reviewDto) {
-        Review review = reviewMapper.toEntity(reviewDto);
+    public ReviewDtoResponse create(Movie movie, CreateReviewDtoRequest reviewDto) {
+        User user = securityService.getCurrentUser();
 
+        checkPermissionToAccessMovie(movie, user);
+
+        Review review = reviewMapper.toEntity(reviewDto);
         review.setMovie(movie);
         review.setUser(user);
 
@@ -42,7 +49,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewDtoResponse update(Movie movie, Long id, UpdateReviewDtoRequest reviewDto) {
-        Review review = findById(id);
+        Review review = findReviewById(id);
 
         if (!movie.containsReview(review)) {
             throw new MovieReviewNotFoundException(movie.getId(), id);
@@ -55,7 +62,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewDtoResponse delete(Movie movie, Long id) {
-        Review review = findById(id);
+        Review review = findReviewById(id);
 
         if (!movie.containsReview(review)) {
             throw new MovieReviewNotFoundException(movie.getId(), id);
@@ -72,7 +79,7 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewMapper.toDtoPage(reviewRepository.findAllByMovie(movie, pageable));
     }
 
-    private Review findById(Long id) {
+    private Review findReviewById(Long id) {
         return reviewRepository.findById(id)
                 .orElseThrow(() -> new ReviewNotFoundException(id));
     }

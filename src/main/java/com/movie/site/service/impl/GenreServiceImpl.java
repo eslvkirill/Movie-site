@@ -37,7 +37,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public GenreDtoResponse update(Long id, UpdateGenreDtoRequest genreDto) {
-        Genre genre = findById(id);
+        Genre genre = findGenreById(id);
 
         genreMapper.update(genreDto, genre);
 
@@ -56,7 +56,7 @@ public class GenreServiceImpl implements GenreService {
         return genres;
     }
 
-    private Genre findById(Long id) {
+    private Genre findGenreById(Long id) {
         return genreRepository.findById(id)
                 .orElseThrow(() -> new GenreNotFoundException(id));
     }
