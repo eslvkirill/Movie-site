@@ -1,0 +1,50 @@
+.sortWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 28%;
+  height: 100%;
+  align-items: flex-end;
+  flex-wrap: wrap;
+
+  .sortText {
+    display: flex;
+    font-family: "Nunito", serif;
+    cursor: default;
+    margin-bottom: 0.22rem;
+    font-size: 18px;
+    letter-spacing: 0.15rem;
+    font-weight: bold;
+    color: #fceddc;
+  }
+
+  .sort {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    background: #6e0d77;
+    border-radius: 10px;
+    padding-left: 8px;
+    height: 6.85vh;
+    transition: 0.3s;
+
+    .icon {
+      cursor: pointer;
+      transform: scale(-1, 1);
+      transition: 0.3s;
+
+      g {
+        stroke: #4f0e55;
+        fill: #e2d9cf;
+      }
+    }
+
+    .descIcon {
+      transform: scale(1, 1);
+    }
+
+    .Select {
+      margin: 0 0 0 0.3rem;
+    }
+  }
+}

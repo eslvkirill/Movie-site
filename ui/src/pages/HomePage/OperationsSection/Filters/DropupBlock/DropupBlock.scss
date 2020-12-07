@@ -1,0 +1,60 @@
+@import "../../../../../exportStyles/mixins.scss";
+
+.dropupBlock {
+  @include gradient-animation(200deg, #815a2d59, #5e0d9450, 0.3s, 15px);
+  width: 96%;
+  display: flex;
+  order: 1;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  box-shadow: 2px 2px 20px 1px #88490f23;
+  padding: 15px 10px;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+
+  .Select {
+    margin: 0.7rem 1rem;
+  }
+
+  .closeDropup {
+    cursor: pointer;
+    margin-top: -0.7rem;
+    font-size: 1.5rem;
+    color: #9b2fdad5;
+    text-shadow: 0px 2px 1px #2b083f94, 0px 2px 33px #c25f35a9,
+      0px 1px 3px #2b083f94;
+    transition: 0.3s;
+    height: 20%;
+
+    &:hover {
+      color: #e27a25a9;
+      transform: scale(0.99);
+      transition: 0.3s;
+    }
+
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+}
+
+.dropup-enter {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.dropup-enter-active {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.dropup-exit {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.dropup-exit-active {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}

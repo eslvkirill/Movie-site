@@ -1,36 +1,4 @@
-@mixin flexible() {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-@mixin gradient-animation($deg, $start, $end, $transTime) {
-  background-size: 100%;
-  background-image: linear-gradient($deg, $start, $end);
-  position: relative;
-  z-index: 100;
-
-  &:before {
-    background-image: linear-gradient($deg, $end, $start);
-    content: "";
-    display: block;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    width: 100%;
-    // border-radius: 40px;
-    z-index: -100;
-    transition: opacity $transTime;
-  }
-  &:hover {
-    &:before {
-      opacity: 1;
-    }
-  }
-}
+@import "../../exportStyles/mixins.scss";
 
 .FilmPage {
   font-family: "Amatic SC", sans-serif;
@@ -265,7 +233,8 @@
               150deg,
               rgba(189, 90, 49, 1),
               rgba(55, 16, 77, 1),
-              0.8s
+              0.8s,
+              0px
             );
             position: relative;
             color: rgb(255, 244, 232);
