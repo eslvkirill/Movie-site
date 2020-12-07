@@ -134,7 +134,13 @@ const Sort = (props) => {
       <div className="sortText">Сортировка по:</div>
       <div
         className="sort"
-        style={!props.arrowDirection ? { background: "#995506" } : {}}
+        style={
+          props.isFetch
+            ? {
+                background: "#450272d2",
+              }
+            : {}
+        }
       >
         <div
           onClick={() => {
@@ -142,6 +148,7 @@ const Sort = (props) => {
             props.setArrowDirection(!props.arrowDirection);
             props.paginate(1, props.sortValue, !props.arrowDirection);
             props.setFetch(true);
+            props.setLoading(true);
           }}
         >
           {renderSortArrows()}
@@ -155,6 +162,7 @@ const Sort = (props) => {
             props.setCurrentPage(1);
             props.paginate(1, event, props.arrowDirection);
             props.setFetch(true);
+            props.setLoading(true);
           }}
           noOptionsMessage={() => "Список пуст"}
           styles={selectStyle(

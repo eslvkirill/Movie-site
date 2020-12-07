@@ -1,0 +1,54 @@
+.authRegistration {
+  margin-top: 5.8rem;
+
+  .Buttons {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    .back {
+      text-decoration: none;
+      margin-right: 10px;
+      width: 33%;
+
+      .primaryBack {
+        margin-left: 0;
+        min-width: 7rem;
+        width: 20%;
+        font-size: 19px;
+        padding: 9px 3px;
+        background: rgb(151, 6, 151);
+        color: #fceddc;
+
+        &:hover {
+          background: rgb(173, 4, 173);
+          transition: 0.3s;
+        }
+      }
+    }
+
+    .successRegistration {
+      width: 67%;
+      font-size: 19px;
+      padding: 9px 3px;
+      color: #fceddc;
+      background: #018522;
+      transition: 0.3s;
+
+      &:hover {
+        background: #019c28;
+        transition: 0.3s;
+      }
+
+      &:disabled {
+        background: #ccc;
+        color: #000;
+        cursor: not-allowed;
+
+        &:hover {
+          background: #ccc;
+        }
+      }
+    }
+  }
+}
