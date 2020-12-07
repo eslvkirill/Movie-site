@@ -13,6 +13,7 @@ import {
 import Input from "../UiItem/Input/Input";
 import Button from "../UiItem/Button/Button";
 import Select from "../UiItem/Select/Select";
+import selectStyle from "../UiItem/Select/selectStyle";
 import FadeBlock from "../UiItem/FadeBlock/FadeBlock";
 import "./FilmList.scss";
 
@@ -466,6 +467,7 @@ export default class FilmList extends Component {
           closeMenuOnSelect={control.closeMenuOnSelect}
           noOptionsMessage={control.noOptionsMessage}
           value={control.value}
+          styles={selectStyle()}
         />
       );
     });

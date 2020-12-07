@@ -1,0 +1,33 @@
+@mixin flexible() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+@mixin gradient-animation($deg, $start, $end, $transTime, $borderRadius) {
+  background-size: 100%;
+  background-image: linear-gradient($deg, $start, $end);
+  position: relative;
+  z-index: 100;
+
+  &:before {
+    background-image: linear-gradient($deg, $end, $start);
+    content: "";
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    border-radius: $borderRadius;
+    z-index: -100;
+    transition: opacity $transTime;
+  }
+  &:hover {
+    &:before {
+      opacity: 1;
+    }
+  }
+}

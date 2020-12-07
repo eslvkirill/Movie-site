@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import selectStyle from "../../../../components/UiItem/Select/selectStyle";
 import Select from "../../../../components/UiItem/Select/Select";
 import Button from "../../../../components/UiItem/Button/Button";
 import BackItem from "./BackItem/BackItem";
@@ -15,14 +16,15 @@ const Cards = (props) => (
             backgroundImage: `linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.7)), 
           url("data:image/*;base64,${props.poster}")`,
             backgroundSize: "cover",
-            backgroundPosition: "center center",
+            backgroundPositionX: "center",
+            backgroundPositionY: "center",
             backgroundRepeat: "no-repeat",
           }}
         >
           <div className="contentCard">
             <div className="topOfCardContent">
               <div className="year">{props.year}г.</div>
-              <div className="rating">{props.rating}</div>
+              <div className="rating">{props.rating.toFixed(1)}</div>
             </div>
             <div className="titles">
               <div className="engTitle">{props.engTitle}</div>
@@ -34,10 +36,12 @@ const Cards = (props) => (
         <div
           className="BackSide"
           style={{
-            background: `linear-gradient(rgba(255, 255, 255, .1), rgba(0, 0, 0, 0.5)), ${props.backgroundColor}`,
+            backgroundImage: `linear-gradient(rgba(255, 255, 255, .1), rgba(0, 0, 0, 0.5))`,
+            backgroundColor: props.backgroundColor,
+            backgroundPositionX: "center",
+            backgroundPositionY: "center",
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
-            backgroundPosition: "center center",
           }}
         >
           <BackItem
@@ -54,9 +58,22 @@ const Cards = (props) => (
       <div className="categoryList">
         <div className="addLabel">Добавить в:</div>
         <Select
-          type="normal"
           placeholder="Выберите категорию"
           noOptionsMessage={() => "Список пуст"}
+          styles={selectStyle(
+            230,
+            15,
+            "#c76c04",
+            "#fff",
+            "#fff",
+            16,
+            "#fff",
+            "#fff",
+            "rgb(252, 237, 220)",
+            198,
+            "rgb(252, 237, 220)",
+            17
+          )}
         />
       </div>
       <div className="buttonsWrapper">
