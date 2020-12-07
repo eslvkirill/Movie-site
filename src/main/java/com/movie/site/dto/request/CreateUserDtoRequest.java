@@ -36,6 +36,6 @@ public class CreateUserDtoRequest {
     private String lastName;
 
     @NotBlank
-    @Size(max = 100)
+    @Size(min = 3, max = 100)
     private String username;
 }
