@@ -1,10 +1,13 @@
 package com.movie.site.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.movie.site.dto.response.LoginUserDtoResponse;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,11 +26,14 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
+    private final ObjectMapper objectMapper;
 
     private static final String USERNAME_PARAMETER = "login";
 
-    public SecurityConfig(@Lazy @Qualifier("userServiceImpl") UserDetailsService userDetailsService) {
+    public SecurityConfig(@Lazy @Qualifier("userServiceImpl") UserDetailsService userDetailsService,
+                          ObjectMapper objectMapper) {
         this.userDetailsService = userDetailsService;
+        this.objectMapper = objectMapper;
     }
 
     @Bean
@@ -53,7 +59,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
             .and()
                 .formLogin()
-                .successHandler((httpServletRequest, httpServletResponse, authentication) -> {
+                .successHandler((request, response, authentication) -> {
+                    LoginUserDtoResponse userDto = new LoginUserDtoResponse();
+                    userDto.setUsername(authentication.getName());
+
+                    authentication.getAuthorities().stream()
+                            .findFirst()
+                            .ifPresent(role -> userDto.setRole(role.toString()));
+
+                    response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+                    response.getOutputStream()
+                            .print(objectMapper.writeValueAsString(userDto));
                 })
                 .failureHandler((request, response, ex) ->
                         response.sendError(HttpStatus.NOT_FOUND.value(), ex.getMessage())
@@ -61,7 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter(USERNAME_PARAMETER)
             .and()
                 .logout()
-                .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> {
+                .logoutSuccessHandler((request, response, authentication) -> {
                 })
             .and()
                 .cors()

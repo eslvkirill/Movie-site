@@ -1,6 +1,7 @@
 package com.movie.site.service.impl;
 
 import com.movie.site.dto.request.CreateUserDtoRequest;
+import com.movie.site.dto.response.LoginUserDtoResponse;
 import com.movie.site.exception.UserNotFoundException;
 import com.movie.site.mapper.UserMapper;
 import com.movie.site.model.QUser;
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User create(CreateUserDtoRequest userDto) {
+    public LoginUserDtoResponse create(CreateUserDtoRequest userDto) {
         User user = userMapper.toEntity(userDto);
 
         String rawPassword = user.getPassword();
@@ -75,7 +76,7 @@ public class UserServiceImpl implements UserService {
 
         securityService.autoLogin(user, rawPassword);
 
-        return user;
+        return userMapper.toDto(user);
     }
 
     @Override

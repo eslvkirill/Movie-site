@@ -1,6 +1,7 @@
 package com.movie.site.api;
 
 import com.movie.site.dto.request.CreateUserDtoRequest;
+import com.movie.site.dto.response.LoginUserDtoResponse;
 import com.movie.site.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ public class UserRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@Valid @RequestBody CreateUserDtoRequest userDto) { // cookie here
-        userService.create(userDto);
+    public LoginUserDtoResponse create(@Valid @RequestBody CreateUserDtoRequest userDto) { // cookie here
+        return userService.create(userDto);
     }
 }
