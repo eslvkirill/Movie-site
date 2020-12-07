@@ -24,7 +24,7 @@ const Filters = (props) => {
         setCurrentPage={props.setCurrentPage}
         arrowDirection={props.arrowDirection}
         paginate={props.paginate}
-        setFetch={props.setFetch}
+        setLoading={props.setLoading}
       />
     </div>
   );

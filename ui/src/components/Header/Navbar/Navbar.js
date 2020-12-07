@@ -8,7 +8,7 @@ const Navbar = () => (
     <ul>
       <li>
         <Link className="list" to="/login">
-          Логин
+          Войти
         </Link>
       </li>
       <li>

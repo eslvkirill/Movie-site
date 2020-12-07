@@ -1,0 +1,50 @@
+.login {
+  .Buttons {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    .success {
+      margin-right: 0%;
+      width: 43%;
+      font-size: 19px;
+      padding: 9px 3px;
+      color: #fceddc;
+      background: rgb(196, 95, 0);
+      transition: 0.3s;
+
+      &:hover {
+        background: #d37101;
+        transition: 0.3s;
+      }
+
+      &:disabled {
+        background: #ccc;
+        color: #000;
+        cursor: not-allowed;
+
+        &:hover {
+          background: #ccc;
+        }
+      }
+    }
+
+    .regForm {
+      text-decoration: none;
+      width: 57%;
+
+      .primary {
+        width: 95%;
+        font-size: 19px;
+        padding: 9px 3px;
+        background: rgb(151, 6, 151);
+        color: #fceddc;
+
+        &:hover {
+          background: rgb(173, 4, 173);
+          transition: 0.3s;
+        }
+      }
+    }
+  }
+}

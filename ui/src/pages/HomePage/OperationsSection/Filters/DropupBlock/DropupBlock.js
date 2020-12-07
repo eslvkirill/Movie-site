@@ -93,7 +93,7 @@ const DropupBlock = (props) => {
       props.sortValue === undefined ? "" : props.sortValue,
       props.arrowDirection
     );
-    props.setFetch(true);
+    props.setLoading(true);
   };
 
   const renderSelects = () => {

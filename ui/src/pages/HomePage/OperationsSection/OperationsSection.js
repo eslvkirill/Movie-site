@@ -15,6 +15,7 @@ const OperationsSection = (props) => {
         paginate={props.paginate}
         arrowDirection={props.arrowDirection}
         setFetch={props.setFetch}
+        setLoading={props.setLoading}
       />
       <Sort
         options={props.options}
@@ -26,6 +27,7 @@ const OperationsSection = (props) => {
         paginate={props.paginate}
         isFetch={props.isFetch}
         setFetch={props.setFetch}
+        setLoading={props.setLoading}
       />
       <hr />
     </section>

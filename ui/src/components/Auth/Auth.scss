@@ -1,29 +1,46 @@
-.Auth {
+.auth {
   font-family: "Comic Sans MS", arial;
   width: 346px;
   display: flex;
   flex-direction: column;
-  margin: 10.5rem auto auto;
+  margin: 9rem auto auto;
 
-  p {
+  h1 {
     display: flex;
     align-items: center;
     justify-content: center;
     color: #db6736;
-    font-size: 2.2rem;
-    margin-bottom: 1.2rem;
-  }
-
-  .errorAuth {
-    color: #f01f30;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 0.7rem;
-    margin-top: 0.3rem;
-    font-size: 0.78rem;
+    margin-bottom: 1.3rem;
   }
 
   .Buttons {
+    margin-top: 0.5rem;
     display: flex;
+  }
+
+  .login,
+  .registration {
+    .renderInputs {
+      input + span {
+        width: calc(100% - 12px);
+        justify-content: flex-start;
+        margin-left: 12px;
+        margin-right: 22px;
+        margin-bottom: 8px;
+      }
+
+      div {
+        margin-bottom: 7px;
+      }
+    }
+
+    .errorLogin {
+      color: #f01f30;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 0.7rem;
+      margin-top: -0.2rem;
+      font-size: 0.78rem;
+    }
   }
 }

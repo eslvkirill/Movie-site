@@ -140,6 +140,7 @@ const HomePage = () => {
         setArrowDirection={setArrowDirection}
         setFetch={setFetch}
         isFetch={isFetch}
+        setLoading={setLoading}
       />
       <AllFilms
         sortValue={sortValue}
