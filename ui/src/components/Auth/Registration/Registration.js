@@ -6,6 +6,7 @@ import {
   validate,
   validateInputs,
 } from "../../../exportFunctions/validation/validation";
+import { useUserAuth } from "../../../containers/UserContext/UserContext";
 import Button from "../../../components/UiItem/Button/Button";
 import Input from "../../../components/UiItem/Input/Input";
 import "./Registration.scss";
@@ -77,8 +78,8 @@ function createFormControls() {
 const Registration = () => {
   const [formControls, setFormControls] = useState(createFormControls());
   const [isFormValid, setFormValid] = useState(false);
-  const [authorized, setAuthorized] = useState(false);
   const [authErrorMessage, setAuthErrorMessage] = useState();
+  const [user, setUser] = useUserAuth();
 
   const registrationHandler = async () => {
     try {
@@ -91,10 +92,7 @@ const Registration = () => {
         method: "post",
         url: "/api/users",
         data: authData,
-      }).then((response) => {
-        console.log(response);
-        setAuthorized(!authorized);
-      });
+      }).then((response) => setUser(response.data));
     } catch (e) {
       if (e.response.status === 400) {
         setAuthErrorMessage(Object.values(e.response.data.errors).toString());
@@ -151,7 +149,7 @@ const Registration = () => {
     });
   };
 
-  if (authorized) {
+  if (user !== null) {
     return <Redirect from="/registration" to="/" />;
   }
 

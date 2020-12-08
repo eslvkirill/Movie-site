@@ -73,6 +73,7 @@ const DropdownForm = (props) => {
         url: `/api/movies/${props.filmId}/reviews`,
         data: review,
       });
+      props.setReviewButtonActive(true);
 
       const lastPageResponse = await axios.get(
         `/api/movies/${props.filmId}/reviews?page=${props.totalPages - 1}`

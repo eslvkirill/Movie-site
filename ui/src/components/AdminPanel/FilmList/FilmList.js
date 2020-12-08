@@ -4,17 +4,17 @@ import {
   createInput,
   createColorInput,
   createInputFile,
-} from "../../exportFunctions/creationEntity/createInput";
-import { createSelect } from "../../exportFunctions/creationEntity/createSelect";
+} from "../../../exportFunctions/creationEntity/createInput";
+import { createSelect } from "../../../exportFunctions/creationEntity/createSelect";
 import {
   validate,
   validateForm,
-} from "../../exportFunctions/validation/validation";
-import Input from "../UiItem/Input/Input";
-import Button from "../UiItem/Button/Button";
-import Select from "../UiItem/Select/Select";
-import selectStyle from "../UiItem/Select/selectStyle";
-import FadeBlock from "../UiItem/FadeBlock/FadeBlock";
+} from "../../../exportFunctions/validation/validation";
+import Input from "../../UiItem/Input/Input";
+import Button from "../../UiItem/Button/Button";
+import Select from "../../UiItem/Select/Select";
+import selectStyle from "../../UiItem/Select/selectStyle";
+import FadeBlock from "../../UiItem/FadeBlock/FadeBlock";
 import "./FilmList.scss";
 
 function createNewInput(placeholder, errorMessage) {
@@ -475,11 +475,13 @@ export default class FilmList extends Component {
 
   render() {
     return (
-      <>
+      <div className="filmList">
         <FadeBlock
           showBlock={this.state.showBlock}
           rusTitle={this.state.film.rusTitle}
         />
+
+        <h2>Создание фильма</h2>
         <form
           className="FilmList"
           onSubmit={(event) => this.submitNewFilm(event)}
@@ -502,7 +504,7 @@ export default class FilmList extends Component {
             </Button>
           </div>
         </form>
-      </>
+      </div>
     );
   }
 }

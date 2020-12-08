@@ -1,5 +1,6 @@
 nav.Navbar {
   width: 100%;
+  margin-bottom: 20px;
 
   ul {
     font-family: "Exo", sans-serif;
@@ -7,77 +8,66 @@ nav.Navbar {
     display: flex;
     justify-content: flex-end;
     max-width: 1500px;
-    margin: 33px 2% 0 0;
+    margin: 33px 3% 0 0;
 
     li {
       list-style: none;
       position: relative;
-      padding: 16px;
+      padding: 16px 6px 0;
 
-      &:hover {
+      a {
         transition: 0.3s ease;
-        box-shadow: 1px 5px 10px -5px black;
-        background-color: #bd5a31;
-        cursor: pointer;
+        text-decoration: none;
+        padding: 16px 32px;
+        text-shadow: 0px 2px 1px #be6037, 0px 1px 3px #9b4724,
+          0px 1px 2px #be6037;
+        color: #fceddc;
+        font-weight: bold;
 
-        a {
-          text-decoration: none;
-        }
-
-        .list {
+        &:hover {
+          transition: 0.3s ease;
+          box-shadow: 1px 5px 10px -5px black;
+          background-color: #bd5a31;
           color: #fafafa;
-          color: #f4e1ff;
+          padding: 16px 32px;
+          cursor: pointer;
         }
-      }
-
-      &:active {
-        .list {
+        &:active {
           color: #37104d;
         }
       }
 
-      a {
-        text-decoration: none;
-        padding: 0 20px;
-        color: rgb(255, 198, 177);
-        color: #e9c3ff;
+      .active {
+        transition: 0.3s ease;
+        box-shadow: 1px 5px 10px -5px black;
+        background-color: #bd5a31;
+        cursor: pointer;
+        padding: 16px 32px;
         color: #fafafa;
-        font-weight: bold;
+
+        &:hover {
+          box-shadow: 1px 5px 10px -5px black;
+          background-color: #bd5a31;
+          color: #fafafa;
+          cursor: pointer;
+
+          &:active {
+            color: #fdaac3;
+          }
+        }
+
+        &:active {
+          color: #37104d;
+        }
       }
-    }
 
-    li:last-child {
-      cursor: default;
-      box-shadow: 1px 5px 10px -5px black;
-      background-color: #bd5a31;
-      padding: 16px 20px;
-      order: -1;
-
-      a {
-        color: #fef8d7;
-        color: #fafafa;
-        color: #f4e1ff;
-      }
-    }
-
-    li:first-child:hover ~ li:last-child,
-    li:nth-child(2):hover ~ li:last-child,
-    li:nth-child(3):hover ~ li:last-child {
-      box-shadow: none;
-      background-color: transparent;
-    }
-
-    li:first-child:hover ~ li:last-child a,
-    li:nth-child(2):hover ~ li:last-child a,
-    li:nth-child(3):hover ~ li:last-child a {
-      color: #e9c3ff;
-      color: #fafafa;
-    }
-
-    li:nth-child(4) {
       &:hover {
-        box-shadow: none;
-        background-color: transparent;
+        a {
+          background: #5f0892;
+          &:active {
+            color: #fafafa;
+          }
+        }
       }
     }
   }
