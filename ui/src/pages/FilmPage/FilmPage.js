@@ -6,9 +6,12 @@ import {
   faImdb,
   faMediumM,
 } from "@fortawesome/free-brands-svg-icons";
+import { Link } from "react-scroll";
 import ReviewSection from "./ReviewSection/ReviewSection";
 import FilmRating from "./FilmRating/FilmRating";
 import ContentLoader from "../../components/UiItem/Loaders/ContentLoader/ContentLoader";
+import { useUserAuth } from "../../containers/UserContext/UserContext";
+import Backdrop from "../../components/UiItem/Backdrop/Backdrop";
 import "./FilmPage.scss";
 
 export default function FilmPage(props) {
@@ -17,14 +20,16 @@ export default function FilmPage(props) {
   const [userRating, setUserRating] = useState(0);
   const [totalRating, setTotalRating] = useState(0);
   const [numberOfRatings, setNumberOfRatings] = useState(0);
+  const [reviewButtonActive, setReviewButtonActive] = useState(false);
+  const [user] = useUserAuth();
+  const [authForm, setAuthForm] = useState(false);
 
   useEffect(() => {
-    const verificationReview = async () => {
+    const getMovie = async () => {
       try {
         await axios
           .get(`/api/movies/${props.match.params.id}`)
           .then((response) => {
-            console.log(response.data);
             const film = response.data;
             let sourceData = film.sourceData;
 
@@ -70,13 +75,14 @@ export default function FilmPage(props) {
             setUserRating(film.userRating);
             setTotalRating(film.totalRating);
             setNumberOfRatings(film.numberOfRatings);
+            setReviewButtonActive(film.userHasAlreadyWrittenReview);
             setLoading(false);
           });
       } catch (e) {
         console.log(e);
       }
     };
-    verificationReview();
+    getMovie();
   }, [props.match.params.id]);
 
   const backgroundStyle = (picture) => {
@@ -205,7 +211,12 @@ export default function FilmPage(props) {
                   </div>
                 </div>
               </div>
+              {authForm ? (
+                <Backdrop authForm={authForm} setAuthForm={setAuthForm} />
+              ) : null}
               <FilmRating
+                user={user}
+                setAuthForm={setAuthForm}
                 filmId={props.match.params.id}
                 userRating={userRating}
                 setUserRating={setUserRating}
@@ -233,17 +244,35 @@ export default function FilmPage(props) {
                   </div>
                 </div>
               </div>
+
               <div className="BottomOfSection">
                 <div className="Links">
-                  <a href="#trailer" className="TrailerButton">
+                  <Link
+                    className="TrailerButton"
+                    activeClass="active"
+                    to="trailer"
+                    spy={true}
+                    smooth={true}
+                    hashSpy={true}
+                    offset={0}
+                    duration={900}
+                    isDynamic={true}
+                  >
                     Посмотреть трейлер
-                  </a>
-                  <a
-                    href="#ReviewSection"
+                  </Link>
+                  <Link
                     className="TrailerButton ReviewButton"
+                    activeClass="active"
+                    to="ReviewSection"
+                    spy={true}
+                    smooth={true}
+                    hashSpy={true}
+                    offset={0}
+                    duration={900}
+                    isDynamic={true}
                   >
                     Прочитать отзывы
-                  </a>
+                  </Link>
                 </div>
                 <div className="BuyButton">
                   <a
@@ -323,11 +352,14 @@ export default function FilmPage(props) {
           </section>
           <ReviewSection
             filmId={props.match.params.id}
+            user={user}
             reviews={reviews}
             rusTitle={rusTitle}
             engTitle={engTitle}
             pageColor1={pageColor1}
             pageColor2={pageColor2}
+            reviewButtonActive={reviewButtonActive}
+            setReviewButtonActive={setReviewButtonActive}
           />
         </>
       )}

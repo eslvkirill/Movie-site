@@ -14,7 +14,7 @@ const HomePage = () => {
   const [activeButton, setActiveButton] = useState(true);
   const [isFetch, setFetch] = useState(true);
 
-  const [arrowDirection, setArrowDirection] = useState(false);
+  const [arrowDirection, setArrowDirection] = useState(true);
   const [sortValue, setSortValue] = useState();
   const [filterContent, setFilterContent] = useState({});
 

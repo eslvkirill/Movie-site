@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import axios from "axios";
 import Input from "../../UiItem/Input/Input";
 import Button from "../../UiItem/Button/Button";
-import ContentLoader from "../../UiItem/Loaders/ContentLoader/ContentLoader";
 import GenreItem from "./GenreItem/GenreItem";
 import {
   validate,
   validateInputs,
 } from "../../../exportFunctions/validation/validation";
 import "./GenreList.scss";
+import PaginateLoader from "../../UiItem/Loaders/ButtonsLoader/PaginateLoader/PaginateLoader";
 
 export default class GenreList extends Component {
   state = {
@@ -17,7 +17,7 @@ export default class GenreList extends Component {
     newItem: "",
     newItemId: "",
     value: "",
-    disabled: false,
+    dropdown: false,
     formControls: {
       text: {
         value: "",
@@ -223,15 +223,24 @@ export default class GenreList extends Component {
         </form>
         <hr />
         {this.state.loading ? (
-          <ContentLoader />
+          <PaginateLoader />
         ) : (
-          <GenreItem
-            genres={this.state.genres}
-            Click={this.button1Click}
-            Click2={this.button2Click}
-            onChangeHandler={this.editHandler}
-            // disabled={this.state.disabled}
-          />
+          <>
+            <Button
+              type="success"
+              onClick={() => this.setState({ dropdown: !this.state.dropdown })}
+            >
+              Развернуть список жанров
+              <span className={this.state.dropdown ? "down" : "up"}>➤</span>
+            </Button>
+            <GenreItem
+              genres={this.state.genres}
+              Click={this.button1Click}
+              Click2={this.button2Click}
+              onChangeHandler={this.editHandler}
+              dropdown={this.state.dropdown}
+            />
+          </>
         )}
       </div>
     );

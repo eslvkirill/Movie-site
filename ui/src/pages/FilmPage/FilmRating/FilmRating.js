@@ -52,11 +52,14 @@ const FilmRating = (props) => {
         precision={0.5}
         value={rating === null ? rating : rating}
         onChange={(event, newValue) => {
-          if (newValue) {
-            props.setUserRating(newValue);
-            if (rating !== null) editRatingHandler(newValue);
-            if (rating === null) addRatingHandler(newValue);
-          }
+          if (props.user !== null) {
+            if (newValue) {
+              props.setUserRating(newValue);
+              if (rating !== null) editRatingHandler(newValue);
+              if (rating === null) addRatingHandler(newValue);
+            }
+            props.setAuthForm(false);
+          } else props.setAuthForm(true);
         }}
         style={rating === null ? { order: 2 } : {}}
       />
@@ -88,13 +91,15 @@ const FilmRating = (props) => {
         >
           {rating !== null ? "✖" : "Оценить ➤"}
         </div>
-        <div
-          className="rating"
-          title={`Ваша оценка: ${rating}`}
-          style={rating === null ? { width: 0, border: "none" } : {}}
-        >
-          {rating !== null ? rating : null}
-        </div>
+        {props.user !== null ? (
+          <div
+            className="rating"
+            title={`Ваша оценка: ${rating}`}
+            style={rating === null ? { width: 0, border: "none" } : {}}
+          >
+            {rating !== null ? rating : null}
+          </div>
+        ) : null}
       </div>
     </div>
   );

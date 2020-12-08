@@ -89,8 +89,25 @@
   }
 
   .emptyReviews {
-    margin-top: 4rem;
+    font-family: "Nunito", serif;
+    letter-spacing: 0.2rem;
+    margin-top: 6rem;
+    cursor: default;
     font-size: 1.3rem;
     color: #f7e7c9;
+
+    a {
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #f8cc7b;
+      transition: 0.3s;
+
+      &:hover {
+        color: #f8b53a;
+        transition: 0.3s;
+      }
+    }
   }
 }

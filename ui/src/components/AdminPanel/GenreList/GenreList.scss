@@ -1,10 +1,11 @@
-$primary-color: rgb(252, 237, 220);
+$primary-color: #fceddc;
 
 .GenreList {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 50%;
+  margin-top: 1.5rem;
 
   form {
     display: flex;
@@ -21,7 +22,7 @@ $primary-color: rgb(252, 237, 220);
     }
 
     &:focus {
-      background: rgb(255, 244, 232);
+      background: #fff4e8;
       transition: 0.3s;
     }
 
@@ -57,8 +58,52 @@ $primary-color: rgb(252, 237, 220);
 
   hr {
     background: $primary-color;
-    width: 90%;
+    width: 85%;
     margin-top: 1rem;
     border-width: 2px;
+  }
+
+  > Button.success {
+    margin-top: 0.5rem;
+    width: 23rem;
+    font-size: 19px;
+    padding: 24px 4px;
+    background: #924f02;
+    border: 2.5px solid #fafafa8a;
+    box-shadow: none;
+    border-radius: 5px;
+    color: rgb(255, 244, 232);
+    display: flex;
+    align-items: top;
+    justify-content: center;
+
+    &:hover {
+      background: #aa5c02;
+      border: 2.5px solid #fafafaab;
+      color: rgb(255, 248, 241);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    span {
+      display: flex;
+      margin-left: 0.27rem;
+      margin-top: 0.07rem;
+      font-weight: bold;
+      transition: 0.3s;
+      font-size: 13px;
+    }
+
+    .down {
+      transform: rotate(270deg);
+      transition: 0.3s;
+    }
+
+    .up {
+      transform: rotate(90deg);
+      transition: 0.2s;
+    }
   }
 }

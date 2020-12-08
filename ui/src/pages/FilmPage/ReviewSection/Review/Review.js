@@ -22,12 +22,17 @@ const Review = (props) => (
             </div>
             <div className="rightSide">
               <div className="reviewDate">{review.datetime}</div>
-              <div
-                className="delete"
-                onClick={() => props.onRemoveClick(review.id)}
-              >
-                ✖
-              </div>
+              {props.user !== null &&
+              props.user.username === review.username ? (
+                <div
+                  className="delete"
+                  onClick={() => props.onRemoveClick(review.id)}
+                >
+                  ✖
+                </div>
+              ) : (
+                ""
+              )}
             </div>
           </div>
           <div className="reviewsTitle">
@@ -46,20 +51,24 @@ const Review = (props) => (
               disabled={!review.open}
             />
           </div>
-          <div className="reviewEdit">
-            <div
-              id={review.id}
-              onClick={() =>
-                !review.open
-                  ? props.onOpenClick(review.id)
-                  : props.onSaveClick(review.id)
-              }
-              style={{ color: props.pageColor1 }}
-            >
-              <span>&#9998;</span>
-              {review.open === true ? "Сохранить" : "Редактировать"}
+          {props.user !== null && props.user.username === review.username ? (
+            <div className="reviewEdit">
+              <div
+                id={review.id}
+                onClick={() =>
+                  !review.open
+                    ? props.onOpenClick(review.id)
+                    : props.onSaveClick(review.id)
+                }
+                style={{ color: props.pageColor1 }}
+              >
+                <span>&#9998;</span>
+                {review.open === true ? "Сохранить" : "Редактировать"}
+              </div>
             </div>
-          </div>
+          ) : (
+            ""
+          )}
         </div>
       </CSSTransition>
     ))}

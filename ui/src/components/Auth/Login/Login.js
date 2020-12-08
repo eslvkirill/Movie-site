@@ -6,6 +6,7 @@ import {
   validate,
   validateInputs,
 } from "../../../exportFunctions/validation/validation";
+import { useUserAuth } from "../../../containers/UserContext/UserContext";
 import Button from "../../../components/UiItem/Button/Button";
 import Input from "../../../components/UiItem/Input/Input";
 import "./Login.scss";
@@ -45,8 +46,8 @@ function createFormControls() {
 const Login = () => {
   const [formControls, setFormControls] = useState(createFormControls());
   const [isFormValid, setFormValid] = useState(false);
-  const [authorized, setAuthorized] = useState(false);
   const [authStatus, setAuthStatus] = useState(0);
+  const [user, setUser] = useUserAuth();
 
   const loginHandler = async (login, password) => {
     try {
@@ -63,9 +64,9 @@ const Login = () => {
         contentType: "application/x-www-form-urlencoded",
         url: "/login",
         data: encodeURI(`login=${login}&password=${password}`),
-      }).then(() => setAuthorized(!authorized));
+      }).then((response) => setUser(response.data));
     } catch (e) {
-      console.log(e.response.status);
+      console.log(e.response);
       if (e.response.status === 404) {
         setAuthStatus(e.response.status);
         setFormControls(createFormControls());
@@ -111,13 +112,14 @@ const Login = () => {
     });
   };
 
-  if (authorized) {
+  if (user !== null) {
     return <Redirect from="/login" to="/" />;
   }
 
   return (
     <form onSubmit={submitHandler} className="login">
       <div className="renderInputs">{renderInputs()}</div>
+
       {authStatus === 404 && (
         <span className="errorLogin">
           *Пользователь с такими данными не зарегистрирован

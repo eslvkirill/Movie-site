@@ -1,14 +1,33 @@
 import React from "react";
-import SortLoader from "../../../../components/UiItem/Loaders/ButtonsLoader/SortLoader/SortLoader";
 import Select from "../../../../components/UiItem/Select/Select";
 import selectStyle from "../../../../components/UiItem/Select/selectStyle";
 import "./Sort.scss";
 
-const Sort = (props) => {
-  const renderSortArrows = () => {
-    if (!props.isFetch) {
-      if (props.arrowDirection) {
-        return (
+const Sort = (props) => (
+  <div className="sortWrapper">
+    <div className="sortText">Сортировка по:</div>
+    <div
+      className="sort"
+      style={
+        props.isFetch
+          ? {
+              opacity: "0.7",
+              transition: "0.3s",
+              pointerEvents: "none",
+            }
+          : {}
+      }
+    >
+      <div
+        onClick={() => {
+          props.setCurrentPage(1);
+          props.setArrowDirection(!props.arrowDirection);
+          props.paginate(1, props.sortValue, !props.arrowDirection);
+          props.setFetch(true);
+          props.setLoading(true);
+        }}
+      >
+        {props.arrowDirection ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="icon ascIcon"
@@ -72,9 +91,7 @@ const Sort = (props) => {
               </g>
             </g>
           </svg>
-        );
-      } else {
-        return (
+        ) : (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="icon descIcon"
@@ -124,82 +141,54 @@ const Sort = (props) => {
               </g>
             </g>
           </svg>
-        );
-      }
-    } else return <SortLoader />;
-  };
-
-  return (
-    <div className="sortWrapper">
-      <div className="sortText">Сортировка по:</div>
-      <div
-        className="sort"
-        style={
-          props.isFetch
-            ? {
-                background: "#450272d2",
-              }
-            : {}
-        }
-      >
-        <div
-          onClick={() => {
-            props.setCurrentPage(1);
-            props.setArrowDirection(!props.arrowDirection);
-            props.paginate(1, props.sortValue, !props.arrowDirection);
-            props.setFetch(true);
-            props.setLoading(true);
-          }}
-        >
-          {renderSortArrows()}
-        </div>
-        <Select
-          isMulti={false}
-          isSearchable={false}
-          options={props.options}
-          defaultValue={props.options[0]}
-          onChange={(event) => {
-            props.setCurrentPage(1);
-            props.paginate(1, event, props.arrowDirection);
-            props.setFetch(true);
-            props.setLoading(true);
-          }}
-          noOptionsMessage={() => "Список пуст"}
-          styles={selectStyle(
-            272,
-            15,
-            "#fceddcd8",
-            "#995506",
-            "#995506",
-            20,
-            "#995506",
-            "#b3752f81",
-            "#4d0477b9",
-            270,
-            "#4d0477b9",
-            15,
-            4,
-            "85%",
-            3.35,
-            "solid",
-            "#b3752f81",
-            "#4d0477b9",
-            "#b3752f81",
-            "#4d0477b9",
-            "#b3752f81",
-            17,
-            230,
-            "relative",
-            -2,
-            "pointer",
-            "12%",
-            -8,
-            "hidden"
-          )}
-        />
+        )}
       </div>
+      <Select
+        isMulti={false}
+        isSearchable={false}
+        options={props.options}
+        defaultValue={props.options[0]}
+        onChange={(event) => {
+          props.setCurrentPage(1);
+          props.paginate(1, event, props.arrowDirection);
+          props.setFetch(true);
+          props.setLoading(true);
+        }}
+        noOptionsMessage={() => "Список пуст"}
+        styles={selectStyle(
+          272,
+          15,
+          "#fceddcd8",
+          "#995506",
+          "#995506",
+          20,
+          "#995506",
+          "#b3752f81",
+          "#4d0477b9",
+          270,
+          "#4d0477b9",
+          15,
+          4,
+          "85%",
+          3.35,
+          "solid",
+          "#b3752f81",
+          "#4d0477b9",
+          "#b3752f81",
+          "#4d0477b9",
+          "#b3752f81",
+          17,
+          230,
+          "relative",
+          -2,
+          "pointer",
+          "12%",
+          -8,
+          "hidden"
+        )}
+      />
     </div>
-  );
-};
+  </div>
+);
 
 export default Sort;

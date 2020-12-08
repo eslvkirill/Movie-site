@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Button from "../../../components/UiItem/Button/Button";
 import DropdownForm from "./DropdownForm/DropdownForm";
@@ -14,18 +15,7 @@ const ReviewSection = (props) => {
   const [totalPages, setTotalPages] = useState(props.reviews.totalPages);
   const [currentPage, setCurrentPage] = useState(1);
   const [dropdown, setDropdawn] = useState(false);
-  const [reviewButtonActive, setReviewButtonActive] = useState(false);
   const [, setFormControls] = useState("");
-
-  // useEffect(() => {
-  //   const verificationReview = async () => {
-  //     const response = await axios.get(
-  //       `/api/movies/${props.filmId}/reviews/verification`
-  //     );
-  //     setReviewButtonActive(response.data);
-  //   };
-  //   verificationReview();
-  // }, []);
 
   const paginate = async (pageNumber) => {
     const response = await axios.get(
@@ -60,6 +50,7 @@ const ReviewSection = (props) => {
       setTotalPages(() => totalPages - 1);
       setCurrentPage(currentPage - 1);
     }
+    props.setReviewButtonActive(false);
   };
 
   const openHandlerClick = async (reviewId) => {
@@ -114,9 +105,9 @@ const ReviewSection = (props) => {
         setReviews(reviews);
         setFormControls(event.target.value);
 
-        if (review[field] === "") {
-          console.log(field);
-        }
+        // if (review[field] === "") {
+        //   console.log(field);
+        // }
       }
       return review;
     });
@@ -142,7 +133,7 @@ const ReviewSection = (props) => {
       <div className="reviewTitle">Отзывы на фильм {props.rusTitle}</div>
       <hr className="reviewLine" />
 
-      {!reviewButtonActive ? (
+      {props.user !== null && !props.reviewButtonActive ? (
         <Button type="success" onClick={() => setDropdawn(!dropdown)}>
           Оставить свой отзыв{" "}
           <span className={dropdown ? "down" : "up"}>➤</span>
@@ -164,13 +155,14 @@ const ReviewSection = (props) => {
           totalPages={totalPages}
           setTotalPages={setTotalPages}
           paginate={paginate}
-          setReviewButtonActive={setReviewButtonActive}
+          setReviewButtonActive={props.setReviewButtonActive}
         />
       </div>
 
       {totalElements !== 0 && reviews.length ? (
         <div className="reviews">
           <Review
+            user={props.user}
             pageColor1={props.pageColor1}
             pageColor2={props.pageColor2}
             reviews={reviews}
@@ -179,6 +171,7 @@ const ReviewSection = (props) => {
             onEditTextareaChange={editHandlerTextareaReview}
             onOpenClick={openHandlerClick}
             onSaveClick={saveHandlerClick}
+            setReviewButtonActive={props.setReviewButtonActive}
           />
           <Pagination
             currentPage={currentPage}
@@ -187,7 +180,10 @@ const ReviewSection = (props) => {
           />
         </div>
       ) : (
-        <div className="emptyReviews">Отзывов на этот фильм пока нет</div>
+        <div className="emptyReviews">
+          Пока их нет, <Link to="/login">ВОЙДИТЕ</Link>, чтобы написать первый
+          отзыв
+        </div>
       )}
     </div>
   );

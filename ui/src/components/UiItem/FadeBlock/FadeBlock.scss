@@ -6,6 +6,8 @@
   height: auto;
   padding: 2px;
   position: absolute;
+  z-index: 10000;
+
   right: 22px;
   color: rgb(255, 244, 232);
   top: 22px;
@@ -13,7 +15,6 @@
   flex-wrap: wrap;
   box-shadow: -8px 8px 9px 0px rgba(0, 0, 0, 0.33);
   cursor: default;
-  z-index: 1000;
 
   h1 {
     margin-left: 10px;

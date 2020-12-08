@@ -2,7 +2,8 @@
 
 .FilmPage {
   font-family: "Amatic SC", sans-serif;
-  position: absolute;
+  position: relative;
+  bottom: 106px;
   min-height: 100vh;
   min-width: 100vw;
 
@@ -63,7 +64,7 @@
         color: rgb(255, 244, 232);
 
         p {
-          animation-delay: 0.5s;
+          animation-delay: 0.1s;
 
           &::before {
             background: rgba(189, 90, 49, 1);
@@ -82,7 +83,7 @@
 
         p {
           color: #fafafa;
-          animation-delay: 1.66s;
+          animation-delay: 1.2s;
 
           &::before {
             margin-top: 8px;
@@ -191,6 +192,7 @@
 
           .TrailerButton {
             @include flexible();
+            cursor: pointer;
             width: 46%;
             opacity: 0.95;
             background: rgba(189, 91, 49, 0.456);
@@ -642,7 +644,7 @@
     height: 100%;
     transform-origin: right;
     animation: reveralText 1s ease-in-out forwards;
-    animation-delay: 2s;
+    animation-delay: 1.5s;
   }
 }
 
@@ -660,8 +662,8 @@
 .RightSideOfTitle {
   opacity: 0;
   display: inline-block;
-  animation: fadeInBottom 0.5s linear forwards;
-  animation-delay: 3.5s;
+  animation: fadeInBottom 1s linear forwards;
+  animation-delay: 3s;
 }
 
 @keyframes reveralTextReverse {
