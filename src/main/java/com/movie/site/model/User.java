@@ -1,16 +1,16 @@
 package com.movie.site.model;
 
+import com.movie.site.model.enums.MovieOperation;
 import com.movie.site.model.enums.Role;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Entity
 @Data
@@ -32,6 +32,28 @@ public class User implements Serializable, UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "cart_detail",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_id"))
+    private Set<Movie> cart;
+
+    public boolean addToCart(Movie movie) {
+        return cart.add(movie);
+    }
+
+    public boolean removeFromCart(Movie movie) {
+        return cart.remove(movie);
+    }
+
+    public void clearCart() {
+        cart.clear();
+    }
+
+    public MovieOperation getMovieOperation(Movie movie) {
+        return cart.contains(movie) ? MovieOperation.REMOVE : MovieOperation.ADD;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

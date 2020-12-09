@@ -381,4 +381,22 @@
             <column name="role" value="ADMIN"/>
         </insert>
     </changeSet>
+
+    <changeSet id="2020-12-07 create table with many-to-many relationship
+        to implement shopping cart" author="Befors">
+        <createTable tableName="cart_detail">
+            <column name="user_id" type="bigint">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_cart_detail"
+                             foreignKeyName="fk_cd_user_id"
+                             references="user(id)"/>
+            </column>
+            <column name="movie_id" type="bigint">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_cart_detail"
+                             foreignKeyName="fk_cd_movie_id"
+                             references="movie(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

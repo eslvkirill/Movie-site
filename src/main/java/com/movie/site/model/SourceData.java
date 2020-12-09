@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -27,7 +28,21 @@ public class SourceData implements Serializable {
     @Enumerated(EnumType.STRING)
     private Source source;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SourceData that = (SourceData) o;
+        return source == that.source &&
+                movie.equals(that.movie);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(source, movie);
+    }
 }
