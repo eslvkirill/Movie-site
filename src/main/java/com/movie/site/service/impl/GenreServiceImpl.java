@@ -46,7 +46,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Genre> findAllByIds(Iterable<Long> ids) {
+    public Set<Genre> findAllByIdsLocal(Iterable<Long> ids) {
         Set<Genre> genres = genreRepository.findAllByIds(ids);
 
         if (genres.isEmpty()) {

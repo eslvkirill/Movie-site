@@ -107,7 +107,7 @@ public class MovieRestController {
             @PageableDefault(size = 9) Pageable pageable,
             @Valid GetAllMovieDtoRequest movieDto,
             @QuerydslPredicate(root = Movie.class) Predicate predicate) {
-        return movieService.findAll(pageable, predicate);
+        return movieService.findAll(predicate, pageable);
     }
 
     @PostMapping("/{id}/ratings")

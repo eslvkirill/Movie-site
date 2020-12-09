@@ -410,23 +410,23 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="movie_catalog">
+        <createTable tableName="category_item">
             <column name="user_id" type="bigint">
                 <constraints primaryKey="true"
-                             primaryKeyName="pk_movie_catalog"
-                             foreignKeyName="fk_mc_user_id"
+                             primaryKeyName="pk_category_item"
+                             foreignKeyName="fk_ci_user_id"
                              references="user(id)"/>
             </column>
             <column name="movie_id" type="bigint">
                 <constraints primaryKey="true"
-                             primaryKeyName="pk_movie_catalog"
-                             foreignKeyName="fk_mc_movie_id"
+                             primaryKeyName="pk_category_item"
+                             foreignKeyName="fk_ci_movie_id"
                              references="movie(id)"/>
             </column>
             <column name="category_id" type="bigint">
                 <constraints primaryKey="true"
-                             primaryKeyName="pk_movie_catalog"
-                             foreignKeyName="fk_mc_category_id"
+                             primaryKeyName="pk_category_item"
+                             foreignKeyName="fk_ci_category_id"
                              references="category(id)"/>
             </column>
         </createTable>

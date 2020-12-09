@@ -18,5 +18,5 @@ public interface CategoryMapper {
 
     Category update(UpdateCategoryDtoRequest categoryDto, @MappingTarget Category genre);
 
-    List<CategoryDtoResponse> toDtoList(List<Category> categories);
+    List<CategoryDtoResponse> toDtoList(Iterable<Category> categories);
 }

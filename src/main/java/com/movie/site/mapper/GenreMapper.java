@@ -16,7 +16,7 @@ public interface GenreMapper {
 
     Genre toEntity(CreateGenreDtoRequest genreDto);
 
-    List<GenreDtoResponse> toDtoList(List<Genre> genres);
+    List<GenreDtoResponse> toDtoList(Iterable<Genre> genres);
 
     Genre update(UpdateGenreDtoRequest genreDto, @MappingTarget Genre genre);
 }

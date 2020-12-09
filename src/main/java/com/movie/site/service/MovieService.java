@@ -2,10 +2,8 @@ package com.movie.site.service;
 
 import com.movie.site.dto.request.*;
 import com.movie.site.dto.response.*;
-import com.movie.site.exception.ForbiddenException;
 import com.movie.site.model.Movie;
 import com.movie.site.model.User;
-import com.movie.site.model.enums.Role;
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +25,7 @@ public interface MovieService {
 
     Page<ReviewDtoResponse> findAllReviews(Long id, Pageable pageable);
 
-    Page<GetAllMovieDtoResponse> findAll(Pageable pageable, Predicate predicate);
+    Page<GetAllMovieDtoResponse> findAll(Predicate predicate, Pageable pageable);
 
     Movie addRating(Long id, CreateRatingDtoRequest ratingDto);
 
@@ -37,18 +35,12 @@ public interface MovieService {
 
     Movie findByIdLocal(Long id);
 
-    List<GetAllDetailsMovieDtoResponse> findAllByPossibleBuyer(User user,
-                                                               Pageable pageable);
-
     void update(Long id, UpdateMovieDtoRequest movieDto);
 
     void updateActivity(Long id);
 
     SaveMovieDtoResponse findById(Long id);
 
-    static void checkPermissionToAccessMovie(Movie movie, User user) {
-        if (!movie.isActive() && (user == null || !user.getAuthorities().contains(Role.ADMIN))) {
-            throw new ForbiddenException();
-        }
-    }
+    List<GetCartMovieDtoResponse> findAllByPossibleBuyer(User user,
+                                                         Pageable pageable);
 }

@@ -22,5 +22,5 @@ public interface PersonMapper {
     @Mapping(target = "name", expression = "java(person.getFullName())")
     GetAllPersonDtoResponse toGetAllDto(Person person);
 
-    List<GetAllPersonDtoResponse> toGetAllDtoList(List<Person> people);
+    List<GetAllPersonDtoResponse> toGetAllDtoList(Iterable<Person> people);
 }

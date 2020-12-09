@@ -19,8 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.movie.site.service.MovieService.checkPermissionToAccessMovie;
-
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -33,9 +31,6 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public ReviewDtoResponse create(Movie movie, CreateReviewDtoRequest reviewDto) {
         User user = securityService.getCurrentUser();
-
-        checkPermissionToAccessMovie(movie, user);
-
         Review review = reviewMapper.toEntity(reviewDto);
         review.setMovie(movie);
         review.setUser(user);

@@ -44,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDtoResponse update(Long id, UpdateCategoryDtoRequest categoryDto) {
-        Category category = findCategoryById(id);
+        Category category = findByIdLocal(id);
 
         categoryMapper.update(categoryDto, category);
 
@@ -54,7 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = true)
     public Collection<CategoryDtoResponse> findAll() {
-        return categoryMapper.toDtoList(categoryRepository.findAll(Sort.by("id")));
+        return categoryMapper.toDtoList(findAllLocal());
     }
 
     @Override
@@ -70,8 +70,16 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElse(Map.of());
     }
 
-    private Category findCategoryById(Long id) {
+    @Override
+    @Transactional(readOnly = true)
+    public Category findByIdLocal(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException(id));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<Category> findAllLocal() {
+        return categoryRepository.findAll(Sort.by("id"));
     }
 }

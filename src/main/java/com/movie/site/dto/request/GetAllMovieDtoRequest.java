@@ -1,6 +1,7 @@
 package com.movie.site.dto.request;
 
 import com.movie.site.annotation.Zero;
+import com.movie.site.model.CategoryItem;
 import com.movie.site.model.enums.AgeRating;
 import com.movie.site.model.enums.Language;
 import lombok.AllArgsConstructor;
@@ -92,4 +93,10 @@ public class GetAllMovieDtoRequest {
 
     @Null
     private Set<Long> actors;
+
+    @Null
+    private Set<Long> possibleBuyers;
+
+    @Null
+    private Set<CategoryItem> categoryItems;
 }

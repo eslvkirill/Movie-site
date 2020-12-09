@@ -1,17 +1,15 @@
 package com.movie.site.service.impl;
 
 import com.movie.site.dto.request.CreateUserDtoRequest;
-import com.movie.site.dto.response.GetAllDetailsMovieDtoResponse;
+import com.movie.site.dto.response.GetAllMovieDtoResponse;
+import com.movie.site.dto.response.GetCartMovieDtoResponse;
 import com.movie.site.dto.response.LoginUserDtoResponse;
-import com.movie.site.exception.CartDetailNotFoundException;
-import com.movie.site.exception.RepeatedCartDetailException;
-import com.movie.site.exception.UserNotFoundException;
+import com.movie.site.exception.*;
 import com.movie.site.mapper.UserMapper;
-import com.movie.site.model.Movie;
-import com.movie.site.model.QUser;
-import com.movie.site.model.User;
+import com.movie.site.model.*;
 import com.movie.site.model.enums.Role;
 import com.movie.site.repository.UserRepository;
+import com.movie.site.service.CategoryService;
 import com.movie.site.service.MovieService;
 import com.movie.site.service.SecurityService;
 import com.movie.site.service.UserService;
@@ -20,6 +18,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,8 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.movie.site.service.MovieService.checkPermissionToAccessMovie;
-
 @Service
 @Transactional
 @PropertySource(value = "classpath:validation.properties", encoding = "UTF-8")
@@ -40,15 +37,17 @@ public class UserServiceImpl implements UserService {
 
     private final SecurityService securityService;
     private final MovieService movieService;
+    private final CategoryService categoryService;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(SecurityService securityService, @Lazy MovieService movieService,
-                           UserRepository userRepository, UserMapper userMapper,
-                           PasswordEncoder passwordEncoder) {
+                           CategoryService categoryService, UserRepository userRepository,
+                           UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.securityService = securityService;
         this.movieService = movieService;
+        this.categoryService = categoryService;
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
@@ -107,13 +106,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addCartDetail(Long movieId) {
+    public void addToCart(Long movieId) {
         User user = getLoggedIn();
-        Movie movie = movieService.findByIdLocal(movieId);
 
-        checkPermissionToAccessMovie(movie, user);
-
-        if (!user.addToCart(movie)) {
+        if (!user.addToCart(movieService.findByIdLocal(movieId))) {
             throw new RepeatedCartDetailException(user.getUsername(), movieId);
         }
 
@@ -121,7 +117,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeCartDetail(Long movieId) {
+    public void removeFromCart(Long movieId) {
         User user = getLoggedIn();
 
         if (!user.removeFromCart(movieService.findByIdLocal(movieId))) {
@@ -132,7 +128,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeAllCartDetails() {
+    public void clearCart() {
         User user = getLoggedIn();
 
         user.clearCart();
@@ -141,16 +137,55 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<GetAllDetailsMovieDtoResponse> findAllCartDetails(Pageable pageable) {
+    public List<GetCartMovieDtoResponse> findCart(Pageable pageable) {
         return movieService.findAllByPossibleBuyer(getLoggedIn(), pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public User findCurrent() {
+    public User findCurrentLocal() {
         return Optional.ofNullable(securityService.getCurrentUser())
                 .map(User::getId).map(this::findUserById)
                 .orElse(null);
+    }
+
+    @Override
+    public void addCategoryItem(Long categoryId, Long movieId) {
+        User user = getLoggedIn();
+        Movie movie = movieService.findByIdLocal(movieId);
+
+        Category category = categoryService.findByIdLocal(categoryId);
+
+        if (!user.addCategoryItem(category, movie)) {
+            throw new RepeatedCategoryItemException(user.getUsername(), category.getName(), movieId);
+        }
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public void removeCategoryItem(Long categoryId, Long movieId) {
+        User user = getLoggedIn();
+        Movie movie = movieService.findByIdLocal(movieId);
+        Category category = categoryService.findByIdLocal(categoryId);
+
+        if (!user.removeCategoryItem(category, movie)) {
+            throw new CategoryItemNotFoundException(user.getUsername(), category.getName(), movieId);
+        }
+
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<GetAllMovieDtoResponse> findAllCategoryItems(Long categoryId,
+                                                             Pageable pageable) {
+        Category category = categoryService.findByIdLocal(categoryId);
+        QMovie movie = QMovie.movie;
+        BooleanExpression hasCategoryItems = movie.categoryItems.any().id.category.eq(category)
+                .and(movie.categoryItems.any().id.user.eq(getLoggedIn()));
+
+        return movieService.findAll(hasCategoryItems, pageable);
     }
 
     private User getLoggedIn() {
