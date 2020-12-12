@@ -1,12 +1,15 @@
 package com.movie.site.model;
 
 import com.movie.site.model.enums.Source;
+import com.movie.site.model.id.SourceDataId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -18,31 +21,30 @@ import java.util.Objects;
 @Table(name = "source_data")
 public class SourceData implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    private SourceDataId id;
 
     private String url;
     private float rating;
 
-    @Enumerated(EnumType.STRING)
-    private Source source;
+    public Source getSource() {
+        return id.getSource();
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "movie_id")
-    private Movie movie;
+    public Movie getMovie() {
+        return id.getMovie();
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SourceData that = (SourceData) o;
-        return source == that.source &&
-                movie.equals(that.movie);
+        return id.equals(that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(source, movie);
+        return Objects.hash(id);
     }
 }
