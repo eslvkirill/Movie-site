@@ -2,6 +2,7 @@ package com.movie.site.model;
 
 import com.movie.site.model.enums.MovieOperation;
 import com.movie.site.model.enums.Role;
+import com.movie.site.model.id.CategoryItemId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,9 @@ public class User implements Serializable, UserDetails {
             inverseJoinColumns = @JoinColumn(name = "movie_id"))
     private Set<Movie> cart;
 
+    @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CategoryItem> categoryItems;
+
     public boolean addToCart(Movie movie) {
         return cart.add(movie);
     }
@@ -53,6 +57,18 @@ public class User implements Serializable, UserDetails {
 
     public MovieOperation getMovieOperation(Movie movie) {
         return cart.contains(movie) ? MovieOperation.REMOVE : MovieOperation.ADD;
+    }
+
+    public boolean addCategoryItem(Category category, Movie movie) {
+        CategoryItem categoryItem = new CategoryItem(this, movie, category);
+
+        return categoryItems.add(categoryItem);
+    }
+
+    public boolean removeCategoryItem(Category category, Movie movie) {
+        CategoryItem categoryItem = new CategoryItem(this, movie, category);
+
+        return categoryItems.remove(categoryItem);
     }
 
     @Override

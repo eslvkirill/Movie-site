@@ -1,9 +1,11 @@
 package com.movie.site.service;
 
 import com.movie.site.dto.request.CreateUserDtoRequest;
-import com.movie.site.dto.response.GetAllDetailsMovieDtoResponse;
+import com.movie.site.dto.response.GetCartMovieDtoResponse;
+import com.movie.site.dto.response.GetAllMovieDtoResponse;
 import com.movie.site.dto.response.LoginUserDtoResponse;
 import com.movie.site.model.User;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -13,13 +15,20 @@ public interface UserService extends UserDetailsService, UniquenessService {
 
     LoginUserDtoResponse create(CreateUserDtoRequest userDto);
 
-    void addCartDetail(Long movieId);
+    void addToCart(Long movieId);
 
-    void removeCartDetail(Long movieId);
+    void removeFromCart(Long movieId);
 
-    void removeAllCartDetails();
+    void clearCart();
 
-    List<GetAllDetailsMovieDtoResponse> findAllCartDetails(Pageable pageable);
+    List<GetCartMovieDtoResponse> findCart(Pageable pageable);
 
-    User findCurrent();
+    User findCurrentLocal();
+
+    void addCategoryItem(Long categoryId, Long movieId);
+
+    void removeCategoryItem(Long categoryId, Long movieId);
+
+    Page<GetAllMovieDtoResponse> findAllCategoryItems(Long categoryId,
+                                                      Pageable pageable);
 }

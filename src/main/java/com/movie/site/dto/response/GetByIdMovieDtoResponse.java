@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalTime;
+import java.util.Map;
 import java.util.Set;
 
 @Data
@@ -43,4 +44,5 @@ public class GetByIdMovieDtoResponse {
     private Set<GetAllPersonDtoResponse> actors;
     private Set<GetAllPersonDtoResponse> directors;
     private MovieOperation operation;
+    private Map<CategoryDtoResponse, Boolean> relationToCategories;
 }

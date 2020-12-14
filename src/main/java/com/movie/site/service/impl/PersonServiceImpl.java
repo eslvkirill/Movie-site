@@ -58,7 +58,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Person> findAllByIds(Iterable<Long> ids) {
+    public Set<Person> findAllByIdsLocal(Iterable<Long> ids) {
         Set<Person> people = personRepository.findAllByIds(ids);
 
         if (people.isEmpty()) {

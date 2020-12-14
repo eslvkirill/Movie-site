@@ -100,6 +100,9 @@ public class Movie implements Serializable {
     @ManyToMany(mappedBy = "cart")
     private Set<User> possibleBuyers;
 
+    @OneToMany(mappedBy = "id.movie")
+    private Set<CategoryItem> categoryItems;
+
     public boolean containsReview(User user) {
         Review review = new Review();
         review.setUser(user);
@@ -157,6 +160,10 @@ public class Movie implements Serializable {
         sourceData.removeAll(sourceData.stream()
                 .filter(sd -> sources.contains(sd.getSource()))
                 .collect(Collectors.toSet()));
+    }
+
+    public boolean containsCategoryItem(User user, Category category) {
+        return categoryItems.contains(new CategoryItem(user, this, category));
     }
 
     @Override

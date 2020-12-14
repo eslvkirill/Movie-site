@@ -2,9 +2,9 @@ package com.movie.site.mapper;
 
 import com.movie.site.dto.request.CreateMovieDtoRequest;
 import com.movie.site.dto.request.UpdateMovieDtoRequest;
-import com.movie.site.dto.response.GetAllDetailsMovieDtoResponse;
 import com.movie.site.dto.response.GetAllMovieDtoResponse;
 import com.movie.site.dto.response.GetByIdMovieDtoResponse;
+import com.movie.site.dto.response.GetCartMovieDtoResponse;
 import com.movie.site.dto.response.SaveMovieDtoResponse;
 import com.movie.site.model.Movie;
 import com.movie.site.model.User;
@@ -54,16 +54,16 @@ public interface MovieMapper {
             @Mapping(target = "totalRating", expression = "java(movie.getTotalRating())"),
             @Mapping(target = "id", source = "movie.id")
     })
-    GetAllMovieDtoResponse toGetAllDto(Movie movie, User user);
+    GetAllMovieDtoResponse toGetAllDto(Movie movie);
 
 
     @Mapping(target = "poster", source = "posterKey", qualifiedByName = "downloadFile")
-    GetAllDetailsMovieDtoResponse toGetAllDetailsDto(Movie movie);
+    GetCartMovieDtoResponse toGetCartDto(Movie movie);
 
-    List<GetAllDetailsMovieDtoResponse> toGetAllDetailsDtoList(List<Movie> movies);
+    List<GetCartMovieDtoResponse> toGetCartDtoList(Iterable<Movie> movies, @Context User user);
 
     default Page<GetAllMovieDtoResponse> toGetAllDtoPage(Page<Movie> movies, User user) {
-        return movies.map(movie -> toGetAllDto(movie, user));
+        return movies.map(this::toGetAllDto);
     }
 
     @Mappings({

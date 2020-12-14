@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
+import java.util.Map;
 import java.util.Set;
 
 @Data
@@ -26,4 +27,5 @@ public class GetAllMovieDtoResponse {
     private float totalRating;
     private Set<GetAllPersonDtoResponse> directors;
     private MovieOperation operation;
+    private Map<Long, Boolean> relationToCategories;
 }

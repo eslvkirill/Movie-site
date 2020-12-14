@@ -18,5 +18,5 @@ public interface GenreService {
     GenreDtoResponse update(Long id, UpdateGenreDtoRequest genreDto);
 
     @Named("findGenresByIds")
-    Set<Genre> findAllByIds(Iterable<Long> ids);
+    Set<Genre> findAllByIdsLocal(Iterable<Long> ids);
 }

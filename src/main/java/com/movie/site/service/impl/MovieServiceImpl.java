@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movie.site.dto.request.*;
 import com.movie.site.dto.response.*;
+import com.movie.site.exception.ForbiddenException;
 import com.movie.site.exception.MovieNotFoundException;
 import com.movie.site.exception.MovieRatingNotFoundException;
 import com.movie.site.exception.RepeatedRatingException;
@@ -36,7 +37,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.util.*;
 
-import static com.movie.site.service.MovieService.checkPermissionToAccessMovie;
 import static com.movie.site.util.ParsingUtils.find;
 
 @Service
@@ -102,12 +102,8 @@ public class MovieServiceImpl implements MovieService {
     @Override
     @Transactional(readOnly = true)
     public GetByIdMovieDtoResponse findById(Long id, Pageable reviewPageable) {
-        Movie movie = findByIdLocal(id);
-        User user = userService.findCurrent();
-
-        checkPermissionToAccessMovie(movie, user);
-
-        return movieMapper.toGetByIdDto(movie, reviewPageable, user);
+        return movieMapper.toGetByIdDto(findByIdLocal(id), reviewPageable,
+                userService.findCurrentLocal());
     }
 
     @Override
@@ -129,18 +125,14 @@ public class MovieServiceImpl implements MovieService {
     @Override
     @Transactional(readOnly = true)
     public Page<ReviewDtoResponse> findAllReviews(Long id, Pageable pageable) {
-        Movie movie = findByIdLocal(id);
-
-        checkPermissionToAccessMovie(movie, securityService.getCurrentUser());
-
-        return reviewService.findAll(movie, pageable);
+        return reviewService.findAll(findByIdLocal(id), pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<GetAllMovieDtoResponse> findAll(Pageable pageable,
-                                                Predicate predicate) {
-        Optional<User> user = Optional.ofNullable(userService.findCurrent());
+    public Page<GetAllMovieDtoResponse> findAll(Predicate predicate,
+                                                Pageable pageable) {
+        Optional<User> user = Optional.ofNullable(userService.findCurrentLocal());
         boolean admin = user.map(u -> u.getAuthorities().contains(Role.ADMIN))
                 .orElse(false);
 
@@ -159,8 +151,6 @@ public class MovieServiceImpl implements MovieService {
         User user = securityService.getCurrentUser();
         Rating rating = ratingMapper.toEntity(ratingDto);
         rating.setId(user, movie);
-
-        checkPermissionToAccessMovie(movie, user);
 
         if (!movie.addRating(rating)) {
             throw new RepeatedRatingException(id, user.getUsername());
@@ -202,18 +192,25 @@ public class MovieServiceImpl implements MovieService {
     @Override
     @Transactional(readOnly = true)
     public Movie findByIdLocal(Long id) {
-        return movieRepository.findById(id)
+        Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException(id));
+        User user = securityService.getCurrentUser();
+
+        if (!movie.isActive() && (user == null || !user.getAuthorities().contains(Role.ADMIN))) {
+            throw new ForbiddenException();
+        }
+
+        return movie;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<GetAllDetailsMovieDtoResponse> findAllByPossibleBuyer(User user,
-                                                                      Pageable pageable) {
+    public List<GetCartMovieDtoResponse> findAllByPossibleBuyer(User user,
+                                                                Pageable pageable) {
         List<Movie> movies = movieRepository
                 .findAllByPossibleBuyersContains(user, pageable);
 
-        return movieMapper.toGetAllDetailsDtoList(movies);
+        return movieMapper.toGetCartDtoList(movies, user);
     }
 
     @Override

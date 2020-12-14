@@ -5,12 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetAllDetailsMovieDtoResponse {
+public class GetCartMovieDtoResponse {
 
     private Long id;
     private String engTitle;
@@ -20,4 +21,5 @@ public class GetAllDetailsMovieDtoResponse {
     private Set<Genre> genres;
     private int price;
     private Set<GetAllPersonDtoResponse> directors;
+    private Map<Long, Boolean> relationToCategories;
 }
