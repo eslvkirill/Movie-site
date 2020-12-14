@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addCartDetail(Long movieId) {
         User user = getLoggedIn();
-        Movie movie = movieService.findById(movieId);
+        Movie movie = movieService.findByIdLocal(movieId);
 
         checkPermissionToAccessMovie(movie, user);
 
@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
     public void removeCartDetail(Long movieId) {
         User user = getLoggedIn();
 
-        if (!user.removeFromCart(movieService.findById(movieId))) {
+        if (!user.removeFromCart(movieService.findByIdLocal(movieId))) {
             throw new CartDetailNotFoundException(user.getUsername(), movieId);
         }
 

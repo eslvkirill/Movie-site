@@ -1,10 +1,7 @@
 package com.movie.site.service;
 
 import com.movie.site.dto.request.*;
-import com.movie.site.dto.response.GetAllDetailsMovieDtoResponse;
-import com.movie.site.dto.response.GetAllMovieDtoResponse;
-import com.movie.site.dto.response.GetByIdMovieDtoResponse;
-import com.movie.site.dto.response.ReviewDtoResponse;
+import com.movie.site.dto.response.*;
 import com.movie.site.exception.ForbiddenException;
 import com.movie.site.model.Movie;
 import com.movie.site.model.User;
@@ -38,10 +35,16 @@ public interface MovieService {
 
     Movie removeRating(Long id);
 
-    Movie findById(Long id);
+    Movie findByIdLocal(Long id);
 
     List<GetAllDetailsMovieDtoResponse> findAllByPossibleBuyer(User user,
                                                                Pageable pageable);
+
+    void update(Long id, UpdateMovieDtoRequest movieDto);
+
+    void updateActivity(Long id);
+
+    SaveMovieDtoResponse findById(Long id);
 
     static void checkPermissionToAccessMovie(Movie movie, User user) {
         if (!movie.isActive() && (user == null || !user.getAuthorities().contains(Role.ADMIN))) {

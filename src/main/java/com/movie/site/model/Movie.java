@@ -2,7 +2,9 @@ package com.movie.site.model;
 
 import com.movie.site.model.enums.AgeRating;
 import com.movie.site.model.enums.Language;
+import com.movie.site.model.enums.Source;
 import com.movie.site.model.id.RatingId;
+import com.movie.site.model.id.SourceDataId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +14,7 @@ import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -40,7 +43,8 @@ public class Movie implements Serializable {
     private String tagline;
     private String plot;
 
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id.movie", cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private Set<SourceData> sourceData;
 
     @ElementCollection
@@ -132,6 +136,27 @@ public class Movie implements Serializable {
                 .filter(rating -> rating.getUser().equals(user))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public SourceData getSourceData(Source source) {
+        return sourceData.stream()
+                .filter(sd -> sd.getSource().equals(source))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public void addSourceData(String url, float rating, Source source) {
+        this.sourceData.add(SourceData.builder()
+                .id(new SourceDataId(source, this))
+                .url(url)
+                .rating(rating)
+                .build());
+    }
+
+    public void removeAllSourceData(Set<Source> sources) {
+        sourceData.removeAll(sourceData.stream()
+                .filter(sd -> sources.contains(sd.getSource()))
+                .collect(Collectors.toSet()));
     }
 
     @Override

@@ -25,8 +25,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.OptionalLong;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,12 +40,16 @@ public class MovieRestController {
     private final PersonService personService;
 
     @GetMapping("/saving")
-    public Map<String, Object> save(@RequestParam(required = false) OptionalLong id) {
-        return Map.of("countries", countryService.findAll(),
-                "ageRatings", AgeRating.values(),
-                "languages", Language.values(),
-                "genres", genreService.findAll(),
-                "people", personService.findAll());
+    public Map<String, Object> save(@RequestParam(required = false) Optional<Long> id) {
+        HashMap<String, Object> response = new HashMap<>();
+        response.put("countries", countryService.findAll());
+        response.put("ageRatings", AgeRating.values());
+        response.put("languages", Language.values());
+        response.put("genres", genreService.findAll());
+        response.put("people", personService.findAll());
+        response.put("current", id.map(movieService::findById).orElse(null));
+
+        return response;
     }
 
     @PostMapping
@@ -140,5 +145,16 @@ public class MovieRestController {
         return Map.of("countries", countryService.findAll(),
                 "genres", genreService.findAll(),
                 "directors", personService.findDirectors());
+    }
+
+    @PostMapping("/{id}")
+    public void update(@PathVariable Long id,
+                       @Valid UpdateMovieDtoRequest movieDto) {
+        movieService.update(id, movieDto);
+    }
+
+    @PostMapping("/{id}/activity")
+    public void updateActivity(@PathVariable Long id) {
+        movieService.updateActivity(id);
     }
 }

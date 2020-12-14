@@ -399,4 +399,24 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="2020-12-13 change primary keys for all @ElementCollection and
+        SourceData tables in the Movie entity" author="Befors">
+        <dropColumn tableName="movie_country">
+            <column name="id"/>
+        </dropColumn>
+        <addPrimaryKey tableName="movie_country" columnNames="movie_id,country"/>
+        <dropColumn tableName="movie_audio">
+            <column name="id"/>
+        </dropColumn>
+        <addPrimaryKey tableName="movie_audio" columnNames="movie_id,language"/>
+        <dropColumn tableName="movie_subtitle">
+            <column name="id"/>
+        </dropColumn>
+        <addPrimaryKey tableName="movie_subtitle" columnNames="movie_id,language"/>
+        <dropColumn tableName="source_data">
+            <column name="id"/>
+        </dropColumn>
+        <addPrimaryKey tableName="source_data" columnNames="movie_id,source"/>
+    </changeSet>
 </databaseChangeLog>
