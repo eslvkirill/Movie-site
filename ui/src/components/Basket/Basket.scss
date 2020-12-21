@@ -1,5 +1,104 @@
 .basket {
   display: flex;
   justify-content: center;
-  margin-top: 12rem;
+  margin-top: calc(106px + 7rem);
+
+  .filmListName {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: #db6736;
+    font-size: 2rem;
+    cursor: default;
+  }
+
+  .myFilmsLine {
+    width: 60%;
+    background: #c06b0a;
+    height: 2px;
+    margin-bottom: 40px;
+  }
+
+  .myFilmsWrapper {
+    margin: 0;
+    margin-top: 10px;
+  }
+
+  .myFilmsCard {
+    width: 58%;
+    padding: 11px 12px;
+    border: 1.5px solid #f7d9a8;
+    border-radius: 10px;
+    margin-bottom: 30px;
+  }
+
+  .myFilmsParts {
+    cursor: default;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto 20px;
+  }
+
+  .myFilmsParts img {
+    cursor: pointer;
+    height: 75px;
+    width: 130px;
+  }
+
+  .reviewCard .filmsTitle {
+    margin: 0;
+    padding: 0;
+  }
+
+  .filmsInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .myFilmsParts button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: #c06b0a;
+    color: #fceddc;
+    padding: 0.1rem 0.7rem;
+    border-radius: 5px;
+    font-size: 22px;
+  }
+
+  .myFilmsParts button:hover {
+    background: #a35b09;
+    transition: 0.3s;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .filmGenre,
+  .myFilmsText {
+    text-align: center;
+  }
+
+  .bottomOfBlock {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5rem;
+
+    > div {
+      margin: auto 3rem;
+      font-size: 1.2rem;
+      color: #fceddc;
+    }
+
+    .success {
+      width: 13rem;
+    }
+  }
 }

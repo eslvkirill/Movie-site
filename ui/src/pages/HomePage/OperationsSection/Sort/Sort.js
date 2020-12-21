@@ -11,7 +11,7 @@ const Sort = (props) => (
       style={
         props.isFetch
           ? {
-              opacity: "0.7",
+              opacity: "0.85",
               transition: "0.3s",
               pointerEvents: "none",
             }
@@ -158,7 +158,7 @@ const Sort = (props) => (
         styles={selectStyle(
           272,
           15,
-          "#fceddcd8",
+          "#fceddc",
           "#995506",
           "#995506",
           20,

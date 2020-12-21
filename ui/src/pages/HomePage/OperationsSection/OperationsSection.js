@@ -14,6 +14,7 @@ const OperationsSection = (props) => {
         setCurrentPage={props.setCurrentPage}
         paginate={props.paginate}
         arrowDirection={props.arrowDirection}
+        isFetch={props.isFetch}
         setFetch={props.setFetch}
         setLoading={props.setLoading}
       />

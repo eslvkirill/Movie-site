@@ -139,10 +139,6 @@ export default function FilmPage(props) {
     return images;
   };
 
-  // {[...Array(10)].map((x, i) =>
-  //   <ObjectRow key={i} />
-  // )}
-
   const renderRatings = () =>
     film.sourceData.map((data, index) => (
       <div key={index} className={`${data.name}Stars`}>
@@ -182,7 +178,10 @@ export default function FilmPage(props) {
   } = film;
 
   return (
-    <div className="FilmPage">
+    <div
+      className="FilmPage"
+      // style={authForm ? { position: "absolute" } : {}}
+    >
       {loading ? (
         <ContentLoader className="Loader" />
       ) : (

@@ -94,6 +94,7 @@ const DropupBlock = (props) => {
       props.arrowDirection
     );
     props.setLoading(true);
+    props.setFetch(true);
   };
 
   const renderSelects = () => {
