@@ -1,5 +1,57 @@
 .filmCatalog {
   display: flex;
   justify-content: center;
-  margin-top: 12rem;
+  flex-direction: column;
+  margin: calc(5rem + 106px) auto 4rem;
+  width: 80%;
+  height: 100%;
+  flex-wrap: wrap;
+
+  .selectWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: -1rem;
+
+    .category {
+      display: flex;
+      font-size: 1.8rem;
+      color: #fceddc;
+      letter-spacing: 0.5rem;
+    }
+
+    .Select {
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      margin: 0;
+    }
+  }
+
+  .myFilms {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .bottomOfCard {
+      margin-top: 1.6rem;
+      width: 29%;
+
+      .onAdd {
+        width: 42%;
+        background: #b81818;
+
+        &:hover {
+          background: #921313;
+        }
+      }
+
+      .onBuy {
+        width: 53%;
+      }
+    }
+  }
 }

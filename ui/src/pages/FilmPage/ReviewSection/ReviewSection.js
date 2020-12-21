@@ -181,8 +181,12 @@ const ReviewSection = (props) => {
         </div>
       ) : (
         <div className="emptyReviews">
-          Пока их нет, <Link to="/login">ВОЙДИТЕ</Link>, чтобы написать первый
-          отзыв
+          Пока их нет,{" "}
+          {props.user === null ? (
+            <Link to="/login">ВОЙДИТЕ, чтобы написать первый отзыв</Link>
+          ) : (
+            "оставьте первый отзыв!"
+          )}
         </div>
       )}
     </div>

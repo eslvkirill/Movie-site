@@ -7,7 +7,18 @@ const Filters = (props) => {
   const [dropup, setDropup] = useState(false);
 
   return (
-    <div className="filtersWrapper">
+    <div
+      className="filtersWrapper"
+      style={
+        props.isFetch
+          ? {
+              opacity: "0.85",
+              transition: "0.3s",
+              pointerEvents: "none",
+            }
+          : {}
+      }
+    >
       <div className="filterText">
         <Button type="success" onClick={() => setDropup(!dropup)}>
           Фильтрация
@@ -25,6 +36,7 @@ const Filters = (props) => {
         arrowDirection={props.arrowDirection}
         paginate={props.paginate}
         setLoading={props.setLoading}
+        setFetch={props.setFetch}
       />
     </div>
   );
