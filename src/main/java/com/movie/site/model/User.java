@@ -107,6 +107,17 @@ public class User implements Serializable, UserDetails {
                 .contains(movie);
     }
 
+    public boolean containsOrder(Long orderId) {
+        return orders.contains(Order.builder().id(orderId).build());
+    }
+
+    public Order getOrder(Long orderId) {
+        return orders.stream()
+                .filter(order -> order.getId().equals(orderId))
+                .findFirst()
+                .orElse(null);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Optional.ofNullable(role)

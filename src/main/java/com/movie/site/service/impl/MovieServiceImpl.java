@@ -10,10 +10,7 @@ import com.movie.site.exception.MovieRatingNotFoundException;
 import com.movie.site.exception.RepeatedRatingException;
 import com.movie.site.mapper.MovieMapper;
 import com.movie.site.mapper.RatingMapper;
-import com.movie.site.model.Movie;
-import com.movie.site.model.QMovie;
-import com.movie.site.model.Rating;
-import com.movie.site.model.User;
+import com.movie.site.model.*;
 import com.movie.site.model.enums.Role;
 import com.movie.site.model.enums.Source;
 import com.movie.site.model.id.RatingId;
@@ -126,7 +123,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     @Transactional(readOnly = true)
     public Page<ReviewDtoResponse> findAllReviews(Long id, Pageable pageable) {
-        return reviewService.findAll(findByIdLocal(id), pageable);
+        return reviewService.findAllByMovie(findByIdLocal(id), pageable);
     }
 
     @Override
@@ -208,9 +205,7 @@ public class MovieServiceImpl implements MovieService {
     @Transactional(readOnly = true)
     public List<GetCartMovieDtoResponse> findAllByPossibleBuyer(User user,
                                                                 Pageable pageable) {
-        QMovie movie = QMovie.movie;
-        BooleanExpression hasPossibleBuyer = movie.cartDetails.any().id.user.eq(user);
-        List<Movie> movies = movieRepository.findAll(hasPossibleBuyer, pageable).getContent();
+        List<Movie> movies = movieRepository.findAllByPossibleBuyer(user, pageable);
 
         return movieMapper.toGetCartDtoList(movies, user);
     }
@@ -260,6 +255,15 @@ public class MovieServiceImpl implements MovieService {
     @Transactional(readOnly = true)
     public SaveMovieDtoResponse findById(Long id) {
         return movieMapper.toSaveDto(findByIdLocal(id));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<GetOrderDetailsMovieDtoResponse> findAllByOrder(Order order,
+                                                                Pageable pageable) {
+        Page<Movie> movies = movieRepository.findAllByOrder(order, pageable);
+
+        return movieMapper.toGetOrderDetailsDtoPage(movies);
     }
 
     @SneakyThrows

@@ -11,7 +11,8 @@ import org.springframework.data.querydsl.binding.QuerydslBindings;
 import java.util.Objects;
 
 public interface MovieRepository extends JpaRepository<Movie, Long>,
-        QuerydslPredicateExecutor<Movie>, QuerydslBinderCustomizer<QMovie> {
+        QuerydslPredicateExecutor<Movie>, QuerydslBinderCustomizer<QMovie>,
+        MovieRepositoryCustom {
 
     @Override
     default void customize(QuerydslBindings bindings, QMovie root) {

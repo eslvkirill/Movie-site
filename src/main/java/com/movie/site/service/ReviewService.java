@@ -16,5 +16,5 @@ public interface ReviewService {
 
     ReviewDtoResponse delete(Movie movie, Long id);
 
-    Page<ReviewDtoResponse> findAll(Movie movie, Pageable pageable);
+    Page<ReviewDtoResponse> findAllByMovie(Movie movie, Pageable pageable);
 }

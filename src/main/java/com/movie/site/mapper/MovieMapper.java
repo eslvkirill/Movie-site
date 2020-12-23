@@ -2,10 +2,7 @@ package com.movie.site.mapper;
 
 import com.movie.site.dto.request.CreateMovieDtoRequest;
 import com.movie.site.dto.request.UpdateMovieDtoRequest;
-import com.movie.site.dto.response.GetAllMovieDtoResponse;
-import com.movie.site.dto.response.GetByIdMovieDtoResponse;
-import com.movie.site.dto.response.GetCartMovieDtoResponse;
-import com.movie.site.dto.response.SaveMovieDtoResponse;
+import com.movie.site.dto.response.*;
 import com.movie.site.model.Movie;
 import com.movie.site.model.User;
 import com.movie.site.model.enums.Source;
@@ -96,4 +93,11 @@ public interface MovieMapper {
                             ".collect(Collectors.toSet()))")
     })
     SaveMovieDtoResponse toSaveDto(Movie movie);
+
+    @Mapping(target = "poster", source = "posterKey", qualifiedByName = "downloadFile")
+    GetOrderDetailsMovieDtoResponse toGetOrderDetailsDto(Movie movie);
+
+    default Page<GetOrderDetailsMovieDtoResponse> toGetOrderDetailsDtoPage(Page<Movie> movies) {
+        return movies.map(this::toGetOrderDetailsDto);
+    }
 }

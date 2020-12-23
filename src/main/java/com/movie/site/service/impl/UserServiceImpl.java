@@ -1,9 +1,7 @@
 package com.movie.site.service.impl;
 
 import com.movie.site.dto.request.CreateUserDtoRequest;
-import com.movie.site.dto.response.GetAllMovieDtoResponse;
-import com.movie.site.dto.response.GetCartMovieDtoResponse;
-import com.movie.site.dto.response.LoginUserDtoResponse;
+import com.movie.site.dto.response.*;
 import com.movie.site.exception.*;
 import com.movie.site.mapper.OrderMapper;
 import com.movie.site.mapper.UserMapper;
@@ -26,10 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -206,6 +201,24 @@ public class UserServiceImpl implements UserService {
 
         user.addOrder(orderMapper.toEntity(user));
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<OrderDtoResponse> findAllOrders() {
+        return orderMapper.toDtoList(getLoggedIn().getOrders());
+    }
+
+    @Override
+    public Page<GetOrderDetailsMovieDtoResponse> findAllOrderDetails(Long orderId,
+                                                                     Pageable pageable) {
+        User user = getLoggedIn();
+
+        if (!user.containsOrder(orderId)) {
+            throw new UserOrderNotFoundException(user.getUsername(), orderId);
+        }
+
+        return movieService.findAllByOrder(user.getOrder(orderId), pageable);
     }
 
     private User getLoggedIn() {
