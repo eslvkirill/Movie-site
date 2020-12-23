@@ -9,16 +9,12 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.springframework.data.domain.Page;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
-@Mapper(imports = {LocalDateTime.class, LocalTime.class, LocalDate.class, DateTimeFormatter.class})
+@Mapper(imports = LocalDateTime.class)
 public interface ReviewMapper {
 
-    @Mapping(target = "datetime",
-            expression = "java(LocalDateTime.of(LocalDate.now(), LocalTime.now()))")
+    @Mapping(target = "datetime", expression = "java(LocalDateTime.now())")
     Review toEntity(CreateReviewDtoRequest reviewDto);
 
     @Mapping(target = "username",

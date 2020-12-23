@@ -1,8 +1,8 @@
 package com.movie.site.service;
 
 import com.movie.site.dto.request.CreateUserDtoRequest;
-import com.movie.site.dto.response.GetCartMovieDtoResponse;
 import com.movie.site.dto.response.GetAllMovieDtoResponse;
+import com.movie.site.dto.response.GetCartMovieDtoResponse;
 import com.movie.site.dto.response.LoginUserDtoResponse;
 import com.movie.site.model.User;
 import org.springframework.data.domain.Page;
@@ -31,4 +31,6 @@ public interface UserService extends UserDetailsService, UniquenessService {
 
     Page<GetAllMovieDtoResponse> findAllCategoryItems(Long categoryId,
                                                       Pageable pageable);
+
+    void checkout();
 }

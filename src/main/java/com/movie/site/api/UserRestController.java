@@ -53,6 +53,12 @@ public class UserRestController {
         return userService.findCart(pageable);
     }
 
+    @PostMapping("/orders")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void checkout() {
+        userService.checkout();
+    }
+
     @PostMapping("/category-items/{categoryId}-{movieId}")
     @ResponseStatus(HttpStatus.CREATED)
     public void addCategoryItem(@PathVariable Long categoryId,

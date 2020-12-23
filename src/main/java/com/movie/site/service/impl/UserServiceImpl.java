@@ -5,6 +5,7 @@ import com.movie.site.dto.response.GetAllMovieDtoResponse;
 import com.movie.site.dto.response.GetCartMovieDtoResponse;
 import com.movie.site.dto.response.LoginUserDtoResponse;
 import com.movie.site.exception.*;
+import com.movie.site.mapper.OrderMapper;
 import com.movie.site.mapper.UserMapper;
 import com.movie.site.model.*;
 import com.movie.site.model.enums.Role;
@@ -40,17 +41,20 @@ public class UserServiceImpl implements UserService {
     private final CategoryService categoryService;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final OrderMapper orderMapper;
     private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(SecurityService securityService, @Lazy MovieService movieService,
                            CategoryService categoryService, UserRepository userRepository,
-                           UserMapper userMapper, PasswordEncoder passwordEncoder) {
+                           UserMapper userMapper, PasswordEncoder passwordEncoder,
+                           OrderMapper orderMapper) {
         this.securityService = securityService;
         this.movieService = movieService;
         this.categoryService = categoryService;
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
+        this.orderMapper = orderMapper;
     }
 
     @Value("${unique.user.email}")
@@ -108,8 +112,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addToCart(Long movieId) {
         User user = getLoggedIn();
+        Movie movie = movieService.findByIdLocal(movieId);
 
-        if (!user.addToCart(movieService.findByIdLocal(movieId))) {
+        if (user.hasAlreadyBoughtMovie(movie)) {
+            throw new AlreadyBoughtMovieException(user.getUsername(), movieId);
+        }
+        if (!user.addToCart(movie)) {
             throw new RepeatedCartDetailException(user.getUsername(), movieId);
         }
 
@@ -186,6 +194,18 @@ public class UserServiceImpl implements UserService {
                 .and(movie.categoryItems.any().id.user.eq(getLoggedIn()));
 
         return movieService.findAll(hasCategoryItem, pageable);
+    }
+
+    @Override
+    public void checkout() {
+        User user = getLoggedIn();
+
+        if (user.isCartEmpty()) {
+            throw new EmptyCartException(user.getUsername());
+        }
+
+        user.addOrder(orderMapper.toEntity(user));
+        userRepository.save(user);
     }
 
     private User getLoggedIn() {

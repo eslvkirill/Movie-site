@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -40,8 +41,15 @@ public class User implements Serializable, UserDetails {
     @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CategoryItem> categoryItems;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Order> orders;
+
     public boolean addToCart(Movie movie) {
-        CartDetail cartDetail = new CartDetail(this, movie, cart.size() + 1);
+        int maxRank = cart.stream()
+                .mapToInt(CartDetail::getRank)
+                .max()
+                .orElse(0);
+        CartDetail cartDetail = new CartDetail(this, movie, maxRank + 1);
 
         return cart.add(cartDetail);
     }
@@ -56,10 +64,21 @@ public class User implements Serializable, UserDetails {
         cart.clear();
     }
 
+    public boolean isCartEmpty() {
+        return cart.isEmpty();
+    }
+
+    public long calcCartTotalPrice() {
+        return cart.stream()
+                .mapToLong(cartDetail -> cartDetail.getMovie().getPrice())
+                .sum();
+    }
+
     public MovieOperation getMovieOperation(Movie movie) {
         CartDetail cartDetail = new CartDetail(this, movie);
 
-        return cart.contains(cartDetail) ? MovieOperation.REMOVE : MovieOperation.ADD;
+        return cart.contains(cartDetail) ? MovieOperation.REMOVE :
+                hasAlreadyBoughtMovie(movie) ? MovieOperation.WATCH : MovieOperation.ADD;
     }
 
     public boolean addCategoryItem(Category category, Movie movie) {
@@ -72,6 +91,20 @@ public class User implements Serializable, UserDetails {
         CategoryItem categoryItem = new CategoryItem(this, movie, category);
 
         return categoryItems.remove(categoryItem);
+    }
+
+    public void addOrder(Order order) {
+        orders.add(order);
+
+        clearCart();
+    }
+
+    public boolean hasAlreadyBoughtMovie(Movie movie) {
+        return orders.stream()
+                .flatMap(order -> order.getDetails().stream())
+                .map(OrderDetail::getMovie)
+                .collect(Collectors.toSet())
+                .contains(movie);
     }
 
     @Override
