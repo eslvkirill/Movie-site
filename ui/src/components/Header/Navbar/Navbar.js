@@ -13,18 +13,18 @@ const Navbar = () => {
       label: user.username,
       visible: false,
     },
-    { to: "/myFilms", label: "Мои фильмы", visible: true },
+    // { to: "/myFilms", label: "Мои фильмы", visible: true },
     user !== null && {
-      to: "/adminPanel",
+      to: "/adminPanel/charts",
       label: "Панель администратора",
       visible: false,
     },
     user !== null && {
-      to: "/ordersHistory",
+      to: "/orders",
       label: "Заказы",
       visible: true,
     },
-    { to: "/basket", label: "Корзина", visible: true },
+    user !== null && { to: "/shoppingCart", label: "Корзина", visible: true },
 
     user !== null
       ? { to: "/logout", label: "➤  Выйти", visible: false }
@@ -47,7 +47,7 @@ const Navbar = () => {
               className="link"
               to={link.to === "/logout" ? "/" : link.to}
               style={
-                link.to === "/basket"
+                link.to === "/shoppingCart"
                   ? { position: "relative", bottom: 6.5 }
                   : link.to === "/login"
                   ? {

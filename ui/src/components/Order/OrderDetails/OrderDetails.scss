@@ -1,0 +1,10 @@
+.orderDetails {
+  display: flex;
+  justify-content: center;
+  margin-top: calc(12rem + 106px);
+
+  .myFilmsParts .filmPrice {
+    color: #f7d9a8;
+    font-size: 18px;
+  }
+}

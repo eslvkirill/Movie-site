@@ -34,7 +34,7 @@ const AllFilms = (props) => {
         <ul>
           {props.films.map((film, index) => {
             return (
-              <li key={index}>
+              <li key={index} id={film.id}>
                 <Cards
                   filmId={film.id}
                   rusTitle={film.rusTitle}
@@ -45,8 +45,12 @@ const AllFilms = (props) => {
                   genres={film.genres}
                   year={film.year}
                   directors={film.directors}
+                  film={film}
                   rating={film.totalRating}
                   backgroundColor={film.pageColor1}
+                  operation={film.operation}
+                  user={props.user}
+                  setFilms={props.setFilms}
                 />
               </li>
             );

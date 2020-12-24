@@ -9,8 +9,12 @@ import AdminPanel from "./components/AdminPanel/AdminPanel";
 import Header from "./components/Header/Header";
 import FilmPage from "./pages/FilmPage/FilmPage";
 import FilmCatalog from "./components/FilmCatalog/FilmCatalog";
-import OrdersHistory from "./components/OrdersHistory/OrdersHistory";
-import Basket from "./components/Basket/Basket";
+import Order from "./components/Order/Order";
+import ShoppingCart from "./components/ShoppingCart/ShoppingCart";
+import GenreList from "./components/AdminPanel/GenreList/GenreList";
+import PersonList from "./components/AdminPanel/PersonList/PersonList";
+import FilmList from "./components/AdminPanel/FilmList/FilmList";
+import Charts from "./components/AdminPanel/Сharts/Сharts";
 import "./App.scss";
 
 const app = (
@@ -21,8 +25,12 @@ const app = (
       <Route path="/registration" component={Registration} />
       <Route path="/adminPanel" component={AdminPanel} />
       <Route path="/myFilms" component={FilmCatalog} />
-      <Route path="/basket" component={Basket} />
-      <Route path="/ordersHistory" component={OrdersHistory} />
+      <Route path="/shoppingCart" component={ShoppingCart} />
+      <Route path="/orders" component={Order} />
+      <Route path="/adminPanel/charts" component={Charts} />
+      <Route path="/adminPanel/genres" component={GenreList} />
+      <Route path="/adminPanel/persons" component={PersonList} />
+      <Route path="/adminPanel/films" component={FilmList} />
       <Route path="/api/movies/:id" component={FilmPage} />
       <Route exact path="/" component={HomePage} />
     </UserProvider>

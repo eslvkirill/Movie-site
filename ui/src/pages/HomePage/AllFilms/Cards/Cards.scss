@@ -130,7 +130,7 @@
       flex-wrap: wrap;
       align-items: center;
       margin-bottom: 0.8rem;
-      margin-top: 1.7rem;
+      margin-top: 1rem;
 
       .addLabel {
         color: #f7e7c9;
@@ -179,10 +179,11 @@
       }
 
       .onBuy {
-        width: 48%;
+        width: 55%;
         background: rgba(189, 90, 49, 1);
         margin-left: 10px;
-        padding: 0.4rem 6px;
+        font-size: 17px;
+        padding: 0.45rem 6px;
 
         &:hover {
           background: rgba(199, 88, 40, 0.733);

@@ -3,6 +3,8 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  margin-left: 4rem;
+  margin-top: -1.7rem;
 }
 
 .filmList {
@@ -10,7 +12,12 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-top: 2rem;
+  margin-top: 0rem;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    color: rgb(252, 237, 220);
+  }
 
   .FilmList {
     margin-top: 0.8rem;
@@ -32,6 +39,7 @@
       width: 80%;
       @include flexible();
       align-items: normal;
+      margin-right: -7rem;
 
       Input {
         width: 22rem;

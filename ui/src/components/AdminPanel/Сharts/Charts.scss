@@ -1,0 +1,28 @@
+.charts {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: -4rem;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 1rem;
+
+    &:first-child {
+      margin-right: 3rem;
+    }
+
+    h2 {
+      margin-bottom: 1.5rem;
+      color: rgb(252, 237, 220);
+    }
+
+    .topMovies {
+      margin-right: -4rem;
+    }
+  }
+}

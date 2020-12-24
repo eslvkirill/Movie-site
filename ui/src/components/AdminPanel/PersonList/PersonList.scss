@@ -1,8 +1,14 @@
 .personList {
   display: flex;
-  width: 50%;
   flex-direction: column;
   align-items: center;
+  margin-top: 3rem;
+  margin-right: -10rem;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    color: rgb(252, 237, 220);
+  }
 
   form {
     display: flex;

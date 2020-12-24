@@ -1,0 +1,82 @@
+.orderWrapper {
+  margin-top: calc(4.5rem + 106px);
+
+  .reviewWrapper {
+    margin-bottom: -0.5rem;
+  }
+
+  .order {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 70%;
+    padding: 12px 2px;
+    border: 3.5px inset #f18203;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    font-size: 16px;
+    cursor: default;
+    height: 100%;
+    font-size: 18px;
+
+    > div {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      margin-left: 1rem;
+
+      div {
+        margin-right: 5rem;
+
+        &:last-child {
+          margin-right: -2rem;
+        }
+        span {
+          font-size: 20px;
+          color: #f7d5a8;
+        }
+      }
+    }
+
+    .down {
+      cursor: pointer;
+      transform: rotate(270deg);
+      background: #aa0e69b6;
+      margin-right: 0.5rem;
+      padding: 12px;
+      transition: 0.3s;
+      font-size: 1.2rem;
+      border-radius: 10px;
+    }
+
+    .up {
+      cursor: pointer;
+      transform: rotate(90deg);
+      background: #8110adcb;
+      margin-right: 0.5rem;
+      transition: 0.3s;
+      padding: 12px;
+      font-size: 1.2rem;
+      border-radius: 10px;
+    }
+  }
+
+  .basket {
+    margin-top: 0;
+
+    .myFilmsCard {
+      border: 0;
+      border-radius: 0;
+      border-bottom: 2px dashed #f7d9a8;
+
+      .myFilmsParts {
+        margin: 0;
+      }
+
+      .filmPrice {
+        margin-left: 20px;
+      }
+    }
+  }
+}

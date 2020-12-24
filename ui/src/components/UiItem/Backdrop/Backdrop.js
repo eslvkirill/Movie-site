@@ -6,7 +6,6 @@ import "./Backdrop.scss";
 
 const useStyles = makeStyles(() => ({
   backdrop: {
-    zIndex: 50,
     background: "linear-gradient(200deg, #280138e3, #382201b0)",
     position: "fixed",
     top: 0,
@@ -14,6 +13,7 @@ const useStyles = makeStyles(() => ({
     bottom: 0,
     right: 0,
     display: "flex",
+    zIndex: 1000,
   },
 }));
 
@@ -27,8 +27,10 @@ const Backdrop = (props) => {
         open={props.authForm}
         className={`${classes.backdrop}`}
         onClick={handleClose}
-      ></MaterialUIBackdrop>
-      <Auth className="auth" />
+      >
+        <Auth className="auth" />
+      </MaterialUIBackdrop>
+      {/* <Auth className="auth" /> */}
     </div>
   );
 };
