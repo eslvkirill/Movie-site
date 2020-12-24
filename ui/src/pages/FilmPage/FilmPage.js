@@ -23,6 +23,7 @@ export default function FilmPage(props) {
   const [reviewButtonActive, setReviewButtonActive] = useState(false);
   const [user] = useUserAuth();
   const [authForm, setAuthForm] = useState(false);
+  const [cartButton, setCartButton] = useState(null);
 
   useEffect(() => {
     const getMovie = async () => {
@@ -30,6 +31,7 @@ export default function FilmPage(props) {
         await axios
           .get(`/api/movies/${props.match.params.id}`)
           .then((response) => {
+            console.log(response.data);
             const film = response.data;
             let sourceData = film.sourceData;
 
@@ -77,6 +79,13 @@ export default function FilmPage(props) {
             setNumberOfRatings(film.numberOfRatings);
             setReviewButtonActive(film.userHasAlreadyWrittenReview);
             setLoading(false);
+            setCartButton(
+              film.operation === "ADD"
+                ? false
+                : film.operation === "REMOVE"
+                ? true
+                : null
+            );
           });
       } catch (e) {
         console.log(e);
@@ -155,6 +164,70 @@ export default function FilmPage(props) {
 
   const renderOscars = () =>
     renderImages(film.oscars, "awardOscar.png", "Оскаровская статуэтка");
+
+  const addToCart = async () => {
+    try {
+      await axios({
+        method: "post",
+        contentType: "application/json",
+        url: `/api/users/cart/${film.id}`,
+        data: film.id,
+      });
+      setCartButton(!cartButton);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const deleteFromCart = async () => {
+    try {
+      await axios.delete(`/api/users/cart/${film.id}`);
+      setCartButton(!cartButton);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const renderBuyButton = () => {
+    if (user !== null) {
+      return (
+        <div
+          className="BuyButton"
+          onClick={() =>
+            (film.operation === "ADD" && !cartButton) ||
+            (film.operation === "REMOVE" && !cartButton)
+              ? addToCart()
+              : film.operation === "REMOVE" || cartButton
+              ? deleteFromCart()
+              : null
+          }
+        >
+          {/* <a
+          // target="_blank"
+          href="https://kinozal-tv.appspot.com/details.php?sid=le9mVLyk&id=1220921"
+        > */}
+          <div>
+            <span />
+            <span />
+            <span />
+            <span />
+            {(film.operation === "ADD" && !cartButton) || !cartButton ? (
+              <>
+                Купить за{" "}
+                <span className="Price">
+                  {price}
+                  <span>р</span>
+                </span>
+              </>
+            ) : film.operation === "REMOVE" || cartButton ? (
+              "Убрать из корзины"
+            ) : null}
+          </div>
+          {/* </a> */}
+        </div>
+      );
+    }
+  };
 
   const {
     genres,
@@ -273,22 +346,7 @@ export default function FilmPage(props) {
                     Прочитать отзывы
                   </Link>
                 </div>
-                <div className="BuyButton">
-                  <a
-                    // target="_blank"
-                    href="https://kinozal-tv.appspot.com/details.php?sid=le9mVLyk&id=1220921"
-                  >
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    Купить за{" "}
-                    <span className="Price">
-                      {price}
-                      <span>р</span>
-                    </span>
-                  </a>
-                </div>
+                {renderBuyButton()}
               </div>
             </div>
             <div className="totalRatingBlock">

@@ -209,6 +209,8 @@ export default class FilmList extends Component {
       const response = await axios.get("/api/movies/saving");
       console.log(response.data);
 
+      delete response.data["current"];
+
       const formControls = this.state.formControls;
       const formSelectControls = formControls.formSelectControls;
 
@@ -245,6 +247,7 @@ export default class FilmList extends Component {
 
         return initialState;
       });
+
       this.setState({ formControls });
     } catch (e) {
       console.log(e);
@@ -481,7 +484,7 @@ export default class FilmList extends Component {
           rusTitle={this.state.film.rusTitle}
         />
 
-        <h2>Создание фильма</h2>
+        {/* <h2>Создание фильма</h2> */}
         <form
           className="FilmList"
           onSubmit={(event) => this.submitNewFilm(event)}

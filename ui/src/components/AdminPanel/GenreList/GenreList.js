@@ -209,7 +209,7 @@ export default class GenreList extends Component {
   render() {
     return (
       <div className="GenreList">
-        <h2>Добавление жанров фильмам</h2>
+        {/* <h2>Добавление жанров фильмам</h2> */}
 
         <form onSubmit={(event) => this.submitNewGenre(event)}>
           {this.renderInputs()}

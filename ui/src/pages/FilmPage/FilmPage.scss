@@ -228,7 +228,8 @@
           justify-content: flex-end;
           width: 55%;
 
-          a {
+          div {
+            cursor: pointer;
             @include gradient-animation(
               150deg,
               rgba(189, 90, 49, 1),

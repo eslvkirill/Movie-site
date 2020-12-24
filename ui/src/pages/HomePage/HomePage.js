@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { filmConstructor } from "../../exportFunctions/filmConstructor/filmConstructor";
+import { useUserAuth } from "../../containers/UserContext/UserContext";
 import AllFilms from "./AllFilms/AllFilms";
 import OperationsSection from "./OperationsSection/OperationsSection";
 import "./HomePage.scss";
@@ -17,6 +18,8 @@ const HomePage = () => {
   const [arrowDirection, setArrowDirection] = useState(true);
   const [sortValue, setSortValue] = useState();
   const [filterContent, setFilterContent] = useState({});
+
+  const [user] = useUserAuth();
 
   const options = [
     { value: "id", label: "Умолчанию" },
@@ -128,6 +131,7 @@ const HomePage = () => {
         </div>
         <hr className="SecondLine" />
       </div>
+
       <OperationsSection
         options={options}
         sortValue={sortValue}
@@ -144,6 +148,7 @@ const HomePage = () => {
       />
       <AllFilms
         sortValue={sortValue}
+        setFilms={setFilms}
         films={films}
         loading={loading}
         numberOfElements={numberOfElements}
@@ -154,6 +159,7 @@ const HomePage = () => {
         isFetch={isFetch}
         setFetch={setFetch}
         arrowDirection={arrowDirection}
+        user={user}
       />
     </main>
   );

@@ -1,0 +1,153 @@
+.basket {
+  display: flex;
+  justify-content: center;
+  margin: calc(106px + 5.5rem) 0 2rem;
+
+  .filmListName {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: #db6736;
+    font-size: 2rem;
+    cursor: default;
+  }
+
+  .myFilmsLine {
+    width: 60%;
+    background: #c06b0a;
+    height: 2px;
+    margin-bottom: 40px;
+  }
+
+  .myFilmsWrapper {
+    margin: 0;
+    margin-top: 10px;
+  }
+
+  .myFilmsCard {
+    width: 62%;
+    padding: 11px 12px;
+    border: 2px solid #f7d9a8;
+    border-radius: 10px;
+    margin-bottom: 30px;
+  }
+
+  .myFilmsParts {
+    cursor: default;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto 20px;
+
+    a {
+      cursor: pointer;
+      height: 75px;
+      width: 130px;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background: #c06b0a;
+      color: #fceddc;
+      padding: 0.1rem 0.7rem;
+      border-radius: 5px;
+      font-size: 22px;
+
+      &:hover {
+        background: #a35b09;
+        transition: 0.3s;
+      }
+    }
+
+    .price {
+      color: #f7d9a8;
+      font-size: 18px;
+      margin-right: 2rem;
+    }
+
+    .InfoWrapper {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 74%;
+    }
+  }
+
+  .reviewCard .filmsTitle {
+    margin: 0;
+    padding: 0;
+  }
+
+  .filmsInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .filmGenre,
+  .myFilmsText {
+    text-align: center;
+  }
+
+  .bottomOfBlock {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5rem;
+
+    > div {
+      margin: auto 3rem;
+      font-size: 1.2rem;
+      color: #fceddc;
+    }
+
+    .success {
+      width: 12rem;
+      font-size: 17.5px;
+      padding: 11px 6px;
+    }
+
+    .reset {
+      margin-right: 1rem;
+      width: 12rem;
+      font-size: 17.5px;
+    }
+
+    .emptyCart {
+      margin-top: 6rem;
+      font-size: 1.5rem;
+    }
+
+    .bought {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      div {
+        margin-bottom: 1rem;
+      }
+
+      a {
+        font-size: 1.55rem;
+        font-weight: bold;
+        text-decoration: none;
+        color: rgb(136, 35, 231);
+        transition: 0.3s;
+
+        &:hover {
+          color: rgb(160, 58, 255);
+          transition: 0.3s;
+        }
+      }
+    }
+  }
+}

@@ -1,12 +1,12 @@
 import React from "react";
-import selectStyle from "../../../../components/UiItem/Select/selectStyle";
-import Select from "../../../../components/UiItem/Select/Select";
+// import selectStyle from "../../../../components/UiItem/Select/selectStyle";
+// import Select from "../../../../components/UiItem/Select/Select";
 import ButtonsBlock from "./ButtonsBlock";
 
 const BottomBlock = (props) => (
   <div className="bottomOfCard">
     <div className="categoryList">
-      <div className="addLabel">Добавить в:</div>
+      {/* <div className="addLabel">Добавить в:</div>
       <Select
         placeholder="Выберите категорию"
         noOptionsMessage={() => "Список пуст"}
@@ -24,9 +24,17 @@ const BottomBlock = (props) => (
           "rgb(252, 237, 220)",
           17
         )}
-      />
+      /> */}
     </div>
-    <ButtonsBlock price={props.price} label={props.label} />
+    <ButtonsBlock
+      price={props.price}
+      // label={props.label}
+      user={props.user}
+      setAuthForm={props.setAuthForm}
+      filmId={props.filmId}
+      operation={props.operation}
+      film={props.film}
+    />
   </div>
 );
 
