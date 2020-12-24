@@ -97,8 +97,8 @@ public class Movie implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "person_id"))
     private Set<Person> directors;
 
-    @ManyToMany(mappedBy = "cart")
-    private Set<User> possibleBuyers;
+    @OneToMany(mappedBy = "id.movie")
+    private Set<CartDetail> cartDetails;
 
     @OneToMany(mappedBy = "id.movie")
     private Set<CategoryItem> categoryItems;

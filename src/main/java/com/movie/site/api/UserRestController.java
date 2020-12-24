@@ -49,7 +49,7 @@ public class UserRestController {
 
     @GetMapping("/cart")
     public List<GetCartMovieDtoResponse> getCart(
-            @PageableDefault(sort = "possibleBuyers.id") Pageable pageable) {
+            @PageableDefault(sort = "cartDetails.rank") Pageable pageable) {
         return userService.findCart(pageable);
     }
 

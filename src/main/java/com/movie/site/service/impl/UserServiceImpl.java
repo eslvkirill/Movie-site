@@ -182,10 +182,10 @@ public class UserServiceImpl implements UserService {
                                                              Pageable pageable) {
         Category category = categoryService.findByIdLocal(categoryId);
         QMovie movie = QMovie.movie;
-        BooleanExpression hasCategoryItems = movie.categoryItems.any().id.category.eq(category)
+        BooleanExpression hasCategoryItem = movie.categoryItems.any().id.category.eq(category)
                 .and(movie.categoryItems.any().id.user.eq(getLoggedIn()));
 
-        return movieService.findAll(hasCategoryItems, pageable);
+        return movieService.findAll(hasCategoryItem, pageable);
     }
 
     private User getLoggedIn() {
