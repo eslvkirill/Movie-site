@@ -2,7 +2,6 @@ package com.movie.site.model;
 
 import com.movie.site.model.enums.MovieOperation;
 import com.movie.site.model.enums.Role;
-import com.movie.site.model.id.CategoryItemId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,21 +33,23 @@ public class User implements Serializable, UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "cart_detail",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id"))
-    private Set<Movie> cart;
+    @OneToMany(mappedBy = "id.user", fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CartDetail> cart;
 
     @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CategoryItem> categoryItems;
 
     public boolean addToCart(Movie movie) {
-        return cart.add(movie);
+        CartDetail cartDetail = new CartDetail(this, movie, cart.size() + 1);
+
+        return cart.add(cartDetail);
     }
 
     public boolean removeFromCart(Movie movie) {
-        return cart.remove(movie);
+        CartDetail cartDetail = new CartDetail(this, movie);
+
+        return cart.remove(cartDetail);
     }
 
     public void clearCart() {
@@ -56,7 +57,9 @@ public class User implements Serializable, UserDetails {
     }
 
     public MovieOperation getMovieOperation(Movie movie) {
-        return cart.contains(movie) ? MovieOperation.REMOVE : MovieOperation.ADD;
+        CartDetail cartDetail = new CartDetail(this, movie);
+
+        return cart.contains(cartDetail) ? MovieOperation.REMOVE : MovieOperation.ADD;
     }
 
     public boolean addCategoryItem(Category category, Movie movie) {

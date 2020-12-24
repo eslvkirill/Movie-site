@@ -20,6 +20,7 @@ import com.movie.site.model.id.RatingId;
 import com.movie.site.repository.MovieRepository;
 import com.movie.site.service.*;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
@@ -207,8 +208,9 @@ public class MovieServiceImpl implements MovieService {
     @Transactional(readOnly = true)
     public List<GetCartMovieDtoResponse> findAllByPossibleBuyer(User user,
                                                                 Pageable pageable) {
-        List<Movie> movies = movieRepository
-                .findAllByPossibleBuyersContains(user, pageable);
+        QMovie movie = QMovie.movie;
+        BooleanExpression hasPossibleBuyer = movie.cartDetails.any().id.user.eq(user);
+        List<Movie> movies = movieRepository.findAll(hasPossibleBuyer, pageable).getContent();
 
         return movieMapper.toGetCartDtoList(movies, user);
     }

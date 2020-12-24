@@ -451,4 +451,13 @@
         </dropColumn>
         <addPrimaryKey tableName="source_data" columnNames="movie_id,source"/>
     </changeSet>
+
+    <changeSet id="2020-12-24 add rank to CartDetail" author="Befors">
+        <delete tableName="cart_detail"/>
+        <addColumn tableName="cart_detail">
+            <column name="rank" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
