@@ -17,7 +17,6 @@ import com.movie.site.model.id.RatingId;
 import com.movie.site.repository.MovieRepository;
 import com.movie.site.service.*;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +33,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.movie.site.util.ParsingUtils.find;
 
@@ -122,7 +122,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<ReviewDtoResponse> findAllReviews(Long id, Pageable pageable) {
+    public Page<ReviewDtoResponse> findReviews(Long id, Pageable pageable) {
         return reviewService.findAllByMovie(findByIdLocal(id), pageable);
     }
 
@@ -264,6 +264,19 @@ public class MovieServiceImpl implements MovieService {
         Page<Movie> movies = movieRepository.findAllByOrder(order, pageable);
 
         return movieMapper.toGetOrderDetailsDtoPage(movies);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<String, Integer> findBestsellers(Pageable pageable) {
+        Collection<Movie> movies = movieRepository.findAll();
+
+        return movies.stream()
+                .sorted((movie1, movie2) -> movie2.getNumberOfBuyers() - movie1.getNumberOfBuyers())
+                .limit(pageable.getPageSize())
+                .map(movie -> Map.entry(movie.getRusTitle(), movie.getNumberOfBuyers()))
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        Map.Entry::getValue, (x, y) -> y, LinkedHashMap::new));
     }
 
     @SneakyThrows

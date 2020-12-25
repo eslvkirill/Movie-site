@@ -28,13 +28,13 @@ public interface UserService extends UserDetailsService, UniquenessService {
 
     void removeCategoryItem(Long categoryId, Long movieId);
 
-    Page<GetAllMovieDtoResponse> findAllCategoryItems(Long categoryId,
-                                                      Pageable pageable);
+    Page<GetAllMovieDtoResponse> findCategoryItems(Long categoryId,
+                                                   Pageable pageable);
 
     void checkout();
 
-    Collection<OrderDtoResponse> findAllOrders();
+    Collection<OrderDtoResponse> findOrders();
 
-    Page<GetOrderDetailsMovieDtoResponse> findAllOrderDetails(Long orderId,
-                                                              Pageable pageable);
+    Page<GetOrderDetailsMovieDtoResponse> findOrderDetails(Long orderId,
+                                                           Pageable pageable);
 }

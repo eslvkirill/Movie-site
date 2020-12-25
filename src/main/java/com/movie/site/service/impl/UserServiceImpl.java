@@ -181,8 +181,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<GetAllMovieDtoResponse> findAllCategoryItems(Long categoryId,
-                                                             Pageable pageable) {
+    public Page<GetAllMovieDtoResponse> findCategoryItems(Long categoryId,
+                                                          Pageable pageable) {
         Category category = categoryService.findByIdLocal(categoryId);
         QMovie movie = QMovie.movie;
         BooleanExpression hasCategoryItem = movie.categoryItems.any().id.category.eq(category)
@@ -205,13 +205,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Collection<OrderDtoResponse> findAllOrders() {
+    public Collection<OrderDtoResponse> findOrders() {
         return orderMapper.toDtoList(getLoggedIn().getOrders());
     }
 
     @Override
-    public Page<GetOrderDetailsMovieDtoResponse> findAllOrderDetails(Long orderId,
-                                                                     Pageable pageable) {
+    public Page<GetOrderDetailsMovieDtoResponse> findOrderDetails(Long orderId,
+                                                                  Pageable pageable) {
         User user = getLoggedIn();
 
         if (!user.containsOrder(orderId)) {
