@@ -34,6 +34,10 @@ public class Order implements Serializable {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private Set<OrderDetail> details;
 
+    public int getNumberOfDetails() {
+        return details.size();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

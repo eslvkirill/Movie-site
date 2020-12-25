@@ -69,7 +69,7 @@ public class UserRestController {
     public Page<GetAllMovieDtoResponse> getCategoryItems(
             @RequestParam Long categoryId,
             @PageableDefault(sort = "categoryItems.id") Pageable pageable) {
-        return userService.findAllCategoryItems(categoryId, pageable);
+        return userService.findCategoryItems(categoryId, pageable);
     }
 
     @PostMapping("/orders")
@@ -80,13 +80,13 @@ public class UserRestController {
 
     @GetMapping("/orders")
     public Collection<OrderDtoResponse> getOrders() {
-        return userService.findAllOrders();
+        return userService.findOrders();
     }
 
     @GetMapping("/orders/{orderId}/order-details")
     public Page<GetOrderDetailsMovieDtoResponse> getOrderDetails(
             @PathVariable Long orderId,
             @PageableDefault(sort = "orderDetails.rank") Pageable pageable) {
-        return userService.findAllOrderDetails(orderId, pageable);
+        return userService.findOrderDetails(orderId, pageable);
     }
 }

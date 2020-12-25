@@ -169,6 +169,10 @@ public class Movie implements Serializable {
         return categoryItems.contains(new CategoryItem(user, this, category));
     }
 
+    public int getNumberOfBuyers() {
+        return orderDetails.size();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

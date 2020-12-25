@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MovieService {
 
@@ -24,7 +25,7 @@ public interface MovieService {
 
     void removeReview(Long movieId, Long reviewId);
 
-    Page<ReviewDtoResponse> findAllReviews(Long id, Pageable pageable);
+    Page<ReviewDtoResponse> findReviews(Long id, Pageable pageable);
 
     Page<GetAllMovieDtoResponse> findAll(Predicate predicate, Pageable pageable);
 
@@ -47,4 +48,6 @@ public interface MovieService {
 
     Page<GetOrderDetailsMovieDtoResponse> findAllByOrder(Order order,
                                                          Pageable pageable);
+
+    Map<String, Integer> findBestsellers(Pageable pageable);
 }

@@ -99,7 +99,7 @@ public class MovieRestController {
     public Page<ReviewDtoResponse> getReviews(
             @PathVariable Long id,
             @PageableDefault(size = 3, sort = "datetime") Pageable pageable) {
-        return movieService.findAllReviews(id, pageable);
+        return movieService.findReviews(id, pageable);
     }
 
     @GetMapping
@@ -156,5 +156,11 @@ public class MovieRestController {
     @PostMapping("/{id}/activity")
     public void updateActivity(@PathVariable Long id) {
         movieService.updateActivity(id);
+    }
+
+    @GetMapping("/bestsellers")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Map<String, Integer> getBestsellers(@PageableDefault(size = 5) Pageable pageable) {
+        return movieService.findBestsellers(pageable);
     }
 }
