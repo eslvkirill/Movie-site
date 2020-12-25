@@ -165,7 +165,7 @@ const PersonList = (props) => {
 
   return (
     <div className="personList">
-      {/* <h2>Добавление актёров и режиссёров</h2> */}
+      <h2>Добавление актёров и режиссёров</h2>
       <form onSubmit={(event) => personSubmitHandler(event)}>
         <div className="renderInputs">{renderInputs()}</div>
         <Button

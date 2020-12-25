@@ -1,7 +1,7 @@
 import React from "react";
 import Select from "../UiItem/Select/Select";
 import selectStyle from "../UiItem/Select/selectStyle";
-import ButtonsBlock from "../../pages/HomePage/AllFilms/Cards/ButtonsBlock";
+import ButtonsBlock from "../../pages/HomePage/AllFilms/Cards/ButtonsBlock/ButtonsBlock";
 import FilmCard from "../../pages/HomePage/AllFilms/Cards/FilmCard";
 import "./FilmCatalog.scss";
 
