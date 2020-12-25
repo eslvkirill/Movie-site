@@ -55,10 +55,16 @@ const ShoppingCart = () => {
     }
   };
 
-  const buyWindow = () => {
-    console.log("kk");
-    setPaid(true);
-    setFilms([]);
+  const orderPayment = async () => {
+    try {
+      await axios.post(`/api/users/orders`).then((res) => {
+        console.log(res);
+        setPaid(true);
+        setFilms([]);
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -122,7 +128,7 @@ const ShoppingCart = () => {
                   <Button type="reset" onClick={clearCart}>
                     Очистить корзину
                   </Button>
-                  <Button type="success" onClick={buyWindow}>
+                  <Button type="success" onClick={orderPayment}>
                     Оплатить заказ
                   </Button>
                   <div>Итог: {price} рублей</div>

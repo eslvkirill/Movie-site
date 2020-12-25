@@ -194,10 +194,12 @@ export default function FilmPage(props) {
         <div
           className="BuyButton"
           onClick={() =>
-            (film.operation === "ADD" && !cartButton) ||
-            (film.operation === "REMOVE" && !cartButton)
+            film.operation !== "WATCH" &&
+            ((film.operation === "ADD" && !cartButton) ||
+              (film.operation === "REMOVE" && !cartButton))
               ? addToCart()
-              : film.operation === "REMOVE" || cartButton
+              : film.operation !== "WATCH" &&
+                (film.operation === "REMOVE" || cartButton)
               ? deleteFromCart()
               : null
           }
@@ -206,12 +208,17 @@ export default function FilmPage(props) {
           // target="_blank"
           href="https://kinozal-tv.appspot.com/details.php?sid=le9mVLyk&id=1220921"
         > */}
-          <div>
+          <div className={film.operation === "WATCH" ? "filmWatch" : ""}>
             <span />
             <span />
             <span />
             <span />
-            {(film.operation === "ADD" && !cartButton) || !cartButton ? (
+            {film.operation === "WATCH" && user !== null ? (
+              <span>Фильм куплен</span>
+            ) : (film.operation === "ADD" &&
+                !cartButton &&
+                film.operation !== "WATCH") ||
+              !cartButton ? (
               <>
                 Купить за{" "}
                 <span className="Price">
@@ -219,7 +226,8 @@ export default function FilmPage(props) {
                   <span>р</span>
                 </span>
               </>
-            ) : film.operation === "REMOVE" || cartButton ? (
+            ) : (film.operation === "REMOVE" || cartButton) &&
+              film.operation !== "WATCH" ? (
               "Убрать из корзины"
             ) : null}
           </div>

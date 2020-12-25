@@ -36,7 +36,7 @@ const Navbar = () => {
       if (user !== null) {
         link.visible = true;
         if (user.role === "USER")
-          if (link.to === "/adminPanel") link.visible = false;
+          if (link.to === "/adminPanel/charts") link.visible = false;
       }
 
       if (link.visible) {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Button from "../../../../components/UiItem/Button/Button";
+import Button from "../../../../../components/UiItem/Button/Button";
+import "./ButtonsBlock.scss";
 
 const ButtonsBlock = (props) => {
   const [cartButton, setCartButton] = useState(null);
@@ -40,8 +41,13 @@ const ButtonsBlock = (props) => {
   };
 
   const renderButtonsLabel = () => {
+    if (props.operation === "WATCH" && props.user !== null) {
+      return <div className="watch">Куплено</div>;
+    }
     if (
-      (props.operation === "ADD" && !cartButton) ||
+      (props.operation === "ADD" &&
+        !cartButton &&
+        props.operation !== "WATCH") ||
       !cartButton ||
       props.user === null
     ) {
@@ -51,7 +57,10 @@ const ButtonsBlock = (props) => {
         </>
       );
     }
-    if (props.operation === "REMOVE" || cartButton) {
+    if (
+      (props.operation === "REMOVE" || cartButton) &&
+      props.operation !== "WATCH"
+    ) {
       return (
         <div
           style={{
@@ -72,10 +81,15 @@ const ButtonsBlock = (props) => {
       <div className="buttonsWrapper">
         {/* <Button type="success onAdd">{props.label}</Button> */}
         <Button
-          type="success onBuy"
+          type={`${
+            props.operation === "WATCH" && props.user !== null
+              ? "bought"
+              : "success onBuy"
+          }`}
           onClick={() => {
             if (
               props.user !== null &&
+              props.operation !== "WATCH" &&
               ((props.operation === "REMOVE" && !cartButton) ||
                 (props.operation === "ADD" && !cartButton))
             ) {
@@ -86,6 +100,7 @@ const ButtonsBlock = (props) => {
             if (props.user === null) props.setAuthForm(true);
             else if (
               props.user !== null &&
+              props.operation !== "WATCH" &&
               ((props.operation === "REMOVE" && cartButton) ||
                 (props.operation === "ADD" && cartButton))
             ) {

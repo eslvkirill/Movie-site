@@ -1,7 +1,7 @@
 import React from "react";
 // import selectStyle from "../../../../components/UiItem/Select/selectStyle";
 // import Select from "../../../../components/UiItem/Select/Select";
-import ButtonsBlock from "./ButtonsBlock";
+import ButtonsBlock from "./ButtonsBlock/ButtonsBlock";
 
 const BottomBlock = (props) => (
   <div className="bottomOfCard">
