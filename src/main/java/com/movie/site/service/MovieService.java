@@ -3,6 +3,7 @@ package com.movie.site.service;
 import com.movie.site.dto.request.*;
 import com.movie.site.dto.response.*;
 import com.movie.site.model.Movie;
+import com.movie.site.model.Order;
 import com.movie.site.model.User;
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;
@@ -42,5 +43,8 @@ public interface MovieService {
     SaveMovieDtoResponse findById(Long id);
 
     List<GetCartMovieDtoResponse> findAllByPossibleBuyer(User user,
+                                                         Pageable pageable);
+
+    Page<GetOrderDetailsMovieDtoResponse> findAllByOrder(Order order,
                                                          Pageable pageable);
 }

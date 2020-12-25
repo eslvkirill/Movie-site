@@ -70,7 +70,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<ReviewDtoResponse> findAll(Movie movie, Pageable pageable) {
+    public Page<ReviewDtoResponse> findAllByMovie(Movie movie, Pageable pageable) {
         return reviewMapper.toDtoPage(reviewRepository.findAllByMovie(movie, pageable));
     }
 

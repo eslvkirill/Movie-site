@@ -1,9 +1,7 @@
 package com.movie.site.api;
 
 import com.movie.site.dto.request.CreateUserDtoRequest;
-import com.movie.site.dto.response.GetCartMovieDtoResponse;
-import com.movie.site.dto.response.GetAllMovieDtoResponse;
-import com.movie.site.dto.response.LoginUserDtoResponse;
+import com.movie.site.dto.response.*;
 import com.movie.site.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.List;
 
 @RestControllerAdvice
@@ -67,9 +66,27 @@ public class UserRestController {
     }
 
     @GetMapping("/category-items")
-    public Page<GetAllMovieDtoResponse> getAllCategoryItems(
+    public Page<GetAllMovieDtoResponse> getCategoryItems(
             @RequestParam Long categoryId,
             @PageableDefault(sort = "categoryItems.id") Pageable pageable) {
         return userService.findAllCategoryItems(categoryId, pageable);
+    }
+
+    @PostMapping("/orders")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void checkout() {
+        userService.checkout();
+    }
+
+    @GetMapping("/orders")
+    public Collection<OrderDtoResponse> getOrders() {
+        return userService.findAllOrders();
+    }
+
+    @GetMapping("/orders/{orderId}/order-details")
+    public Page<GetOrderDetailsMovieDtoResponse> getOrderDetails(
+            @PathVariable Long orderId,
+            @PageableDefault(sort = "orderDetails.rank") Pageable pageable) {
+        return userService.findAllOrderDetails(orderId, pageable);
     }
 }

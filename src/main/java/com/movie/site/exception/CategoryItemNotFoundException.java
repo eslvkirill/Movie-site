@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class CategoryItemNotFoundException extends RuntimeException {
 
     public CategoryItemNotFoundException(String username, String categoryName, Long movieId) {
-        super("The " + username + " user doesn't have movie with id " + movieId + " in " + categoryName + " category");
+        super("User " + username + " doesn't have movie with id " + movieId + " in " + categoryName + " category");
     }
 }

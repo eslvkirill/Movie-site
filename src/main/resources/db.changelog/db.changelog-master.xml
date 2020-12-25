@@ -460,4 +460,39 @@
             </column>
         </addColumn>
     </changeSet>
+
+    <changeSet id="2020-12-24 create tables for the Order and OrderDetail entities" author="Befors">
+        <createTable tableName="orders">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_orders_user_id"
+                             references="user(id)"/>
+            </column>
+            <column name="datetime" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_price" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="order_detail">
+            <column name="order_id" type="bigint">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_order_detail"
+                             foreignKeyName="fk_od_order_id"
+                             references="orders(id)"/>
+            </column>
+            <column name="movie_id" type="bigint">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_order_detail"
+                             foreignKeyName="fk_od_movie_id"
+                             references="movie(id)"/>
+            </column>
+            <column name="rank" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

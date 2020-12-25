@@ -31,4 +31,8 @@ public class CartDetail implements Serializable {
     public CartDetail(User user, Movie movie, int rank) {
         this(new CartDetailId(user, movie), rank);
     }
+
+    public Movie getMovie() {
+        return id.getMovie();
+    }
 }

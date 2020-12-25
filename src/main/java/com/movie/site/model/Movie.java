@@ -103,6 +103,9 @@ public class Movie implements Serializable {
     @OneToMany(mappedBy = "id.movie")
     private Set<CategoryItem> categoryItems;
 
+    @OneToMany(mappedBy = "movie")
+    private Set<OrderDetail> orderDetails;
+
     public boolean containsReview(User user) {
         Review review = new Review();
         review.setUser(user);
