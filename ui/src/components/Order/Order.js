@@ -9,13 +9,17 @@ const Order = () => {
   const [dropdown, setDropdawn] = useState(false);
   const [orders, setOrders] = useState([]);
   const [orderDetails, setOrderDetails] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getAllOrders = async () => {
       try {
         await axios.get("/api/users/orders").then((response) => {
           console.log(response);
-          if (response.data.length !== 0) setOrders(response.data);
+          if (response.data.length !== 0) {
+            setOrders(response.data);
+            setLoading(true);
+          }
         });
       } catch (e) {
         console.log(e);
@@ -30,7 +34,7 @@ const Order = () => {
       await axios
         .get(`/api/users/orders/${orderId}/order-details`)
         .then((response) => {
-          console.log(response.data.content);
+          console.log(response);
           setOrderDetails(filmConstructor(response.data.content));
         });
     } catch (e) {
@@ -40,38 +44,48 @@ const Order = () => {
 
   return (
     <main className="orderWrapper">
-      {orders.length !== 0 ? (
-        <div className="reviewWrapper myFilmsWrapper">
+      {loading ? (
+        <div>
           {orders.map((order, index) => (
-            <div className="order" key={index}>
-              <div>
-                <div className="numberOfOrder">
-                  Номер заказа: <span>{order.id}</span>
+            <div className="reviewWrapper myFilmsWrapper" key={order.id}>
+              <div className="order">
+                <div>
+                  <div className="numberOfOrder">
+                    Номер заказа: <span>{order.id}</span>
+                  </div>
+                  <div className="dateOrder">
+                    Дата заказа: <span>{order.datetime}</span>
+                  </div>
+                  <div className="priceOrder">
+                    Общая сумма: <span>{order.totalPrice} р.</span>
+                  </div>
                 </div>
-                <div className="dateOrder">
-                  Дата заказа: <span>{order.datetime}</span>
-                </div>
-                <div className="priceOrder">
-                  Общая сумма: <span>{order.totalPrice} р.</span>
+                <div
+                  id={order.id}
+                  onClick={(orderId) => {
+                    if (!dropdown) {
+                      getOrderDetails(order.id);
+                      // console.log(orderId);
+                      setDropdawn(!dropdown);
+                    }
+                    setDropdawn(!dropdown);
+                  }}
+                  className={dropdown ? "down" : "up"}
+                >
+                  ➤
                 </div>
               </div>
-              <div
-                id={order.id}
-                onClick={() => {
-                  if (!dropdown) getOrderDetails(order.id);
-                  setDropdawn(!dropdown);
-                }}
-                className={dropdown ? "down" : "up"}
-              >
-                ➤
-              </div>
+              <OrderDetails
+                dropdown={dropdown}
+                orderDetails={orderDetails}
+                orderId={order.id}
+              />
             </div>
           ))}
         </div>
       ) : (
         <ContentLoader />
       )}
-      <OrderDetails dropdown={dropdown} orderDetails={orderDetails} />
     </main>
   );
 };
