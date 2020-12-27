@@ -117,7 +117,7 @@ const ShoppingCart = () => {
               {!films.length && !paid ? (
                 <div className="emptyCart">Добавьте товары в корзину</div>
               ) : paid ? (
-                <div className="emptyCart bought">
+                <div className="emptyCart boughtFilms">
                   <div>Заказ успешно оплачен!</div>
                   <Link to="/">Перейти на главную страницу</Link>
                 </div>
