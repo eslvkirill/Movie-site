@@ -40,4 +40,11 @@ Login data for admin (use email or username):
   <li>password: 123456</li>
 </ul>
 
-— At the moment, the database with films is disabled, because the subscription to Yandex.Cloud has ended.
+*— At the moment, the database with films is disabled, because the subscription to Yandex.Cloud has ended.*
+
+<h2>Site in pictures</h2>
+
+![home-page](https://user-images.githubusercontent.com/57803074/110241401-fb56de80-7f69-11eb-846f-537ae721c389.png)
+![admin-page](https://user-images.githubusercontent.com/57803074/110241408-027dec80-7f6a-11eb-893f-cac741948b1c.png)
+![cart-and-orders-page](https://user-images.githubusercontent.com/57803074/110241412-07db3700-7f6a-11eb-9e27-c600121316d5.png)
+![film-page](https://user-images.githubusercontent.com/57803074/110241416-0dd11800-7f6a-11eb-8f8d-c9f2f75c1aef.png)
